@@ -10,8 +10,8 @@ CleanVar1 <- function(dataframe,a,b,c) {
   #Combines the date and time variables
   output$datetime2 <- as.POSIXct(output$datetime, format='%m/%d/%Y %H:%M:%S')
   output$timedate <- as.numeric(output$datetime2)
-  tot_time <- output$timedate[c(nrow(output))]-output$timedate[c(2)]
-  output$timefac <- (output$timedate-output$timedate[c(2)])/tot_time
+  tot_time <- output$timedate[c(nrow(output))]-output$timedate[c(1)]
+  output$timefac <- (output$timedate-output$timedate[c(1)])/tot_time
   #determines the time-drift componant
   output$corr <- output$raw + (output$timefac*(c-b))
   #This is the 1 point calibration equation
