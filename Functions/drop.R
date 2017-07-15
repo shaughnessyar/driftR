@@ -1,4 +1,4 @@
-drop <- function(dataframe,a=NULL,b=NULL){
+dr_drop <- function(dataframe,a=NULL,b=NULL){
   Output <- dataframe
   if (is.null(a)){
     Output <- Output [-c((nrow(Output)-(`b`-1)):nrow(Output)),]

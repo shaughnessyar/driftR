@@ -1,4 +1,4 @@
-read.exo <- function(extention, x , define=FALSE) {
+dr_readExo <- function(extention, x , define=FALSE) {
   if (is.null(define)) {
     df <- read_csv(extention, skip = x)
     df <- as_tibble(df)

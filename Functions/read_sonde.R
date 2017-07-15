@@ -1,4 +1,4 @@
-read.sonde <- function(extention, define=FALSE) {
+dr_readSonde <- function(extention, define=FALSE) {
   if (is.null(define)) {
     all_content = readLines(extention)
     df = read.csv(textConnection(all_content), header = TRUE, stringsAsFactors = FALSE)
