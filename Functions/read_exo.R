@@ -1,6 +1,6 @@
 dr_readExo <- function(fileExtention, skipRows , defineVar=FALSE) {
   if (is.null(defineVar)) {
-    df <- read_csv(fileExtention, skip = skip)
+    df <- read_csv(fileExtention, skip = skipRows)
     df <- as_tibble(df)
     return(df)
   }
