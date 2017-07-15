@@ -1,12 +1,12 @@
-dr_readSonde <- function(extention, define=FALSE) {
-  if (is.null(define)) {
-    all_content = readLines(extention)
+dr_readSonde <- function(fileExtention, defineVar=FALSE) {
+  if (is.null(defineVar)) {
+    all_content = readLines(fileExtention)
     df = read.csv(textConnection(all_content), header = TRUE, stringsAsFactors = FALSE)
     df <- as_tibble(df)
     return(df)
   }
-  else if (define == "TRUE"){
-    all_content = readLines(extention)
+  else if (defineVar == "TRUE"){
+    all_content = readLines(fileExtention)
     skip_second = all_content[-2]
     df = read.csv(textConnection(skip_second), header = TRUE, stringsAsFactors = FALSE)
     df$Date <- as.Date(df$Date, "%m/%d/%y")
@@ -15,7 +15,7 @@ dr_readSonde <- function(extention, define=FALSE) {
     return(df)
   }
   else {
-    all_content = readLines(extention)
+    all_content = readLines(fileExtention)
     df = read.csv(textConnection(all_content), header = TRUE, stringsAsFactors = FALSE)
     df <- as_tibble(df)
     return(df)

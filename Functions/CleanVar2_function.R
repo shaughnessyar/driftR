@@ -1,8 +1,9 @@
-CleanVar2 <- function(dataframe,a,b,c,d,e) {
+dr_clean2 <- function(dataframe,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar) {
   #CleanVar2(dataframe, variable, cal. value low, cal. std. low, cal. value high, cal. std. high)
-  raw <- eval(substitute(a), dataframe)
-  low <- c+(corr.frac*(c-b))
-  high <- e-(corr.frac*(e-d))
-  correct <- (((raw-low)/(high-low))*(e-c))+c
+  corrVal <- eval(substitute(correctVar), dataframe)
+  raw <- eval(substitute(varName), dataframe)
+  low <- calStdLow+(corrVal*(calStdLow-calValLow))
+  high <- calStdHigh-(corrVal*(calStdHigh-calValHigh))
+  correct <- (((raw-low)/(high-low))*(calStdHigh-calStdLow))+calStdLow
   return(correct)
 }
