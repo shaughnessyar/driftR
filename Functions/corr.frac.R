@@ -1,7 +1,7 @@
-dr_correct <- function(dataframe, dateVar, timeVar, format){
-    date <- eval(substitute(dateVar), dataframe)
-    time <- eval(substitute(timeVar), dataframe)
-    datetime <- paste(date, time)
+dr_correct <- function(dataFrame, dateVar, timeVar, format){
+    date <- eval(substitute(dateVar), dataFrame)
+    time <- eval(substitute(timeVar), dataFrame)
+    dateTime <- paste(date, time)
 
   # set format
    if (format == "MDY"){
@@ -15,10 +15,10 @@ dr_correct <- function(dataframe, dateVar, timeVar, format){
    }
 
    # apply format
-   datetime <- as.POSIXct(datetime, format = dayTimeFormat)
-   datetime <- as.numeric(datetime)
+   dateTime <- as.POSIXct(dateTime, format = dayTimeFormat)
+   dateTime <- as.numeric(dateTime)
 
-   tot_time <- tail(datetime,n=1) - head(datetime, n=1)
-   corr.frac <- (datetime-head(datetime, n=1))/tot_time
-   return(corr.frac)
+   totTime <- tail(dateTime,n=1) - head(dateTime, n=1)
+   corrFrac <- (dateTime-head(dateTime, n=1))/totTime
+   return(corrFrac)
 }
