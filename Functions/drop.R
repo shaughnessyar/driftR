@@ -1,5 +1,5 @@
-dr_drop <- function(dataframe,head=NULL,tail=NULL){
-  Output <- dataframe
+dr_drop <- function(dataFrame,head=NULL,tail=NULL){
+  Output <- dataFrame
   if (is.null(head)){
     Output <- Output [-c((nrow(Output)-(`tail`-1)):nrow(Output)),]
     return(Output)
