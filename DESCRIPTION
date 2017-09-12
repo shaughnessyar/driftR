@@ -1,11 +1,12 @@
 Package: driftR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: driftR: software for correcting water-quality data
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors: Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller 
+Maintainer: andrew.shaughnessy@slu.edu
+Description: This package corrects continuous water-quality
+monitoring data for intramental drift over time. Drift corrections can be
+exicuted using one or two calibration references. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
