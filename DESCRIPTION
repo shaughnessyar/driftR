@@ -5,8 +5,8 @@ Version: 0.1.0
 Authors: Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller 
 Maintainer: andrew.shaughnessy@slu.edu
 Description: This package corrects continuous water-quality
-monitoring data for intramental drift over time. Drift corrections can be
-exicuted using one or two calibration references. 
+    monitoring data for intramental drift over time. Drift corrections can be
+    exicuted using one or two calibration references. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
