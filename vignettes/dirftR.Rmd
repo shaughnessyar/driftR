@@ -1,0 +1,61 @@
+---
+title: "driftR"
+author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
+date: "`r Sys.Date(September 26, 2017)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{driftR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r}
+# setup
+library(readr)
+library(dplyr)
+```
+
+## Overview
+
+In-situ water-quality monitoring intruments take a continuous measurements of a various chemical and physical parameters. The longer these intruments are allowed to stay in the field, the further the readings of the various sensors drift from the true value of the parameter. The purpose of this package is to correct water-quality monotoring datasets for instrumental drift in a reliable, reproducable method. 
+
+## Using driftR
+There are five main functions in the `driftR` which each serve their own purpose in data cleaning process.
+
+### Importing data
+First, to import a dataset, the `dr_sondeClean(fileExtention, defineVar= FALSE)` function will be utilized. The aregument `fileExtention` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" abservation will be removed and the different variables will be defined as the correct data type (i.e. Date as a date variable, Time as a time variable, everything else as a numberic variable). Using `defineVar = TRUE` will format the date as Year-Month-Day.
+
+example:
+
+```{r}
+df <- dr_readSonde("~/driftR/inst/extdata/correctedData.csv", defineVar = TRUE)
+```
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
