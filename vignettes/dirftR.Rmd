@@ -27,35 +27,49 @@ First, to import a dataset, the `dr_sondeClean(fileExtention, defineVar= FALSE)`
 example:
 
 ```{r}
-df <- dr_readSonde("~/driftR/inst/extdata/correctedData.csv", defineVar = TRUE)
+df <- dr_readSonde("~/driftR/inst/extdata/rawData.csv", defineVar = TRUE)
 ```
 
-## Figures
+### Creating correction factors
+The next step in the data cleaning process is creating correction factors using `dr_correct(dataFrame, dateVar, timeVar, format)`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total dataset. The argument `dataFrame` is the working data frame for the correction. The argument `dateVar` is the date variable for the dataset and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "YMD"`
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+example:
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r}
+corrFactors <- dr_correct(df, Date, Time, format = "YMD")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+### Cleaning the data
+After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_clean1(dataFrame,varName,calVal,calStd,correctVar)` will be used. The argument `dataFrame` is the working data frame for the correction and `varName` is the variable name that you want to correct. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respecively. The `correctVar` argument is the result generated from the `dr_correct()` function. 
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+If two standard measurements are taken, then the function `dr_clean2(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar)` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` areguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+These functions correct the data based on the formulas in Hasenmueller and Chriss, YEAR & LINK.
 
-## More Examples
+example:
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+```{r}
+df$SpCond_Corr <- dr_clean1(df, SpCond, 1.07, 1, corrFactors)
+df$pH_Corr <- dr_clean2(df, pH, 7.01, 7, 11.8, 10, corrFactors)
+```
+### Dropping Data
+After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using `dr_clean1()` or `dr_clean2()` will result in the corrections being non-consistant. To do this, the `dr_drop(dataFrame,head=NULL,tail=NULL)` function will be used. The argument `dataFrame` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the begining and the end of the dataset respectively. It is recommended that at least 30 minutes are dropped from both the begining and end of the dataset (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+example:
+
+```{r}
+df <- dr_drop(df, 6, 6)
 ```
 
-Also a quote using `>`:
+## Installation
+Opening on R:
+  1. `install.packages("driftR")`
+  2. `library(driftR)`
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+Opening with Github:
+  1. `install.packages("devtools")`
+  2. `devtools::install_github("shaughnessyar/driftR")`
+
+
+
+
