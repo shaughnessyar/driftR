@@ -1,3 +1,11 @@
+#' Import raw data
+#'
+#' @param fileExtention Location of data
+#' @param defineVar Logical statement
+#' @return A dataframe with with the raw data and the variable types defined if \code{defineVar = TRUE}
+#' @examples
+#' dr_readSonde("~/fileLocation/data.csv")
+#' dr_readSonde("~/fileLocation/data.csv", defineVar= TRUE)
 dr_readSonde <- function(fileExtention, defineVar=FALSE) {
   if (is.null(defineVar)) {
     allContent = readLines(fileExtention)

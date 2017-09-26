@@ -1,3 +1,13 @@
+#' Creating correction factors
+#'
+#' @param dataFrame The working data frame
+#' @param dateVar Date variable name
+#' @param timeVar Time variable name
+#' @param format Either "MDY" or "YMD" for \code{dateVar}
+#' @return A series of correction factors
+#' @examples
+#' dr_correct(df, Date, Time, "YMD")
+#' dr_correct(df, X, Y, "MDY")
 dr_correct <- function(dataFrame, dateVar, timeVar, format){
     date <- eval(substitute(dateVar), dataFrame)
     time <- eval(substitute(timeVar), dataFrame)

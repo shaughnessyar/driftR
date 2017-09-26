@@ -1,3 +1,13 @@
+#' Dropping observations for equilibration period
+#'
+#' @param dataFrame The working data frame
+#' @param head A number
+#' @param tail A number
+#' @return A data frame with fewer observations
+#' @examples
+#' dr_drop(df, 3, 9)
+#' dr_drop(df, , 4)
+#' dr_drop(df, 7,)
 dr_drop <- function(dataFrame,head=NULL,tail=NULL){
   Output <- dataFrame
   if (is.null(head)){
