@@ -6,25 +6,24 @@
 #
 # @usage data(sondeClean)
 #
-# @format a dataframe with 1528 rows and 17 variables
+# @format a dataframe with 1528 rows and 16 variables
 # \describe{
 #    \item{Date}{Date of measurement}
 #    \item{Time}{Time of measurement}
-#    \item{DateTime}{combined date and time variables}
-#    \item{Temp}{Temperature}
-#    \item{SpCond}{Specific conductivity raw}
-#    \item{SpCond_Corr}{Specific conductivity corrected}
+#    \item{Temp}{Temperature in degrees C}
+#    \item{SpCond}{Specific conductivity raw in mS/cm}
+#    \item{SpCond_Corr}{Specific conductivity corrected in mS/cm}
 #    \item{pH}{pH raw}
 #    \item{pH_Corr}{pH corrected}
-#    \item{pHmV}{Potential reading from pH sensor}
-#    \item{Chloride}{Chloride raw}
-#    \item{Chloride_Corr}{Chloride corrected}
-#    \item{AmmoniumN}{Ammonium-Nitrogen}
-#    \item{NitrateN}{Nitrate-Nitrogen}
-#    \item{`Turbidity+`}{Turbidity raw}
-#    \item{Turbidity_Corr}{Turbidity corrected}
-#    \item{DO}{Dissolved Oxygen raw}
-#    \item{DO_Corr}{Dissolved Oxygen corrected}
+#    \item{pHmV}{Potential reading from pH sensor in mV}
+#    \item{Chloride}{Chloride raw in mg/L}
+#    \item{Chloride_Corr}{Chloride corrected in mg/L}
+#    \item{AmmoniumN}{Ammonium-Nitrogen in mg/L}
+#    \item{NitrateN}{Nitrate-Nitrogen in mg/L}
+#    \item{`Turbidity+`}{Turbidity raw in NTU}
+#    \item{Turbidity_Corr}{Turbidity corrected in NTU}
+#    \item{DO}{Dissolved Oxygen raw in % sat}
+#    \item{DO_Corr}{Dissolved Oxygen corrected in % sat}
 # }
 #
 # @source Saint Louis University Geochemistry Lab
