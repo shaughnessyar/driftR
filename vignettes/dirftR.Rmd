@@ -25,7 +25,7 @@ There are five main functions in the `driftR` which each serve their own purpose
 
 1. `dr_readSonde()` - import data from the Sonde 
 2. `dr_correct()` - apply correction factors
-3. `dr_clean1() - one point calibration 
+3. `dr_clean1()` - one point calibration 
 4. `dr_clean2()` - two point claibration
 5. `dr_drop()` - drop observations to account for equilibration
 
