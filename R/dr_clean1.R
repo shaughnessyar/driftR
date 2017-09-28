@@ -9,6 +9,7 @@
 #' @examples
 #' dr_clean1(df, SpCond, 1.05, 1, corrfactors)
 #' dr_clean1(df, DO, 96.4, 99, df$corrections)
+#'
 dr_clean1 <- function(dataFrame,varName,calVal,calStd,correctVar) {
   corrVal <- eval(substitute(correctVar), dataFrame)
   raw <- eval(substitute(varName), dataFrame)
