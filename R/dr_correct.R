@@ -28,7 +28,7 @@
    dateTime <- as.POSIXct(dateTime, format = dayTimeFormat)
    dateTime <- as.numeric(dateTime)
 
-   totTime <- tail(dateTime,n=1) - head(dateTime, n=1)
+   totTime <- utils::tail(dateTime,n=1) - head(dateTime, n=1)
    corrFrac <- (dateTime-head(dateTime, n=1))/totTime
    return(corrFrac)
 }
