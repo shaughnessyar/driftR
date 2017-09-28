@@ -6,7 +6,7 @@
 #' @examples
 #' dr_readSonde("~/fileLocation/data.csv")
 #' dr_readSonde("~/fileLocation/data.csv", defineVar= TRUE)
-dr_readSonde <- function(fileExtention, defineVar=FALSE) {
+"dr_readSonde" <- function(fileExtention, defineVar=FALSE) {
   if (is.null(defineVar)) {
     allContent = readLines(fileExtention)
     df = read.csv(textConnection(allContent), header = TRUE, stringsAsFactors = FALSE)

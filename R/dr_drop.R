@@ -8,7 +8,7 @@
 #' dr_drop(df, 3, 9)
 #' dr_drop(df, , 4)
 #' dr_drop(df, 7,)
-dr_drop <- function(dataFrame,head=NULL,tail=NULL){
+"dr_drop" <- function(dataFrame,head=NULL,tail=NULL){
   Output <- dataFrame
   if (is.null(head)){
     Output <- Output [-c((nrow(Output)-(`tail`-1)):nrow(Output)),]

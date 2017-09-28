@@ -33,7 +33,7 @@ There are five main functions in the `driftR` which each serve their own purpose
 First, to import a dataset, the `dr_sondeClean(fileExtention, defineVar= FALSE)` function will be utilized. The aregument `fileExtention` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" abservation will be removed and the different variables will be defined as the correct data type (i.e. Date as a date variable, Time as a time variable, everything else as a numberic variable). Using `defineVar = TRUE` will format the date as Year-Month-Day.
 
 ```{r}
-df <- dr_readSonde("~/driftR/inst/extdata/rawData.csv", defineVar = TRUE)
+df <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = TRUE)
 ```
 
 ### Creating correction factors

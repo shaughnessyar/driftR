@@ -8,7 +8,7 @@
 #' @examples
 #' dr_correct(df, Date, Time, "YMD")
 #' dr_correct(df, X, Y, "MDY")
-dr_correct <- function(dataFrame, dateVar, timeVar, format){
+"dr_correct" <- function(dataFrame, dateVar, timeVar, format){
     date <- eval(substitute(dateVar), dataFrame)
     time <- eval(substitute(timeVar), dataFrame)
     dateTime <- paste(date, time)

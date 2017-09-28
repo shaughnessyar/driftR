@@ -26,4 +26,5 @@ One-point drift correction
 \examples{
 dr_clean1(df, SpCond, 1.05, 1, corrfactors)
 dr_clean1(df, DO, 96.4, 99, df$corrections)
+
 }
