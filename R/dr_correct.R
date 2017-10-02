@@ -9,9 +9,9 @@
 #' dr_correct(df, Date, Time, "YMD")
 #' dr_correct(df, X, Y, "MDY")
 "dr_correct" <- function(dataFrame, dateVar, timeVar, format){
-    date <- eval(substitute(dateVar), dataFrame)
-    time <- eval(substitute(timeVar), dataFrame)
-    dateTime <- paste(date, time)
+    date <- base::eval(base::substitute(dateVar), dataFrame)
+    time <- base::eval(base::substitute(timeVar), dataFrame)
+    dateTime <- base::paste(date, time)
 
   # set format
    if (format == "MDY"){
@@ -25,8 +25,8 @@
    }
 
    # apply format
-   dateTime <- as.POSIXct(dateTime, format = dayTimeFormat)
-   dateTime <- as.numeric(dateTime)
+   dateTime <- base::as.POSIXct(dateTime, format = dayTimeFormat)
+   dateTime <- base::as.numeric(dateTime)
 
    totTime <- utils::tail(dateTime, n=1) - utils::head(dateTime, n=1)
    corrFrac <- (dateTime-utils::head(dateTime, n=1))/totTime

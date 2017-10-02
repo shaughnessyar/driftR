@@ -11,8 +11,8 @@
 #' dr_clean1(df, DO, 96.4, 99, df$corrections)
 #'
 "dr_clean1" <- function(dataFrame,varName,calVal,calStd,correctVar) {
-  corrVal <- eval(substitute(correctVar), dataFrame)
-  raw <- eval(substitute(varName), dataFrame)
+  corrVal <- base::eval(base::substitute(correctVar), dataFrame)
+  raw <- base::eval(base::substitute(varName), dataFrame)
   correct <- raw + (corrVal*(calVal-calStd))
   return(correct)
 }

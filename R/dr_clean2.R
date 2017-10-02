@@ -12,8 +12,8 @@
 #' dr_clean2(df, pH, 7.05, 7, 10.25, 10, corrfactors)
 #' dr_clean2(df, Chloride, 7.95, 10, 847, 1000, df$corrections)
 "dr_clean2" <- function(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar) {
-  corrVal <- eval(substitute(correctVar), dataFrame)
-  raw <- eval(substitute(varName), dataFrame)
+  corrVal <- base::eval(base::substitute(correctVar), dataFrame)
+  raw <- base::eval(base::substitute(varName), dataFrame)
   low <- calStdLow+(corrVal*(calStdLow-calValLow))
   high <- calStdHigh-(corrVal*(calStdHigh-calValHigh))
   correct <- (((raw-low)/(high-low))*(calStdHigh-calStdLow))+calStdLow
