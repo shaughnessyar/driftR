@@ -20,10 +20,11 @@
 #    \item{Chloride_Corr}{Chloride corrected in mg/L}
 #    \item{AmmoniumN}{Ammonium-Nitrogen in mg/L}
 #    \item{NitrateN}{Nitrate-Nitrogen in mg/L}
-#    \item{`Turbidity+`}{Turbidity raw in NTU}
+#    \item{`Turbidity.`}{Turbidity raw in NTU}
 #    \item{Turbidity_Corr}{Turbidity corrected in NTU}
 #    \item{DO}{Dissolved Oxygen raw in % sat}
 #    \item{DO_Corr}{Dissolved Oxygen corrected in % sat}
+#    \item{corrFactors}{A list of correction factors based on time spent in the water}
 # }
 #
 # @source Saint Louis University Geochemistry Lab
