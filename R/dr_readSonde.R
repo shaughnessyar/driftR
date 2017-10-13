@@ -17,8 +17,6 @@
     allContent = base::readLines(fileExtention)
     skipSecond = allContent[-2]
     df = utils::read.csv(base::textConnection(skipSecond), header = TRUE, stringsAsFactors = FALSE)
-    df$Date <- base::as.Date(df$Date, "%m/%d/%y")
-    df$Time <- readr::parse_time(df$Time,format='%H:%M:%S')
     df <- dplyr::as_tibble(df)
     return(df)
   }

@@ -40,7 +40,7 @@ df <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), de
 The next step in the data cleaning process is creating correction factors using `dr_correct(dataFrame, dateVar, timeVar, format)`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total dataset. The argument `dataFrame` is the working data frame for the correction. The argument `dateVar` is the date variable for the dataset and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "YMD"`
 
 ```{r}
-corrFactors <- dr_correct(df, Date, Time, format = "YMD")
+corrFactors <- dr_correct(df, Date, Time, format = "MDY")
 ```
 
 ### Cleaning the data
