@@ -15,7 +15,7 @@ dr_clean1(dataFrame, varName, calVal, calStd, correctVar)
 
 \item{calStd}{A number}
 
-\item{correctVar}{Name of value or variable generated from \code{\link{dr_correct()}}}
+\item{correctVar}{Name of value or variable generated from \code{\link{dr_correct}}}
 }
 \value{
 A list of values for the specified \code{varName} corrected for drift
@@ -24,7 +24,9 @@ A list of values for the specified \code{varName} corrected for drift
 One-point drift correction
 }
 \examples{
+\dontrun{
 dr_clean1(df, SpCond, 1.05, 1, corrfactors)
 dr_clean1(df, DO, 96.4, 99, df$corrections)
+}
 
 }

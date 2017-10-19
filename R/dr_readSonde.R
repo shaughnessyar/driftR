@@ -4,8 +4,12 @@
 #' @param defineVar Logical statement
 #' @return A dataframe with with the raw data and the variable types defined if \code{defineVar = TRUE}
 #' @examples
+#' \dontrun{
 #' dr_readSonde("~/fileLocation/data.csv")
 #' dr_readSonde("~/fileLocation/data.csv", defineVar= TRUE)
+#'}
+#'
+#' @export
 "dr_readSonde" <- function(fileExtention, defineVar=FALSE) {
   if (base::is.null(defineVar)) {
     allContent = base::readLines(fileExtention)

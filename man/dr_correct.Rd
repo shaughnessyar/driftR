@@ -22,6 +22,9 @@ A series of correction factors
 Creating correction factors
 }
 \examples{
+\dontrun{
 dr_correct(df, Date, Time, "YMD")
 dr_correct(df, X, Y, "MDY")
+}
+
 }

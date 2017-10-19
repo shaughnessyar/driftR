@@ -5,9 +5,13 @@
 #' @param tail A number
 #' @return A data frame with fewer observations
 #' @examples
+#' \dontrun{
 #' dr_drop(df, 3, 9)
 #' dr_drop(df, , 4)
 #' dr_drop(df, 7,)
+#' }
+#'
+#' @export
 "dr_drop" <- function(dataFrame,head=NULL,tail=NULL){
   Output <- dataFrame
   if (base::is.null(head)){
@@ -15,7 +19,7 @@
     return(Output)
   }
   else if (base::is.null(tail)) {
-    Output <- Output [-c(1:`a`), ]
+    Output <- Output [-c(1:`head`), ]
     return(Output)
   }
   else

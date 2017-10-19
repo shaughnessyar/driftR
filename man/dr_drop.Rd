@@ -20,7 +20,10 @@ A data frame with fewer observations
 Dropping observations for equilibration period
 }
 \examples{
+\dontrun{
 dr_drop(df, 3, 9)
 dr_drop(df, , 4)
 dr_drop(df, 7,)
+}
+
 }

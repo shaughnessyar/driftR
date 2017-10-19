@@ -6,8 +6,12 @@
 #' @param format Either "MDY" or "YMD" for \code{dateVar}
 #' @return A series of correction factors
 #' @examples
+#' \dontrun{
 #' dr_correct(df, Date, Time, "YMD")
 #' dr_correct(df, X, Y, "MDY")
+#'}
+#'
+#' @export
 "dr_correct" <- function(dataFrame, dateVar, timeVar, format){
     date <- base::eval(base::substitute(dateVar), dataFrame)
     time <- base::eval(base::substitute(timeVar), dataFrame)
