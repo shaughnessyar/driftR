@@ -18,6 +18,9 @@ A dataframe with with the raw data and the variable types defined if \code{defin
 Import raw data
 }
 \examples{
+\dontrun{
 dr_readSonde("~/fileLocation/data.csv")
 dr_readSonde("~/fileLocation/data.csv", defineVar= TRUE)
+}
+
 }

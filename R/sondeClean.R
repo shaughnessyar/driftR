@@ -1,36 +1,36 @@
-# Clean Water-quality Monitoring Data
-#
-# A data set containing corrected measurements from a YSI Sonde 6600
-#
-# @docType data
-#
-# @usage data(sondeClean)
-#
-# @format a dataframe with 1528 rows and 16 variables
-# \describe{
-#    \item{Date}{Date of measurement}
-#    \item{Time}{Time of measurement}
-#    \item{Temp}{Temperature in degrees C}
-#    \item{SpCond}{Specific conductivity raw in mS/cm}
-#    \item{SpCond_Corr}{Specific conductivity corrected in mS/cm}
-#    \item{pH}{pH raw}
-#    \item{pH_Corr}{pH corrected}
-#    \item{pHmV}{Potential reading from pH sensor in mV}
-#    \item{Chloride}{Chloride raw in mg/L}
-#    \item{Chloride_Corr}{Chloride corrected in mg/L}
-#    \item{AmmoniumN}{Ammonium-Nitrogen in mg/L}
-#    \item{NitrateN}{Nitrate-Nitrogen in mg/L}
-#    \item{`Turbidity.`}{Turbidity raw in NTU}
-#    \item{Turbidity_Corr}{Turbidity corrected in NTU}
-#    \item{DO}{Dissolved Oxygen raw in % sat}
-#    \item{DO_Corr}{Dissolved Oxygen corrected in % sat}
-#    \item{corrFactors}{A list of correction factors based on time spent in the water}
-# }
-#
-# @source Saint Louis University Geochemistry Lab
-#
-# @examples
-# str(sondeClean)
-# head(sondeClean)
-#
+#' Clean Water-quality Monitoring Data
+#'
+#' A data set containing corrected measurements from a YSI Sonde 6600
+#'
+#' @docType data
+#'
+#' @usage data(sondeClean)
+#'
+#' @format a dataframe with 1528 rows and 16 variables
+#' \describe{
+#'    \item{Date}{Date of measurement}
+#'    \item{Time}{Time of measurement}
+#'    \item{Temp}{Temperature in degrees C}
+#'    \item{SpCond}{Specific conductivity raw in mS/cm}
+#'    \item{SpCond_Corr}{Specific conductivity corrected in mS/cm}
+#'    \item{pH}{pH raw}
+#'    \item{pH_Corr}{pH corrected}
+#'    \item{pHmV}{Potential reading from pH sensor in mV}
+#'    \item{Chloride}{Chloride raw in mg/L}
+#'    \item{Chloride_Corr}{Chloride corrected in mg/L}
+#'    \item{AmmoniumN}{Ammonium-Nitrogen in mg/L}
+#'    \item{NitrateN}{Nitrate-Nitrogen in mg/L}
+#'    \item{`Turbidity.`}{Turbidity raw in NTU}
+#'    \item{Turbidity_Corr}{Turbidity corrected in NTU}
+#'    \item{DO}{Dissolved Oxygen raw in \% sat}
+#'    \item{DO_Corr}{Dissolved Oxygen corrected in \% sat}
+#'    \item{corrFactors}{A list of correction factors based on time spent in the water}
+#' }
+#'
+#' @source Saint Louis University Geochemistry Lab
+#'
+#' @examples
+#' str(sondeClean)
+#' head(sondeClean)
+#'
 "sondeClean"

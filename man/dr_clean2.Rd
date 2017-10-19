@@ -20,7 +20,7 @@ dr_clean2(dataFrame, varName, calValLow, calStdLow, calValHigh, calStdHigh,
 
 \item{calStdHigh}{A number}
 
-\item{correctVar}{Name of value or variable generated from \code{\link{dr_correct()}}}
+\item{correctVar}{Name of value or variable generated from \code{\link{dr_correct}}}
 }
 \value{
 A list of values for the specified \code{varName} corrected for drift
@@ -29,6 +29,9 @@ A list of values for the specified \code{varName} corrected for drift
 Two-point drift correction
 }
 \examples{
+\dontrun{
 dr_clean2(df, pH, 7.05, 7, 10.25, 10, corrfactors)
 dr_clean2(df, Chloride, 7.95, 10, 847, 1000, df$corrections)
+}
+
 }
