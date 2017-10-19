@@ -1,11 +1,24 @@
 Package: driftR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Software for Drift Correcting Water-quality Data
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+    person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
+    person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),
+    person("Elizabeth", "Hasenmueller", , "elizabeth.hasenmueller", c("aut"))
+    )
+Description: An implamentation of data correction for instramental drift in continuous water- 
+    quality monotoring data. There are many sources of water-quality data including private 
+    (ex: YSI instruments) and open source (ex: USGS and NDBC), each of which are susceptible 
+    to errors/inaccuracies due to drift. This package allows the user to correct their data 
+    using one or two standard reference values in a uniform, reproducible way.
+License: MIT + file LICENSE
+URL: https://github.com/shaughnessyar/driftR
+BugReports: https://github.com/shaughnessyar/driftR/issues
 Encoding: UTF-8
 LazyData: true
+Imports: dplyr
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
