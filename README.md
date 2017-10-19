@@ -3,6 +3,8 @@
 driftR
 ======
 
+[![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR)
+
 The goal of driftR is to correct continuous water-quality monitoring data for intramental drift.
 
 Installation
