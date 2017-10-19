@@ -9,7 +9,7 @@
 #' dr_readSonde("~/fileLocation/data.csv", defineVar= TRUE)
 #'}
 #'
-#' @importFrom dplyr as_tibble()
+#' @import dplyr
 #'
 #' @export
 "dr_readSonde" <- function(fileExtention, defineVar=FALSE) {
