@@ -15,7 +15,7 @@
 #'}
 #'
 #' @export
-"dr_clean2" <- function(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar) {
+"dr_clean2" <- function(dataFrame, varName, calValLow, calStdLow, calValHigh, calStdHigh, correctVar) {
   corrVal <- base::eval(base::substitute(correctVar), dataFrame)
   raw <- base::eval(base::substitute(varName), dataFrame)
   low <- calStdLow+(corrVal*(calStdLow-calValLow))

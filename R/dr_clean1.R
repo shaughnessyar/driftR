@@ -13,7 +13,7 @@
 #'}
 #'
 #'@export
-"dr_clean1" <- function(dataFrame,varName,calVal,calStd,correctVar) {
+"dr_clean1" <- function(dataFrame, varName, calVal, calStd, correctVar) {
   corrVal <- base::eval(base::substitute(correctVar), dataFrame)
   raw <- base::eval(base::substitute(varName), dataFrame)
   correct <- raw + (corrVal*(calVal-calStd))
