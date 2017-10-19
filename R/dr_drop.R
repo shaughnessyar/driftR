@@ -12,7 +12,7 @@
 #' }
 #'
 #' @export
-"dr_drop" <- function(dataFrame,head=NULL,tail=NULL){
+"dr_drop" <- function(dataFrame, head = NULL, tail = NULL){
   Output <- dataFrame
   if (base::is.null(head)){
     Output <- Output [-c((base::nrow(Output)-(`tail`-1)):base::nrow(Output)),]
