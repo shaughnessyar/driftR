@@ -30,6 +30,11 @@ You can install driftR from github with:
 devtools::install_github("shaughnessyar/driftR")
 ```
 
+## Background
+
+![fig1](man/figures/onePointCorrection.png)
+![fig2](man/figures/twoPointCorrection.png)
+
 ## Usage
 
 As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. First, you start with importing the data with `dr_readSonde()`. Next, you apply a correction factor using `dr_correct()`. Then, utilizing the generated correction factors, you use either `dr_clean1()` or `dr_clean2()` to drift correct the data using 1 or 2 point calibrations respectively. Lastly, you would `dr_drop()` data to account for instrument equilibration. 

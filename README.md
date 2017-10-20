@@ -17,6 +17,11 @@ You can install driftR from github with:
 devtools::install_github("shaughnessyar/driftR")
 ```
 
+Background
+----------
+
+![fig1](man/figures/onePointCorrection.png) ![fig2](man/figures/twoPointCorrection.png)
+
 Usage
 -----
 
