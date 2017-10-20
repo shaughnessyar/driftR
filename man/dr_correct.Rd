@@ -19,7 +19,7 @@ dr_correct(dataFrame, dateVar, timeVar, format)
 A series of correction factors
 }
 \description{
-Creating correction factors
+This function creates a series of correction factors. These are calculated based on the time of the observation and the total amount of time that the instrument had been deployed
 }
 \examples{
 \dontrun{

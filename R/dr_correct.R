@@ -1,5 +1,5 @@
 #' Creating correction factors
-#'
+#' @description This function creates a series of correction factors. These are calculated based on the time of the observation and the total amount of time that the instrument had been deployed
 #' @param dataFrame The working data frame
 #' @param dateVar Date variable name
 #' @param timeVar Time variable name

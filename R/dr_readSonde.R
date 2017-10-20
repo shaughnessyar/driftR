@@ -1,5 +1,5 @@
 #' Import raw data
-#'
+#' @description This function imports the raw data from a YSI Sonde and fomats the dataset for easy drift correction
 #' @param fileExtention Location of data
 #' @param defineVar Logical statement
 #' @return A dataframe with with the raw data and the variable types defined if \code{defineVar = TRUE}

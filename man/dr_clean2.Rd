@@ -12,13 +12,13 @@ dr_clean2(dataFrame, varName, calValLow, calStdLow, calValHigh, calStdHigh,
 
 \item{varName}{The name of the variable to correct}
 
-\item{calValLow}{A number}
+\item{calValLow}{The number that the instrument was actually reading for the low standard}
 
-\item{calStdLow}{A number}
+\item{calStdLow}{The number that the instrument should have been reading for that standard; i.e. the low standard value}
 
-\item{calValHigh}{A number}
+\item{calValHigh}{The number that the instrument was actually reading for the high standard}
 
-\item{calStdHigh}{A number}
+\item{calStdHigh}{The number that the instrument should have been reading for that standard; i.e. the high standard value}
 
 \item{correctVar}{Name of value or variable generated from \code{\link{dr_correct}}}
 }
@@ -26,7 +26,7 @@ dr_clean2(dataFrame, varName, calValLow, calStdLow, calValHigh, calStdHigh,
 A list of values for the specified \code{varName} corrected for drift
 }
 \description{
-Two-point drift correction
+This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_correct}} and returns data that accounts for drift over time. This is done via a two point calibration standard, which it typical for pH and chloride.
 }
 \examples{
 \dontrun{

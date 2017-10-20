@@ -15,7 +15,7 @@ dr_readSonde(fileExtention, defineVar = FALSE)
 A dataframe with with the raw data and the variable types defined if \code{defineVar = TRUE}
 }
 \description{
-Import raw data
+This function imports the raw data from a YSI Sonde and fomats the dataset for easy drift correction
 }
 \examples{
 \dontrun{

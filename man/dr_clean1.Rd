@@ -11,9 +11,9 @@ dr_clean1(dataFrame, varName, calVal, calStd, correctVar)
 
 \item{varName}{The name of the variable to correct}
 
-\item{calVal}{A number}
+\item{calVal}{The number that the instrument was actually reading for the parameter}
 
-\item{calStd}{A number}
+\item{calStd}{The number that the instrument should have been reading for that standard; i.e. the standard value}
 
 \item{correctVar}{Name of value or variable generated from \code{\link{dr_correct}}}
 }
@@ -21,7 +21,7 @@ dr_clean1(dataFrame, varName, calVal, calStd, correctVar)
 A list of values for the specified \code{varName} corrected for drift
 }
 \description{
-One-point drift correction
+This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_correct}} and returns data that accounts for drift over time. This is done via a one point calibration standard, which it typical for specific conductivity, dissolved oxygen, and turbidity.
 }
 \examples{
 \dontrun{

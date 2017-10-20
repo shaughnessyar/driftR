@@ -1,11 +1,11 @@
 #' Two-point drift correction
-#'
+#' @description This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_correct}} and returns data that accounts for drift over time. This is done via a two point calibration standard, which it typical for pH and chloride.
 #' @param dataFrame The working data frame
 #' @param varName The name of the variable to correct
-#' @param calValLow A number
-#' @param calStdLow A number
-#' @param calValHigh A number
-#' @param calStdHigh A number
+#' @param calValLow The number that the instrument was actually reading for the low standard
+#' @param calStdLow The number that the instrument should have been reading for that standard; i.e. the low standard value
+#' @param calValHigh The number that the instrument was actually reading for the high standard
+#' @param calStdHigh The number that the instrument should have been reading for that standard; i.e. the high standard value
 #' @param correctVar Name of value or variable generated from \code{\link{dr_correct}}
 #' @return A list of values for the specified \code{varName} corrected for drift
 #' @examples

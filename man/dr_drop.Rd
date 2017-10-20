@@ -17,7 +17,7 @@ dr_drop(dataFrame, head = NULL, tail = NULL)
 A data frame with fewer observations
 }
 \description{
-Dropping observations for equilibration period
+When taking the instrument out of the water, there is often several observations that pass before the run can be downloaded. Additionally, once the instrument is in the water, it often takes about 30 minutes for the sensors to equilibrate. This function allows you to drop observations from the bottom and top of the dataset for each of those issues respectively.
 }
 \examples{
 \dontrun{
