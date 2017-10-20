@@ -5,12 +5,12 @@ driftR <img src="man/figures/logo.png" align="right" />
 
 [![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR)
 
-The goal of driftR is to correct continuous water-quality monitoring data for intramental drift.
+The goal of `driftR` is to correct continuous water-quality monitoring data for intramental drift.
 
 Installation
 ------------
 
-You can install driftR from github with:
+You can install `driftR` from Github with:
 
 ``` r
 # install.packages("devtools")
@@ -20,7 +20,15 @@ devtools::install_github("shaughnessyar/driftR")
 Background
 ----------
 
-![fig1](man/figures/onePointCorrection.png) ![fig2](man/figures/twoPointCorrection.png)
+The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections, a one-point callibration and a two-point callibration.
+
+### One-Point Callibration
+
+![fig1](man/figures/onePointCorrection.png)
+
+### Two-Point Callibration
+
+![fig2](man/figures/twoPointCorrection.png)
 
 Usage
 -----
