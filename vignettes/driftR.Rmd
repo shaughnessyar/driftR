@@ -21,14 +21,17 @@ library(driftR)
 In-situ water-quality monitoring intruments take a continuous measurements of a various chemical and physical parameters. The longer these intruments are allowed to stay in the field, the further the readings of the various sensors drift from the true value of the parameter. The purpose of this package is to correct water-quality monotoring datasets for instrumental drift in a reliable, reproducable method. 
 
 ## Equations
+The equations that are implemented were originally published as part of [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) [dissertation research](http://openscholarship.wustl.edu/cgi/viewcontent.cgi?article=1584&amp=&context=etd&amp=&sei-redir=1&referer=https%253A%252F%252Fscholar.google.com%252Fscholar%253Fhl%253Den%2526as_sdt%253D0%25252C26%2526q%253Dhasenmueller%252Bwash%252Bu%2526btnG%253D#search=%22hasenmueller%20wash%20u%22) (see page 32).
 
 ### One-Point Calibration
+The one-point calibration equation is as follows:
 
-![fig1](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/onePointCorrection.png)
+![](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/onePointCorrection.png)
 
 ### Two-Point Calibration 
+The two-point calibration equation is as follows:
 
-![fig2](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/twoPointCorrection.png)
+![](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/twoPointCorrection.png)
 
 ## Using driftR
 There are five main functions in the `driftR` which each serve their own purpose in data cleaning process:
@@ -57,8 +60,6 @@ corrFactors <- dr_correct(df, Date, Time, format = "MDY")
 After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_clean1(dataFrame,varName,calVal,calStd,correctVar)` will be used. The argument `dataFrame` is the working data frame for the correction and `varName` is the variable name that you want to correct. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respecively. The `correctVar` argument is the result generated from the `dr_correct()` function. 
 
 If two standard measurements are taken, then the function `dr_clean2(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar)` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` areguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
-
-These functions correct the data based on the formulas in Hasenmueller and Chriss, YEAR & LINK.
 
 ```{r}
 df$SpCond_Corr <- dr_clean1(df, SpCond, 1.07, 1, corrFactors)

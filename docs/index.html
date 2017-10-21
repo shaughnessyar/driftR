@@ -35,19 +35,10 @@
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="articles/driftR.html">Get Started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/dirftR.html">driftR</a>
-    </li>
-  </ul>
+  <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -83,46 +74,47 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install <code>driftR</code> from Github with:</p>
+<p><code>driftR</code> is not available from CRAN yet. In the meantime, you can install the development version of <code>driftR</code> from Github with devtools:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
 </div>
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>The <code>driftR</code> package implements a series of equations used in <a href="https://hasenmuellerlab.weebly.com">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections, a one-point callibration and a two-point callibration.</p>
-<div id="one-point-callibration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#one-point-callibration" class="anchor"></a>One-Point Callibration</h3>
-<div class="figure">
-<img src="reference/figures/onePointCorrection.png" alt="fig1"><p class="caption">fig1</p>
-</div>
-</div>
-<div id="two-point-callibration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#two-point-callibration" class="anchor"></a>Two-Point Callibration</h3>
-<div class="figure">
-<img src="reference/figures/twoPointCorrection.png" alt="fig2"><p class="caption">fig2</p>
-</div>
-</div>
+<p>The <code>driftR</code> package implements a series of equations used in <a href="https://hasenmuellerlab.weebly.com">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements.</p>
+<p>The package is currently written for the easiest use with YSI Sonde products. We will be adding a vignette in the future describing the application of this package to other brands of water monitoring sensors.</p>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. First, you start with importing the data with <code>dr_readSonde()</code>. Next, you apply a correction factor using <code>dr_correct()</code>. Then, utilizing the generated correction factors, you use either <code>dr_clean1()</code> or <code>dr_clean2()</code> to drift correct the data using 1 or 2 point calibrations respectively. Lastly, you would <code>dr_drop()</code> data to account for instrument equilibration.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#library(driftR)</span>
+<p>As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. First, you start with importing the data with <code><a href="reference/dr_readSonde.html">dr_readSonde()</a></code>. Next, you apply a correction factor using <code><a href="reference/dr_correct.html">dr_correct()</a></code>. Then, utilizing the generated correction factors, you use either <code><a href="reference/dr_clean1.html">dr_clean1()</a></code> or <code><a href="reference/dr_clean2.html">dr_clean2()</a></code> to drift correct the data using 1 or 2 point calibrations respectively. Lastly, you would <code><a href="reference/dr_drop.html">dr_drop()</a></code> data to account for instrument equilibration.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the driftR package</span>
+<span class="kw">library</span>(driftR)
 
-<span class="co">#dataFrame &lt;- dr_readSond("~/filePath/data.csv", define=TRUE)</span>
-<span class="co">#correct &lt;- dr_correct(dataFrame, Date, Time, format=YMD)</span>
-<span class="co">#dataFrame$SpCond_clean &lt;- dr_clean1(df, SpCond, 1.07, 1, correct)</span>
-<span class="co">#dataFrame &lt;- dr_drop(dataFrame, head=10, tail=5)</span>
+<span class="co"># import data exported from a Sonde </span>
+dataFrame &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="st">"filePath/data.csv"</span>, <span class="dt">define=</span><span class="ot">TRUE</span>)
 
-<span class="co">#(plot funtion w/ graph to show raw vs. corrected data)</span></code></pre></div>
+<span class="co"># calculate correction factor</span>
+correct &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correct.html">dr_correct</a></span>(dataFrame, Date, Time, <span class="dt">format =</span> YMD)
+
+<span class="co"># apply one-point calibration to SpConde</span>
+dataFrame<span class="op">$</span>SpCond_clean &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_clean1.html">dr_clean1</a></span>(df, SpCond, <span class="fl">1.07</span>, <span class="dv">1</span>, correct)
+
+<span class="co"># drop observations to account for instrument equilibration</span>
+dataFrame &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(dataFrame, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
+<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for details on these functions and a <a href="">detailed vignette</a> describing their use.</p>
+</div>
+<div id="about-the-authors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#about-the-authors" class="anchor"></a>About the Authors</h2>
+<p>Andrew Shaughnessy led the development of this package. He is a senior at <a href="https://www.slu.edu">Saint Louis University</a> studying Chemistry and Environmental Science.</p>
+<p><a href="https://chris-prener.github.io">Christopher Prener, Ph.D.</a> assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at <a href="https://www.slu.edu">Saint Louis University</a>. He has a broad interest in computational social science as well as the development of <code>R</code> packages to make research more reproducibile and to generalize research code.</p>
+<p><a href="https://hasenmuellerlab.weebly.com">Elizabeth Hasenmueller, Ph.D.</a> developed the original equations that this package implements and provided the example data. She is an Assistant Professor in the Department of Earth and Atmospheric Science at <a href="https://www.slu.edu">Saint Louis University</a>.</p>
 </div>
 <div id="contributor-code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h2>
-<p>Please note that this project is released with a Contributor Code of Conduct (CONDUCT.md). By participating in this project you agree to abide by its terms.</p>
+<p>Please note that this project is released with a <a href="https://github.com/shaughnessyar/driftR/blob/master/CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
 </div>
