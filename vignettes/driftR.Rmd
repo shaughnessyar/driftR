@@ -72,15 +72,3 @@ After the data has been cleaned, some of the data will need to be dropped in ord
 df <- dr_drop(df, 6, 6)
 ```
 
-## Installation
-Install from CRAN:
-  1. `install.packages("driftR")`
-  2. `library(driftR)`
-
-Install development version from GitHub:
-  1. `install.packages("devtools")`
-  2. `devtools::install_github("shaughnessyar/driftR")`
-
-
-
-
