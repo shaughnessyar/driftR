@@ -20,7 +20,9 @@ devtools::install_github("shaughnessyar/driftR")
 Background
 ----------
 
-The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point callibration and a two-point callibration. One-point and two-point callibration values are suited for different types of measurements.
+The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements.
+
+The package is currently written for the easiest use with YSI Sonde products. We will be adding a vignette in the future describing the application of this package to other brands of water monitoring sensors.
 
 Usage
 -----
