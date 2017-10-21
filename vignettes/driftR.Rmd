@@ -1,5 +1,5 @@
 ---
-title: "driftR"
+title: "Applying Drift Corrections with driftR"
 author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -19,6 +19,16 @@ library(driftR)
 ## Overview
 
 In-situ water-quality monitoring intruments take a continuous measurements of a various chemical and physical parameters. The longer these intruments are allowed to stay in the field, the further the readings of the various sensors drift from the true value of the parameter. The purpose of this package is to correct water-quality monotoring datasets for instrumental drift in a reliable, reproducable method. 
+
+## Equations
+
+### One-Point Calibration
+
+![fig1](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/onePointCorrection.png)
+
+### Two-Point Calibration 
+
+![fig2](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/twoPointCorrection.png)
 
 ## Using driftR
 There are five main functions in the `driftR` which each serve their own purpose in data cleaning process:
