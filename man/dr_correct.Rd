@@ -4,27 +4,39 @@
 \alias{dr_correct}
 \title{Creating correction factors}
 \usage{
-dr_correct(dataFrame, dateVar, timeVar, format)
+dr_correct(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 }
 \arguments{
-\item{dataFrame}{The working data frame}
+\item{.data}{A tbl}
 
-\item{dateVar}{Date variable name}
+\item{corrFactor}{New variable name for correction factor data}
 
-\item{timeVar}{Time variable name}
+\item{dateVar}{Character vector containing date data}
+
+\item{timeVar}{Character vector containing time data}
 
 \item{format}{Either "MDY" or "YMD" for \code{dateVar}}
 }
 \value{
-A series of correction factors
+An object of the same class as \code{.data} with the new correction factor variable added
+to the other data in \code{.data}.
 }
 \description{
-This function creates a series of correction factors. These are calculated based on the time of the observation and the total amount of time that the instrument had been deployed
+A wrapper around `dplyr::mutate()` for creating a series of correction factors.
+}
+\details{
+Correction factors are calculated based on the time of the observation and the total amount of time
+that the instrument had been deployed.
 }
 \examples{
-\dontrun{
-dr_correct(df, Date, Time, "YMD")
-dr_correct(df, X, Y, "MDY")
-}
+testData <- data.frame(
+   Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
+   Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
+   Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
+   SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
+   stringsAsFactors = FALSE
+ )
+
+dr_correct(testData, correction, Date, Time, format = "MDY")
 
 }
