@@ -15,6 +15,9 @@
 #'
 #' @return An object of the same class as \code{.data} with specified operations removed.
 #'
+#' @importFrom dplyr slice
+#' @importFrom dplyr n
+#'
 #' @examples
 #' testData <- data.frame(
 #'    Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
@@ -28,11 +31,11 @@
 #'  dr_drop(testData, tail = 1)
 #'  dr_drop(testData, head = 2, tail = 1)
 #'
-#'  @importFrom dplyr slice
-#'  @importFrom dplyr n
-#'
 #' @export
 dr_drop <- function(.data, head = NULL, tail = NULL){
+
+  # To prevent NOTE from R CMD check 'no visible binding for global variable'
+  n = NULL
 
   # calculate slice positions
   headPos <- head+1
