@@ -13,9 +13,13 @@
 #'}
 #'
 #'@export
-"dr_clean1" <- function(dataFrame, varName, calVal, calStd, correctVar) {
-  corrVal <- base::eval(base::substitute(correctVar), dataFrame)
-  raw <- base::eval(base::substitute(varName), dataFrame)
-  correct <- raw + (corrVal*(calVal-calStd))
-  return(correct)
+dr_clean1 <- function(.data, sourceVar, cleanVar, calVal, calStd, correctVar) {
+
+  # quote input variables
+  cleanVar <- quo_name(enquo(cleanVar))
+  sourceVar <- enquo(sourceVar)
+  correctVar <- enquo(correctVar)
+
+  # create new variable
+  mutate(.data, !!cleanVar := !!sourceVar + ( !!correctVar * (calVal - calStd)))
 }
