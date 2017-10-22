@@ -25,7 +25,7 @@
 #'    stringsAsFactors = FALSE
 #'  )
 #'
-#' dr_factor(testData, corrFactor = correction, dateVar = Date, timeVar = Time, format = "MDY")
+#' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
 #'
 #' @importFrom rlang :=
 #'

@@ -11,9 +11,9 @@ dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 
 \item{corrFactor}{New variable name for correction factor data}
 
-\item{dateVar}{Character vector containing date data}
+\item{dateVar}{Vector containing date data}
 
-\item{timeVar}{Character vector containing time data}
+\item{timeVar}{Vector containing time data}
 
 \item{format}{Either "MDY" or "YMD" for \code{dateVar}}
 }
@@ -22,7 +22,7 @@ An object of the same class as \code{.data} with the new correction factor varia
 to the other data in \code{.data}.
 }
 \description{
-A wrapper around `dplyr::mutate()` for creating a series of correction factors.
+A wrapper around `dplyr::mutate()` that creates a correction factor for each observation.
 }
 \details{
 Correction factors are calculated based on the time of the observation and the total amount of time
@@ -37,6 +37,6 @@ testData <- data.frame(
    stringsAsFactors = FALSE
  )
 
-dr_factor(testData, corrFactor = correction, dateVar = Date, timeVar = Time, format = "MDY")
+dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
 
 }
