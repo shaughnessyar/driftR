@@ -31,7 +31,7 @@
 dr_correct <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
 
   # quote input variables
-  corrFactor <- enquo(corrFactor)
+  corrFactor <- quo_name(enquo(corrFactor))
   date <- enquo(dateVar)
   time <- enquo(timeVar)
 
@@ -51,6 +51,7 @@ dr_correct <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "Y
     dplyr::mutate(dateTime = stringr::str_c(!!date, !!time, sep = " ", collapse = NULL)) %>%
     dplyr::mutate(dateTime = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
     dplyr::mutate(dateTime = base::as.numeric(dateTime)) %>%
-    dplyr::mutate(totTime = utils::tail(dateTime, n=1) - utils::head(dateTime, n=1))%>%
-    dplyr::mutate(corrFactor = (dateTime - utils::head(dateTime, n=1)) / totTime)
+    dplyr::mutate(totTime = utils::tail(dateTime, n=1) - utils::head(dateTime, n=1)) %>%
+    dplyr::mutate(!!corrFactor := (dateTime - utils::head(dateTime, n=1)) / totTime) %>%
+    select(-dateTime, -totTime)
 }
