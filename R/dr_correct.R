@@ -27,8 +27,13 @@
 #'
 #' dr_correct(testData, correction, Date, Time, format = "MDY")
 #'
+#' @importFrom rlang :=
+#'
 #' @export
 dr_correct <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
+
+  # To prevent NOTE from R CMD check 'no visible binding for global variable'
+  dateTime = totTime = NULL
 
   # quote input variables
   corrFactor <- quo_name(enquo(corrFactor))
