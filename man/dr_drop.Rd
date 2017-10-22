@@ -38,4 +38,7 @@ testData <- data.frame(
  dr_drop(testData, tail = 1)
  dr_drop(testData, head = 2, tail = 1)
 
+ @importFrom dplyr slice
+ @importFrom dplyr n
+
 }

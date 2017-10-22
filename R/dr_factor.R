@@ -34,8 +34,6 @@
 #' @importFrom rlang enquo
 #' @importFrom rlang quo_name
 #'
-#'
-#'
 #' @export
 dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
 
