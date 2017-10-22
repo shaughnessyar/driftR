@@ -11,14 +11,15 @@ dr_readSonde(file, defineVar = FALSE)
 as one line of the file. If it does not contain an absolute path, the file name is relative to
 the current working directory.}
 
-\item{defineVar}{A logical scalar}
+\item{defineVar}{Logical scalar that determines if the consistent variable names are applied}
 }
 \value{
 A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
 }
 \description{
 This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
-If \code{defineVar} is set to \code{TRUE} (the default option),
+If \code{defineVar} is set to \code{TRUE} (the default option), a consistent set of
+variable names will be applied.
 }
 \examples{
 \dontrun{

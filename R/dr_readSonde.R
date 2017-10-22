@@ -1,22 +1,23 @@
 #' Import raw data from YSI Sonde
 #'
 #' This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
-#' If \code{defineVar} is set to \code{TRUE} (the default option),
+#' If \code{defineVar} is set to \code{TRUE} (the default option), a consistent set of
+#' variable names will be applied.
 #'
 #' @param file The name of the file which the data are to be read from. Each row of the table appears
 #'     as one line of the file. If it does not contain an absolute path, the file name is relative to
 #'     the current working directory.
-#' @param defineVar A logical scalar
+#' @param defineVar Logical scalar that determines if the consistent variable names are applied
 #'
 #' @return A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
+#'
+#' @importFrom tibble as_tibble
 #'
 #' @examples
 #' \dontrun{
 #' dr_readSonde("data.csv")
 #' dr_readSonde("data.csv", defineVar = TRUE)
 #'}
-#'
-#' @importFrom tibble as_tibble
 #'
 #' @export
 dr_readSonde <- function(file, defineVar = FALSE) {
