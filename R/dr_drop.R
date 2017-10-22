@@ -37,6 +37,19 @@ dr_drop <- function(.data, head = NULL, tail = NULL){
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   n = NULL
 
+  # Check for input errors
+  if (!is.null(head)) {
+    if (!(typeof(head) %in% c('integer', 'double')) | head < 0) {
+      return(stop('Head value not acceptable - value should be NULL or >= 0'))
+    }
+  }
+
+  if (!is.null(tail)) {
+    if (!(typeof(tail) %in% c('integer', 'double')) | tail < 0) {
+      return(stop('Trail value not acceptable - value should be NULL or >= 0'))
+    }
+  }
+
   # calculate slice positions
   headPos <- head+1
 
