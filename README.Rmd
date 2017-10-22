@@ -44,19 +44,22 @@ library(driftR)
 df <- dr_readSonde("data.csv", define=TRUE)
 
 # calculate correction factor
+# results stored in new vector corrFac
 df <- dr_factor(df, corrFactor = corrFac, 
                 dateVar = Date, 
                 timeVar = Time, 
                 format = "MDY")
 
-# apply one-point calibration to SpConde
+# apply one-point calibration to SpConde;
+# results stored in new vector SPConde_Corr
 df <- dr_correctOne(df, sourceVar = SpConde, 
                     cleanVar = SPConde_Corr, 
                     calVal = 1.07, 
                     calStd = 1, 
                     factorVar = corrFac)
 
-# apply two-point calibration to 
+# apply two-point calibration to pH;
+# results stored in new vector ph_Corr
 df <- dr_correctTwo(df, sourceVar = pH, 
                     cleanVar = pH_Corr, 
                     calValLow = 7.01, 
