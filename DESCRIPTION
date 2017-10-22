@@ -21,7 +21,9 @@ Imports: dplyr,
     ggplot2,
     readr,
     stringr,
-    rlang
+    rlang,
+    tibble,
+    magrittr
 RoxygenNote: 6.0.1
 Suggests: testthat, 
     knitr,

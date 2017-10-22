@@ -1,35 +1,41 @@
-#' Import raw data
-#' @description This function imports the raw data from a YSI Sonde and fomats the dataset for easy drift correction
-#' @param fileExtention Location of data
-#' @param defineVar Logical statement
-#' @return A dataframe with with the raw data and the variable types defined if \code{defineVar = TRUE}
+#' Import raw data from YSI Sonde
+#'
+#' This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
+#' If \code{defineVar} is set to \code{TRUE} (the default option),
+#'
+#' @param file The name of the file which the data are to be read from. Each row of the table appears
+#'     as one line of the file. If it does not contain an absolute path, the file name is relative to
+#'     the current working directory.
+#' @param defineVar A logical scalar
+#'
+#' @return A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
+#'
 #' @examples
 #' \dontrun{
-#' dr_readSonde("~/fileLocation/data.csv")
-#' dr_readSonde("~/fileLocation/data.csv", defineVar= TRUE)
+#' dr_readSonde("data.csv")
+#' dr_readSonde("data.csv", defineVar = TRUE)
 #'}
 #'
-#' @import dplyr
+#' @importFrom tibble as_tibble
 #'
 #' @export
-"dr_readSonde" <- function(fileExtention, defineVar=FALSE) {
-  if (base::is.null(defineVar)) {
-    allContent <- base::readLines(fileExtention)
+dr_readSonde <- function(file, defineVar = FALSE) {
+
+  if (!is.logical(defineVar)) {
+    defineVar <- FALSE
+  }
+
+  if (defineVar == FALSE) {
+    allContent <- base::readLines(file)
     df <- utils::read.csv(base::textConnection(allContent), header = TRUE, stringsAsFactors = FALSE)
-    df <- dplyr::as_tibble(df)
+    df <- tibble::as_tibble(df)
     return(df)
   }
-  else if (defineVar == "TRUE"){
-    allContent <- base::readLines(fileExtention)
+  else if (defineVar == TRUE){
+    allContent <- base::readLines(file)
     skipSecond <- allContent[-2]
     df <- utils::read.csv(base::textConnection(skipSecond), header = TRUE, stringsAsFactors = FALSE)
-    df <- dplyr::as_tibble(df)
-    return(df)
-  }
-  else {
-    allContent <- base::readLines(fileExtention)
-    df <- utils::read.csv(base::textConnection(allContent), header = TRUE, stringsAsFactors = FALSE)
-    df <- dplyr::as_tibble(df)
+    df <- tibble::as_tibble(df)
     return(df)
   }
 }

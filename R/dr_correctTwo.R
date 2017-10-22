@@ -15,6 +15,13 @@
 #' dr_correctTwo(df, Chloride, 7.95, 10, 847, 1000, df$corrections)
 #'}
 #'
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom magrittr %>%
+#' @importFrom rlang :=
+#' @importFrom rlang enquo
+#' @importFrom rlang quo_name
+#'
 #' @export
 dr_correctTwo <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, factorVar) {
 

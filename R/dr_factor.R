@@ -27,7 +27,14 @@
 #'
 #' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
 #'
+#' @importFrom dplyr mutate
+#' @importFrom dplyr select
+#' @importFrom magrittr %>%
 #' @importFrom rlang :=
+#' @importFrom rlang enquo
+#' @importFrom rlang quo_name
+#'
+#'
 #'
 #' @export
 dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {

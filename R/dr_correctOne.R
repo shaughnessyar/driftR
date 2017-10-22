@@ -13,6 +13,12 @@
 #' dr_correctOne(df, DO, 96.4, 99, df$corrections)
 #'}
 #'
+#' @importFrom dplyr mutate
+#' @importFrom magrittr %>%
+#' @importFrom rlang :=
+#' @importFrom rlang enquo
+#' @importFrom rlang quo_name
+#'
 #'@export
 dr_correctOne <- function(.data, sourceVar, cleanVar, calVal, calStd, factorVar) {
 
