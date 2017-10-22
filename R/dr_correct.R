@@ -1,38 +1,56 @@
 #' Creating correction factors
-#' @description This function creates a series of correction factors. These are calculated based on the time of the observation and the total amount of time that the instrument had been deployed
-#' @param dataFrame The working data frame
-#' @param dateVar Date variable name
-#' @param timeVar Time variable name
+#'
+#' A wrapper around `dplyr::mutate()` for creating a series of correction factors.
+#'
+#' Correction factors are calculated based on the time of the observation and the total amount of time
+#' that the instrument had been deployed.
+#'
+#' @usage dr_correct(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
+#'
+#' @param .data A tbl
+#' @param corrFactor New variable name for correction factor data
+#' @param dateVar Character vector containing date data
+#' @param timeVar Character vector containing time data
 #' @param format Either "MDY" or "YMD" for \code{dateVar}
-#' @return A series of correction factors
+#'
+#' @return An object of the same class as \code{.data} with the new correction factor variable added
+#' to the other data in \code{.data}.
+#'
 #' @examples
-#' \dontrun{
-#' dr_correct(df, Date, Time, "YMD")
-#' dr_correct(df, X, Y, "MDY")
-#'}
+#' testData <- data.frame(
+#'    Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
+#'    Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
+#'    Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
+#'    SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
+#'    stringsAsFactors = FALSE
+#'  )
+#'
+#' dr_correct(testData, correction, Date, Time, format = "MDY")
 #'
 #' @export
-"dr_correct" <- function(dataFrame, dateVar, timeVar, format){
-    date <- base::eval(base::substitute(dateVar), dataFrame)
-    time <- base::eval(base::substitute(timeVar), dataFrame)
-    dateTime <- base::paste(date, time)
+dr_correct <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
+
+  # quote input variables
+  corrFactor <- enquo(corrFactor)
+  date <- enquo(dateVar)
+  time <- enquo(timeVar)
 
   # set format
-   if (format == "MDY"){
-     dayTimeFormat <- "%m/%d/%Y %H:%M:%S"
-   }
-   else if (format == "YMD"){
-     dayTimeFormat <- "%Y-%m-%d %H:%M:%S"
-   }
-   else {
-     stop("invalid date-time format - use either MDY or YMD")
-   }
+  if (format == "MDY"){
+    dayTimeFormat <- "%m/%d/%Y %H:%M:%S"
+  }
+  else if (format == "YMD"){
+    dayTimeFormat <- "%Y-%m-%d %H:%M:%S"
+  }
+  else {
+    stop("invalid date-time format - use either MDY or YMD")
+  }
 
-   # apply format
-   dateTime <- base::as.POSIXct(dateTime, format = dayTimeFormat)
-   dateTime <- base::as.numeric(dateTime)
-
-   totTime <- utils::tail(dateTime, n=1) - utils::head(dateTime, n=1)
-   corrFrac <- (dateTime-utils::head(dateTime, n=1))/totTime
-   return(corrFrac)
+  # concatenate date and time, apply date-time format, and calculate correction factor
+  .data %>%
+    dplyr::mutate(dateTime = stringr::str_c(!!date, !!time, sep = " ", collapse = NULL)) %>%
+    dplyr::mutate(dateTime = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
+    dplyr::mutate(dateTime = base::as.numeric(dateTime)) %>%
+    dplyr::mutate(totTime = utils::tail(dateTime, n=1) - utils::head(dateTime, n=1))%>%
+    dplyr::mutate(corrFactor = (dateTime - utils::head(dateTime, n=1)) / totTime)
 }
