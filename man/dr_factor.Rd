@@ -37,6 +37,6 @@ testData <- data.frame(
    stringsAsFactors = FALSE
  )
 
-dr_factor(testData, correction, Date, Time, format = "MDY")
+dr_factor(testData, corrFactor = correction, dateVar = Date, timeVar = Time, format = "MDY")
 
 }

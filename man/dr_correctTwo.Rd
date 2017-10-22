@@ -8,6 +8,12 @@ dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh,
   calStdHigh, factorVar)
 }
 \arguments{
+\item{.data}{The working data frame}
+
+\item{sourceVar}{The name of the variable to correct}
+
+\item{cleanVar}{The new variable}
+
 \item{calValLow}{The number that the instrument was actually reading for the low standard}
 
 \item{calStdLow}{The number that the instrument should have been reading for that standard; i.e. the low standard value}
@@ -16,17 +22,13 @@ dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh,
 
 \item{calStdHigh}{The number that the instrument should have been reading for that standard; i.e. the high standard value}
 
-\item{factorVar}{Name of value or variable generated from \code{\link{dr_correct}}}
-
-\item{dataFrame}{The working data frame}
-
-\item{varName}{The name of the variable to correct}
+\item{factorVar}{Name of value or variable generated from \code{\link{dr_factor}}}
 }
 \value{
 A list of values for the specified \code{varName} corrected for drift
 }
 \description{
-This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_correct}} and returns data that accounts for drift over time. This is done via a two point calibration standard, which it typical for pH and chloride.
+This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_factor}} and returns data that accounts for drift over time. This is done via a two point calibration standard, which it typical for pH and chloride.
 }
 \examples{
 \dontrun{

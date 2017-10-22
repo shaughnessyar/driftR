@@ -7,21 +7,23 @@
 dr_correctOne(.data, sourceVar, cleanVar, calVal, calStd, factorVar)
 }
 \arguments{
+\item{.data}{The working data frame}
+
+\item{sourceVar}{The name of the variable to correct}
+
+\item{cleanVar}{The new var}
+
 \item{calVal}{The number that the instrument was actually reading for the parameter}
 
 \item{calStd}{The number that the instrument should have been reading for that standard; i.e. the standard value}
 
-\item{factorVar}{Name of value or variable generated from \code{\link{dr_correct}}}
-
-\item{dataFrame}{The working data frame}
-
-\item{varName}{The name of the variable to correct}
+\item{factorVar}{Name of value or variable generated from \code{\link{dr_factor}}}
 }
 \value{
 A list of values for the specified \code{varName} corrected for drift
 }
 \description{
-This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_correct}} and returns data that accounts for drift over time. This is done via a one point calibration standard, which it typical for specific conductivity, dissolved oxygen, and turbidity.
+This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_factor}} and returns data that accounts for drift over time. This is done via a one point calibration standard, which it typical for specific conductivity, dissolved oxygen, and turbidity.
 }
 \examples{
 \dontrun{
