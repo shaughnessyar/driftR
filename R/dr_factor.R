@@ -1,6 +1,6 @@
 #' Creating correction factors
 #'
-#' A wrapper around `dplyr::mutate()` for creating a series of correction factors.
+#' A wrapper around `dplyr::mutate()` that creates a correction factor for each observation.
 #'
 #' Correction factors are calculated based on the time of the observation and the total amount of time
 #' that the instrument had been deployed.
@@ -9,8 +9,8 @@
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
-#' @param dateVar Character vector containing date data
-#' @param timeVar Character vector containing time data
+#' @param dateVar Vector containing date data
+#' @param timeVar Vector containing time data
 #' @param format Either "MDY" or "YMD" for \code{dateVar}
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
