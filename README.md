@@ -5,7 +5,7 @@ driftR <img src="man/figures/logo.png" align="right" />
 
 [![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR)
 
-The goal of `driftR` is to correct continuous water-quality monitoring data for intramental drift.
+`driftR` is to provide tidy corrections of continuous water-quality monitoring data for intramental drift.
 
 Installation
 ------------
@@ -20,33 +20,77 @@ devtools::install_github("shaughnessyar/driftR")
 Background
 ----------
 
-The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements.
-
-The package is currently written for the easiest use with YSI Sonde products. We will be adding a vignette in the future describing the application of this package to other brands of water monitoring sensors.
+The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI Sonde products.
 
 Usage
 -----
 
-As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. First, you start with importing the data with `dr_readSonde()`. Next, you apply a correction factor using `dr_correct()`. Then, utilizing the generated correction factors, you use either `dr_clean1()` or `dr_clean2()` to drift correct the data using 1 or 2 point calibrations respectively. Lastly, you would `dr_drop()` data to account for instrument equilibration.
+As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. `driftR` provides four verbs for applying these corrections in a consistent, reproducible manner: *read*, *factor*, *correct*, and *drop*. These verbs are designed to be implemented in that order, though there may be multiple applications of *correct* for a given data set. All of the core functions for `driftR` have the `dr_` prefix, making it easy to use them interactively in RStudio. The following example shows a simple workflow for applying these verbs to some hypothetical data:
 
 ``` r
 # load the driftR package
 library(driftR)
 
 # import data exported from a Sonde 
-dataFrame <- dr_readSonde("filePath/data.csv", define=TRUE)
+df <- dr_readSonde("data.csv", define=TRUE)
 
 # calculate correction factor
-correct <- dr_correct(dataFrame, Date, Time, format = YMD)
+df <- dr_factor(df, corrFactor = corrFac, 
+                dateVar = Date, 
+                timeVar = Time, 
+                format = "MDY")
 
 # apply one-point calibration to SpConde
-dataFrame$SpCond_clean <- dr_clean1(df, SpCond, 1.07, 1, correct)
+df <- dr_correctOne(df, sourceVar = SpConde, 
+                    cleanVar = SPConde_Corr, 
+                    calVal = 1.07, 
+                    calStd = 1, 
+                    factorVar = corrFac)
+
+# apply two-point calibration to 
+df <- dr_correctTwo(df, sourceVar = pH, 
+                    cleanVar = pH_Corr, 
+                    calValLow = 7.01, 
+                    calStdLow = 7,
+                    calValHigh = 11.8, 
+                    calStdHigh =  10, 
+                    factorVar = corrFac)
 
 # drop observations to account for instrument equilibration
-dataFrame <- dr_drop(dataFrame, head=10, tail=5)
+df <- dr_drop(df, head=10, tail=5)
 ```
 
-See the [package website](https://shaughnessyar.github.io/driftR/) for details on these functions and a [detailed vignette]() describing their use.
+All of the core functions return data frames and make use of the tidy evaluation pronoun `.data`, so using them in concert with the pipe (`%>%`) is straightforward:
+
+``` r
+# load the driftR package
+library(driftR)
+
+# import data exported from a Sonde 
+df <- dr_readSonde("data.csv", define=TRUE)
+
+# caclulate correction factors, apply corrections, and drop observations
+df <- df %>%
+  dr_factor(corrFactor = corrFac, 
+            dateVar = Date, 
+            timeVar = Time, 
+            format = "MDY") %>%
+  dr_correctOne(sourceVar = SpConde, 
+                cleanVar = SPConde_Corr, 
+                calVal = 1.07, 
+                calStd = 1, 
+                factorVar = corrFac) %>%
+  dr_correctTwo(sourceVar = pH, 
+                cleanVar = pH_Corr, 
+                calValLow = 7.01, 
+                calStdLow = 7,
+                calValHigh = 11.8, 
+                calStdHigh =  10, 
+                factorVar = corrFac)%>%
+  dr_drop(head=10, tail=5)
+```
+
+See the [package website](https://shaughnessyar.github.io/driftR/) for details on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing their use. An [additional vignette]() describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Finally, we provide a [third vignette]() designed for users of non-YSI Sonde instruments who wish to use `driftR` with their data.
 
 About the Authors
 -----------------

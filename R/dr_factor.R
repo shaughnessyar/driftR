@@ -5,7 +5,7 @@
 #' Correction factors are calculated based on the time of the observation and the total amount of time
 #' that the instrument had been deployed.
 #'
-#' @usage dr_correct(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
+#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
@@ -25,12 +25,12 @@
 #'    stringsAsFactors = FALSE
 #'  )
 #'
-#' dr_correct(testData, correction, Date, Time, format = "MDY")
+#' dr_factor(testData, corrFactor = correction, dateVar = Date, timeVar = Time, format = "MDY")
 #'
 #' @importFrom rlang :=
 #'
 #' @export
-dr_correct <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
+dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   dateTime = totTime = NULL

@@ -6,26 +6,26 @@
 #' @param calStdLow The number that the instrument should have been reading for that standard; i.e. the low standard value
 #' @param calValHigh The number that the instrument was actually reading for the high standard
 #' @param calStdHigh The number that the instrument should have been reading for that standard; i.e. the high standard value
-#' @param correctVar Name of value or variable generated from \code{\link{dr_correct}}
+#' @param factorVar Name of value or variable generated from \code{\link{dr_correct}}
 #' @return A list of values for the specified \code{varName} corrected for drift
 #' @examples
 #' \dontrun{
-#' dr_clean2(df, pH, 7.05, 7, 10.25, 10, corrfactors)
-#' dr_clean2(df, Chloride, 7.95, 10, 847, 1000, df$corrections)
+#' dr_correctTwo(df, pH, 7.05, 7, 10.25, 10, corrfactors)
+#' dr_correctTwo(df, Chloride, 7.95, 10, 847, 1000, df$corrections)
 #'}
 #'
 #' @export
-dr_clean2 <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, correctVar) {
+dr_correctTwo <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, factorVar) {
 
   # quote input variables
   cleanVar <- quo_name(enquo(cleanVar))
   sourceVar <- enquo(sourceVar)
-  correctVar <- enquo(correctVar)
+  factorVar <- enquo(factorVar)
 
   # calculate parameters and create new variable
   .data %>%
-    mutate(low := calStdLow + ((!!correctVar) * (calStdLow - calValLow))) %>%
-    mutate(high := calStdHigh - ((!!correctVar) * (calStdHigh - calValHigh))) %>%
+    mutate(low := calStdLow + ((!!factorVar) * (calStdLow - calValLow))) %>%
+    mutate(high := calStdHigh - ((!!factorVar) * (calStdHigh - calValHigh))) %>%
     mutate(!!cleanVar := ((((!!sourceVar) - low) / (high - low) ) * (calStdHigh - calStdLow) ) + calStdLow) %>%
     select(-low, -high)
 }
