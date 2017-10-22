@@ -15,11 +15,17 @@
 #'}
 #'
 #' @export
-"dr_clean2" <- function(dataFrame, varName, calValLow, calStdLow, calValHigh, calStdHigh, correctVar) {
-  corrVal <- base::eval(base::substitute(correctVar), dataFrame)
-  raw <- base::eval(base::substitute(varName), dataFrame)
-  low <- calStdLow+(corrVal*(calStdLow-calValLow))
-  high <- calStdHigh-(corrVal*(calStdHigh-calValHigh))
-  correct <- (((raw-low)/(high-low))*(calStdHigh-calStdLow))+calStdLow
-  return(correct)
+dr_clean2 <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, correctVar) {
+
+  # quote input variables
+  cleanVar <- quo_name(enquo(cleanVar))
+  sourceVar <- enquo(sourceVar)
+  correctVar <- enquo(correctVar)
+
+  # calculate parameters and create new variable
+  .data %>%
+    mutate(low := calStdLow + ((!!correctVar) * (calStdLow - calValLow))) %>%
+    mutate(high := calStdHigh - ((!!correctVar) * (calStdHigh - calValHigh))) %>%
+    mutate(!!cleanVar := ((((!!sourceVar) - low) / (high - low) ) * (calStdHigh - calStdLow) ) + calStdLow) %>%
+    select(-low, -high)
 }

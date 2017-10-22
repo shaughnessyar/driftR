@@ -21,5 +21,5 @@ dr_clean1 <- function(.data, sourceVar, cleanVar, calVal, calStd, correctVar) {
   correctVar <- enquo(correctVar)
 
   # create new variable
-  mutate(.data, !!cleanVar := !!sourceVar + ( !!correctVar * (calVal - calStd)))
+  mutate(.data, !!cleanVar := (!!sourceVar) + ( (!!correctVar) * (calVal - calStd)))
 }
