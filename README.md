@@ -32,7 +32,7 @@ As shown, continuous water-quality instrument drift over time, so it becomes nec
 library(driftR)
 
 # import data exported from a Sonde 
-df <- dr_readSonde("data.csv", define=TRUE)
+df <- dr_readSonde(file = "data.csv", define = TRUE)
 
 # calculate correction factor
 # results stored in new vector corrFac
@@ -70,7 +70,7 @@ All of the core functions return data frames and make use of the tidy evaluation
 library(driftR)
 
 # import data exported from a Sonde 
-df <- dr_readSonde("data.csv", define=TRUE)
+df <- dr_readSonde(file = "data.csv", define = TRUE)
 
 # caclulate correction factors, apply corrections, and drop observations
 df <- df %>%
