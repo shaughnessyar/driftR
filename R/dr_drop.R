@@ -46,7 +46,7 @@ dr_drop <- function(.data, head = NULL, tail = NULL){
 
   if (!is.null(tail)) {
     if (!(typeof(tail) %in% c('integer', 'double')) | tail < 0) {
-      return(stop('Trail value not acceptable - value should be NULL or >= 0'))
+      return(stop('Tail value not acceptable - value should be NULL or >= 0'))
     }
   }
 
