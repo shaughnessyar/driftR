@@ -29,9 +29,11 @@
 #'
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
+#' @importFrom glue glue
 #' @importFrom magrittr %>%
 #' @importFrom rlang :=
 #' @importFrom rlang enquo
+#' @importFrom rlang quo
 #' @importFrom rlang quo_name
 #'
 #' @export
@@ -43,11 +45,24 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   # quote input variables
   corrFactor <- quo_name(enquo(corrFactor))
   date <- enquo(dateVar)
+  dateQ <- quo_name(enquo(dateVar))
   time <- enquo(timeVar)
+  timeQ <- quo_name(enquo(timeVar))
 
   # check variables
-  if(date %nin% colnames(.data)) {
+  if(!!dateQ %nin% colnames(.data)) {
+    stop(glue::glue('Variable {dv}, given for dateVar, cannot be found in the given data frame',
+                    dv = dateQ))
+  }
 
+  if(!!timeQ %nin% colnames(.data)) {
+    stop(glue::glue('Variable {tv}, given for timeVar, cannot be found in the given data frame',
+                    tv = timeQ))
+  }
+
+  if(!!corrFactor %in% colnames(.data)) {
+    stop(glue::glue('A variable named {cf}, given for corrFactor, already exists in the given data frame',
+                    cf = corrFactor))
   }
 
   # set format

@@ -23,7 +23,8 @@ Imports: dplyr,
     stringr,
     rlang,
     tibble,
-    magrittr
+    magrittr,
+    glue
 RoxygenNote: 6.0.1
 Suggests: testthat, 
     knitr,
