@@ -23,7 +23,7 @@ test_that("input errors trigged - missing parameters", {
                "An existing variable with date data must be specified for dateVar")
   expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, format = "MDY"),
                "An existing variable with time data must be specified for timeVar")
-  expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = bar),
+  expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time),
                "A format - either MDY or YMD - must be specified")
 })
 
@@ -40,7 +40,7 @@ test_that("input errors trigged - format invalid", {
   expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, format = "foo"),
                "The date-time format foo is invalid - format should be MDY or YMD")
   expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, format = foo),
-               "object 'foo' not found")
+               "It appears that the format parameter is not quoted")
 })
 
 # test results ------------------------------------------------

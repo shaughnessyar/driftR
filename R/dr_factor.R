@@ -33,6 +33,17 @@
 #' @export
 dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
 
+  # save parameters to list
+  paramList <- as.list(match.call())
+
+  # check if fostmat is quoted
+  if (!is.character(paramList$format)) {
+    if (is.null(paramList$format)) {
+      stop('A format - either MDY or YMD - must be specified')
+    } else if (!is.null(paramList$format))
+      stop('It appears that the format parameter is not quoted')
+  }
+
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   dateTime = totTime = NULL
 
@@ -47,10 +58,6 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
 
   if (missing(timeVar)) {
     stop('An existing variable with time data must be specified for timeVar')
-  }
-
-  if (missing(format)) {
-    stop('A format - either MDY or YMD - must be specified')
   }
 
   # quote input variables
