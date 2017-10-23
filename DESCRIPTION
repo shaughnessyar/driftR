@@ -1,13 +1,13 @@
 Package: driftR
 Type: Package
 Title: Software for Drift Correcting Water-quality Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
     person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),
     person("Elizabeth", "Hasenmueller", , "elizabeth.hasenmueller@slu.edu", c("aut"))
     )
-Description: An implamentation of data correction for instramental drift in continuous water- 
+Description: An tidy implamentation of data correction for instramental drift in continuous water- 
     quality monotoring data. There are many sources of water-quality data including private 
     (ex: YSI instruments) and open source (ex: USGS and NDBC), each of which are susceptible 
     to errors/inaccuracies due to drift. This package allows the user to correct their data 
