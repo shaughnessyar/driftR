@@ -25,7 +25,11 @@ The `driftR` package implements a series of equations used in [Dr. Elizabeth Has
 Usage
 -----
 
-As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. `driftR` provides four verbs for applying these corrections in a consistent, reproducible manner: *read*, *factor*, *correct*, and *drop*. These verbs are designed to be implemented in that order, though there may be multiple applications of *correct* for a given data set. All of the core functions for `driftR` have the `dr_` prefix, making it easy to use them interactively in RStudio. The following example shows a simple workflow for applying these verbs to some hypothetical data:
+As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. `driftR` provides four verbs for applying these corrections in a consistent, reproducible manner: *read*, *factor*, *correct*, and *drop*. These verbs are designed to be implemented in that order, though there may be multiple applications of *correct* for a given data set. All of the core functions for `driftR` have the `dr_` prefix, making it easy to use them interactively in RStudio.
+
+### Basic Use
+
+The following example shows a simple workflow for applying these verbs to some hypothetical data:
 
 ``` r
 # load the driftR package
@@ -44,7 +48,7 @@ df <- dr_factor(df, corrFactor = corrFac,
 # apply one-point calibration to SpConde;
 # results stored in new vector SPConde_Corr
 df <- dr_correctOne(df, sourceVar = SpConde, 
-                    cleanVar = SPConde_Corr, 
+                    cleanVar = SpConde_Corr, 
                     calVal = 1.07, 
                     calStd = 1, 
                     factorVar = corrFac)
@@ -63,6 +67,8 @@ df <- dr_correctTwo(df, sourceVar = pH,
 df <- dr_drop(df, head=10, tail=5)
 ```
 
+### Use with `%>%`
+
 All of the core functions return data frames and make use of the tidy evaluation pronoun `.data`, so using them in concert with the pipe (`%>%`) is straightforward:
 
 ``` r
@@ -79,7 +85,7 @@ df <- df %>%
             timeVar = Time, 
             format = "MDY") %>%
   dr_correctOne(sourceVar = SpConde, 
-                cleanVar = SPConde_Corr, 
+                cleanVar = SpConde_Corr, 
                 calVal = 1.07, 
                 calStd = 1, 
                 factorVar = corrFac) %>%
@@ -93,7 +99,16 @@ df <- df %>%
   dr_drop(head=10, tail=5)
 ```
 
+Additional Documentation
+------------------------
+
 See the [package website](https://shaughnessyar.github.io/driftR/) for details on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing their use. An [additional vignette]() describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Finally, we provide a [third vignette]() designed for users of non-YSI Sonde instruments who wish to use `driftR` with their data.
+
+You can also view the help files from within R:
+
+``` r
+?dr_readSonde
+```
 
 About the Authors
 -----------------
