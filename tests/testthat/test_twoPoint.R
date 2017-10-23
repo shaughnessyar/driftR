@@ -8,16 +8,15 @@ result <- dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time
 
 # test inputs ------------------------------------------------
 
-## quoting both the source var and the factor var causes errors:
-## "Evaluation error: non-numeric argument to binary operator.
+## quoting both the source var and the factor var caused errors in an earlier iteration of this function
 
 test_that("quoted variables do not cause errors", {
   expect_error(dr_correctTwo(result, sourceVar = "pH", cleanVar = pH_Corr, calValLow = 7.01,
-                             calStdLow = 7, calValHigh = 11.8, calStdHigh =  10, factorVar = factors))
+                             calStdLow = 7, calValHigh = 11.8, calStdHigh =  10, factorVar = factors), NA)
   expect_error(dr_correctTwo(result, sourceVar = pH, cleanVar = "pH_Corr", calValLow = 7.01,
                              calStdLow = 7, calValHigh = 11.8, calStdHigh =  10, factorVar = factors), NA)
   expect_error(dr_correctTwo(result, sourceVar = pH, cleanVar = pH_Corr, calValLow = 7.01,
-                             calStdLow = 7, calValHigh = 11.8, calStdHigh =  10, factorVar = "factors"))
+                             calStdLow = 7, calValHigh = 11.8, calStdHigh =  10, factorVar = "factors"), NA)
 })
 
 # test errors ------------------------------------------------

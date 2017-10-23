@@ -36,6 +36,9 @@
 #' @export
 dr_correctOne <- function(.data, sourceVar, cleanVar, calVal, calStd, factorVar) {
 
+  # save parameters to list
+  paramList <- as.list(match.call())
+
   # check for missing parameters
   if (missing(sourceVar)) {
     stop('A existing variable name with data to be corrected must be specified for sourceVar')
@@ -57,11 +60,24 @@ dr_correctOne <- function(.data, sourceVar, cleanVar, calVal, calStd, factorVar)
     stop('An existing variable name with the correction factor data must be specified for factorVar')
   }
 
+  # quote input variables
   cleanVar <- rlang::quo_name(rlang::enquo(cleanVar))
-  sourceVar <- rlang::enquo(sourceVar)
-  sourceVarQ <- rlang::quo_name(rlang::enquo(sourceVar))
-  factorVar <- rlang::enquo(factorVar)
-  factorVarQ <- rlang::quo_name(rlang::enquo(factorVar))
+
+  if (!is.character(paramList$sourceVar)) {
+    source <- rlang::enquo(sourceVar)
+  } else if (is.character(paramList$sourceVar)) {
+    source <- rlang::quo(!! rlang::sym(sourceVar))
+  }
+
+  sourceVarQ <- rlang::quo_name(rlang::enquo(source))
+
+  if (!is.character(paramList$factorVar)) {
+    factor <- rlang::enquo(factorVar)
+  } else if (is.character(paramList$factorVar)) {
+    factor <- rlang::quo(!! rlang::sym(factorVar))
+  }
+
+  factorVarQ <- rlang::quo_name(rlang::enquo(factor))
 
   # check variables
   if(!!sourceVarQ %nin% colnames(.data)) {
@@ -89,5 +105,5 @@ dr_correctOne <- function(.data, sourceVar, cleanVar, calVal, calStd, factorVar)
   }
 
   # create new variable
-  dplyr::mutate(.data, !!cleanVar := (!!sourceVar) + ( (!!factorVar) * (calVal - calStd)))
+  dplyr::mutate(.data, !!cleanVar := (!!source) + ( (!!factor) * (calVal - calStd)))
 }

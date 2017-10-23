@@ -35,6 +35,9 @@
 #' @export
 dr_correctTwo <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, factorVar) {
 
+  # save parameters to list
+  paramList <- as.list(match.call())
+
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   high = low = NULL
 
@@ -69,10 +72,22 @@ dr_correctTwo <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calV
 
   # quote input variables
   cleanVar <- rlang::quo_name(rlang::enquo(cleanVar))
-  sourceVar <- rlang::enquo(sourceVar)
-  sourceVarQ <- rlang::quo_name(rlang::enquo(sourceVar))
-  factorVar <- rlang::enquo(factorVar)
-  factorVarQ <- rlang::quo_name(rlang::enquo(factorVar))
+
+  if (!is.character(paramList$sourceVar)) {
+    source <- rlang::enquo(sourceVar)
+  } else if (is.character(paramList$sourceVar)) {
+    source <- rlang::quo(!! rlang::sym(sourceVar))
+  }
+
+  sourceVarQ <- rlang::quo_name(rlang::enquo(source))
+
+  if (!is.character(paramList$factorVar)) {
+    factor <- rlang::enquo(factorVar)
+  } else if (is.character(paramList$factorVar)) {
+    factor <- rlang::quo(!! rlang::sym(factorVar))
+  }
+
+  factorVarQ <- rlang::quo_name(rlang::enquo(factor))
 
   # check variables
   if(!!sourceVarQ %nin% colnames(.data)) {
@@ -109,8 +124,8 @@ dr_correctTwo <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calV
 
   # calculate parameters and create new variable
   .data %>%
-    dplyr::mutate(low := calStdLow + ((!!factorVar) * (calStdLow - calValLow))) %>%
-    dplyr::mutate(high := calStdHigh - ((!!factorVar) * (calStdHigh - calValHigh))) %>%
-    dplyr::mutate(!!cleanVar := ((((!!sourceVar) - low) / (high - low) ) * (calStdHigh - calStdLow) ) + calStdLow) %>%
+    dplyr::mutate(low := calStdLow + ((!!factor) * (calStdLow - calValLow))) %>%
+    dplyr::mutate(high := calStdHigh - ((!!factor) * (calStdHigh - calValHigh))) %>%
+    dplyr::mutate(!!cleanVar := ((((!!source) - low) / (high - low) ) * (calStdHigh - calStdLow) ) + calStdLow) %>%
     dplyr::select(-low, -high)
 }
