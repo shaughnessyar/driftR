@@ -9,9 +9,9 @@ dr_drop(.data, head = NULL, tail = NULL)
 \arguments{
 \item{.data}{A tbl}
 
-\item{head}{An integer specifying the number of rows to be removed from the top of \code{.data}}
+\item{head}{An integer >= 1 specifying the number of rows to be removed from the top of \code{.data} (or \code{NULL})}
 
-\item{tail}{An integer specifying the number of rows to be removed from the bottom of \code{.data}}
+\item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom of \code{.data} (or \code{NULL})}
 }
 \value{
 An object of the same class as \code{.data} with specified operations removed.

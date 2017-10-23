@@ -10,8 +10,8 @@
 #' @usage dr_drop(.data, head = NULL, tail = NULL)
 #'
 #' @param .data A tbl
-#' @param head An integer specifying the number of rows to be removed from the top of \code{.data}
-#' @param tail An integer specifying the number of rows to be removed from the bottom of \code{.data}
+#' @param head An integer >= 1 specifying the number of rows to be removed from the top of \code{.data} (or \code{NULL})
+#' @param tail An integer >= 1 specifying the number of rows to be removed from the bottom of \code{.data} (or \code{NULL})
 #'
 #' @return An object of the same class as \code{.data} with specified operations removed.
 #'
@@ -39,15 +39,27 @@ dr_drop <- function(.data, head = NULL, tail = NULL){
 
   # Check for input errors
   if (!is.null(head)) {
-    if (!(typeof(head) %in% c('integer', 'double')) | head < 0) {
-      return(stop('Head value not acceptable - value should be NULL or >= 0'))
+    if (!(typeof(head) %in% c('integer', 'double'))) {
+      return(stop('Head value not acceptable - value should be NULL or integer >= 1'))
+    }
+
+    if ((head %% 1 != 0) | (head <= 0)) {
+      return(stop('Head value not acceptable - value should be NULL or integer >= 1'))
     }
   }
 
   if (!is.null(tail)) {
-    if (!(typeof(tail) %in% c('integer', 'double')) | tail < 0) {
-      return(stop('Tail value not acceptable - value should be NULL or >= 0'))
+    if (!(typeof(tail) %in% c('integer', 'double'))) {
+      return(stop('Tail value not acceptable - value should be NULL or integer >= 1'))
     }
+
+    if ((tail %% 1 != 0) | (tail <= 0)) {
+      return(stop('Tail value not acceptable - value should be NULL or integer >= 1'))
+    }
+  }
+
+  if (is.null(head) & is.null(tail)) {
+      return(stop('At least 1 observation must be removed from the data frame'))
   }
 
   # calculate slice positions

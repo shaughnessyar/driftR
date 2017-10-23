@@ -4,9 +4,11 @@ context("test dr_drop function")
 ## input errors, head parameter
 
 test_that("input errors trigged", {
-  expect_error(dr_drop(test_data, head = -5), "Head value not acceptable - value should be NULL or >= 0")
-  expect_error(dr_drop(test_data, head = "foo"), "Head value not acceptable - value should be NULL or >= 0")
-  expect_error(dr_drop(test_data, head = TRUE), "Head value not acceptable - value should be NULL or >= 0")
+  expect_error(dr_drop(test_data, head = -5), "Head value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = 2.3), "Head value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = 0), "Head value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = "foo"), "Head value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = TRUE), "Head value not acceptable - value should be NULL or integer >= 1")
 })
 
 ## input errors, head and tail parameters, unquoted string
@@ -19,9 +21,18 @@ test_that("input errors trigged", {
 ## input errors, tail parameter
 
 test_that("input errors trigged", {
-  expect_error(dr_drop(test_data, tail = -5), "Tail value not acceptable - value should be NULL or >= 0")
-  expect_error(dr_drop(test_data, tail = "foo"), "Tail value not acceptable - value should be NULL or >= 0")
-  expect_error(dr_drop(test_data, tail = TRUE), "Tail value not acceptable - value should be NULL or >= 0")
+  expect_error(dr_drop(test_data, tail = -8), "Tail value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = 7.5), "Tail value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = 0), "Tail value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = "foo"), "Tail value not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = TRUE), "Tail value not acceptable - value should be NULL or integer >= 1")
+})
+
+## input errors, no parameters
+
+test_that("input errors trigged", {
+  expect_error(dr_drop(test_data), "At least 1 observation must be removed from the data frame")
+  expect_error(dr_drop(test_data, head = NULL, tail = NULL), "At least 1 observation must be removed from the data frame")
 })
 
 # test results ------------------------------------------------
