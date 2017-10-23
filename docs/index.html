@@ -40,6 +40,9 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -70,7 +73,7 @@
 <a href="#driftr" class="anchor"></a>driftR <img src="reference/figures/logo.png" align="right">
 </h1></div>
 
-<p>The goal of <code>driftR</code> is to correct continuous water-quality monitoring data for intramental drift.</p>
+<p><code>driftR</code> is to provide tidy corrections of continuous water-quality monitoring data for intramental drift.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -81,28 +84,88 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>The <code>driftR</code> package implements a series of equations used in <a href="https://hasenmuellerlab.weebly.com">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements.</p>
-<p>The package is currently written for the easiest use with YSI Sonde products. We will be adding a vignette in the future describing the application of this package to other brands of water monitoring sensors.</p>
+<p>The <code>driftR</code> package implements a series of equations used in <a href="https://hasenmuellerlab.weebly.com">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI Sonde products.</p>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. First, you start with importing the data with <code><a href="reference/dr_readSonde.html">dr_readSonde()</a></code>. Next, you apply a correction factor using <code><a href="reference/dr_correct.html">dr_correct()</a></code>. Then, utilizing the generated correction factors, you use either <code><a href="reference/dr_clean1.html">dr_clean1()</a></code> or <code><a href="reference/dr_clean2.html">dr_clean2()</a></code> to drift correct the data using 1 or 2 point calibrations respectively. Lastly, you would <code><a href="reference/dr_drop.html">dr_drop()</a></code> data to account for instrument equilibration.</p>
+<p>As shown, continuous water-quality instrument drift over time, so it becomes necessary to correct the data to maintain accuracy. <code>driftR</code> provides four verbs for applying these corrections in a consistent, reproducible manner: <em>read</em>, <em>factor</em>, <em>correct</em>, and <em>drop</em>. These verbs are designed to be implemented in that order, though there may be multiple applications of <em>correct</em> for a given data set. All of the core functions for <code>driftR</code> have the <code>dr_</code> prefix, making it easy to use them interactively in RStudio.</p>
+<div id="basic-use" class="section level3">
+<h3 class="hasAnchor">
+<a href="#basic-use" class="anchor"></a>Basic Use</h3>
+<p>The following example shows a simple workflow for applying these verbs to some hypothetical data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the driftR package</span>
 <span class="kw">library</span>(driftR)
 
 <span class="co"># import data exported from a Sonde </span>
-dataFrame &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="st">"filePath/data.csv"</span>, <span class="dt">define=</span><span class="ot">TRUE</span>)
+df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">define =</span> <span class="ot">TRUE</span>)
 
 <span class="co"># calculate correction factor</span>
-correct &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correct.html">dr_correct</a></span>(dataFrame, Date, Time, <span class="dt">format =</span> YMD)
+<span class="co"># results stored in new vector corrFac</span>
+df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_factor.html">dr_factor</a></span>(df, <span class="dt">corrFactor =</span> corrFac, 
+                <span class="dt">dateVar =</span> Date, 
+                <span class="dt">timeVar =</span> Time, 
+                <span class="dt">format =</span> <span class="st">"MDY"</span>)
 
-<span class="co"># apply one-point calibration to SpConde</span>
-dataFrame<span class="op">$</span>SpCond_clean &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_clean1.html">dr_clean1</a></span>(df, SpCond, <span class="fl">1.07</span>, <span class="dv">1</span>, correct)
+<span class="co"># apply one-point calibration to SpConde;</span>
+<span class="co"># results stored in new vector SPConde_Corr</span>
+df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctOne.html">dr_correctOne</a></span>(df, <span class="dt">sourceVar =</span> SpConde, 
+                    <span class="dt">cleanVar =</span> SpConde_Corr, 
+                    <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
+                    <span class="dt">calStd =</span> <span class="dv">1</span>, 
+                    <span class="dt">factorVar =</span> corrFac)
+
+<span class="co"># apply two-point calibration to pH;</span>
+<span class="co"># results stored in new vector ph_Corr</span>
+df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctTwo.html">dr_correctTwo</a></span>(df, <span class="dt">sourceVar =</span> pH, 
+                    <span class="dt">cleanVar =</span> pH_Corr, 
+                    <span class="dt">calValLow =</span> <span class="fl">7.01</span>, 
+                    <span class="dt">calStdLow =</span> <span class="dv">7</span>,
+                    <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
+                    <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, 
+                    <span class="dt">factorVar =</span> corrFac)
 
 <span class="co"># drop observations to account for instrument equilibration</span>
-dataFrame &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(dataFrame, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
-<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for details on these functions and a <a href="">detailed vignette</a> describing their use.</p>
+df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(df, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
+</div>
+<div id="use-with" class="section level3">
+<h3 class="hasAnchor">
+<a href="#use-with" class="anchor"></a>Use with <code>%&gt;%</code>
+</h3>
+<p>All of the core functions return data frames and make use of the tidy evaluation pronoun <code>.data</code>, so using them in concert with the pipe (<code>%&gt;%</code>) is straightforward:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the driftR package</span>
+<span class="kw">library</span>(driftR)
+
+<span class="co"># import data exported from a Sonde </span>
+df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">define =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># caclulate correction factors, apply corrections, and drop observations</span>
+df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
+            <span class="dt">dateVar =</span> Date, 
+            <span class="dt">timeVar =</span> Time, 
+            <span class="dt">format =</span> <span class="st">"MDY"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpConde, 
+                <span class="dt">cleanVar =</span> SpConde_Corr, 
+                <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
+                <span class="dt">calStd =</span> <span class="dv">1</span>, 
+                <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, 
+                <span class="dt">cleanVar =</span> pH_Corr, 
+                <span class="dt">calValLow =</span> <span class="fl">7.01</span>, 
+                <span class="dt">calStdLow =</span> <span class="dv">7</span>,
+                <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
+                <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, 
+                <span class="dt">factorVar =</span> corrFac)<span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
+</div>
+</div>
+<div id="additional-documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#additional-documentation" class="anchor"></a>Additional Documentation</h2>
+<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for details on these functions and a <a href="https://shaughnessyar.github.io/driftR/articles/driftR.html">detailed vignette</a> describing their use. An <a href="">additional vignette</a> describes <code>driftR</code>’s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Finally, we provide a <a href="">third vignette</a> designed for users of non-YSI Sonde instruments who wish to use <code>driftR</code> with their data.</p>
+<p>You can also view the help files from within R:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><a href="reference/dr_readSonde.html">?dr_readSonde</a></code></pre></div>
 </div>
 <div id="about-the-authors" class="section level2">
 <h2 class="hasAnchor">

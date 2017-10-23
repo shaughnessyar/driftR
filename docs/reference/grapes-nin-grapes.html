@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calibration Values for Water-quality Monitoring Data Correction — sondeCal • driftR</title>
+<title>Not In Operator — %nin% • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -86,60 +86,50 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calibration Values for Water-quality Monitoring Data Correction</h1>
+    <h1>Not In Operator</h1>
     </div>
 
     
-    <p>A data set containing correction values used in practice drift corrections</p>
+    <p>Provides the compliment to the base R <code>%in%</code> operator. Included here instead of via import
+due to stability issues with the source package, <a href='\code{Hmsic}'>https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s</a>,
+during original package development in October, 2017. Used under terms of <a href='\code{Hmisc}'>https://cran.r-project.org/web/packages/Hmisc/index.html</a>'s
+<a href='GPL-3 License'>https://cran.r-project.org/web/licenses/GPL-3</a>.</p>
     
 
-    <pre class="usage"><span class='fu'>data</span>(<span class='no'>sondeCal</span>)</pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>a dataframe with 7 rows and 3 variables</p><dl class='dl-horizontal'>
-   <dt>Parameter</dt><dd><p>The parameter that you will be correcting for</p></dd>
-   <dt>'Cal Standard'</dt><dd><p>The value that the instrument should be reading for the given parameter</p></dd>
-   <dt>'Cal Value'</dt><dd><p>The value that the instrument is actually reading for the given parameter</p></dd>
-</dl>
+    <pre class="usage"><span class='no'>x</span> <span class='kw'>%nin%</span> <span class='no'>table</span></pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>vector or <code>NULL</code>: the values to be matched</p></td>
+    </tr>
+    <tr>
+      <th>table</th>
+      <td><p>vector or <code>NULL</code>: the values to be matched against</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p>Saint Louis University Geochemistry Lab</p>
+    <p><a href='\code{Hmsic}'>https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s</a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>str</span>(<span class='no'>sondeCal</span>)</div><div class='output co'>#&gt; Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	7 obs. of  3 variables:
-#&gt;  $ Parameter   : chr  "SpCond" "Turbidity" "DO" "pH High" ...
-#&gt;  $ Cal Standard: int  1 0 99 10 7 1000 10
-#&gt;  $ Cal Value   : num  1.07 1.3 97.6 11.8 7.01 ...
-#&gt;  - attr(*, "spec")=List of 2
-#&gt;   ..$ cols   :List of 3
-#&gt;   .. ..$ Parameter   : list()
-#&gt;   .. .. ..- attr(*, "class")= chr  "collector_character" "collector"
-#&gt;   .. ..$ Cal Standard: list()
-#&gt;   .. .. ..- attr(*, "class")= chr  "collector_integer" "collector"
-#&gt;   .. ..$ Cal Value   : list()
-#&gt;   .. .. ..- attr(*, "class")= chr  "collector_double" "collector"
-#&gt;   ..$ default: list()
-#&gt;   .. ..- attr(*, "class")= chr  "collector_guess" "collector"
-#&gt;   ..- attr(*, "class")= chr "col_spec"</div><div class='input'><span class='fu'>head</span>(<span class='no'>sondeCal</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
-#&gt;       Parameter `Cal Standard` `Cal Value`
-#&gt;           &lt;chr&gt;          &lt;int&gt;       &lt;dbl&gt;
-#&gt; 1        SpCond              1        1.07
-#&gt; 2     Turbidity              0        1.30
-#&gt; 3            DO             99       97.60
-#&gt; 4       pH High             10       11.80
-#&gt; 5        pH Low              7        7.01
-#&gt; 6 Chloride High           1000     1411.00</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
+<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fl'>3</span>
+
+<span class='no'>x</span> <span class='kw'>%in%</span> <span class='no'>y</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>x</span> <span class='kw'>%nin%</span> <span class='no'>y</span></div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='no'>x</span> <span class='kw'>%in%</span> <span class='no'>z</span></div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='no'>x</span> <span class='kw'>%nin%</span> <span class='no'>z</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
       <li><a href="#source">Source</a></li>
       
       <li><a href="#examples">Examples</a></li>

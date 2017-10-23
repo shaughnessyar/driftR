@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import raw data — dr_readSonde • driftR</title>
+<title>Import raw data from YSI Sonde — dr_readSonde • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -63,6 +63,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -83,37 +86,42 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import raw data</h1>
+    <h1>Import raw data from YSI Sonde</h1>
     </div>
 
     
-    <p>This function imports the raw data from a YSI Sonde and fomats the dataset for easy drift correction</p>
+    <p>This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
+    If <code>defineVar</code> is set to <code>TRUE</code> (the default option), units of measurement will not be
+    included in the first observation.</p>
     
 
-    <pre class="usage"><span class='fu'>dr_readSonde</span>(<span class='no'>fileExtention</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>dr_readSonde</span>(<span class='no'>file</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fileExtention</th>
-      <td><p>Location of data</p></td>
+      <th>file</th>
+      <td><p>The name of the file which the data are to be read from. Each row of the table appears
+as one line of the file. If it does not contain an absolute path, the file name is relative to
+the current working directory.</p></td>
     </tr>
     <tr>
       <th>defineVar</th>
-      <td><p>Logical statement</p></td>
+      <td><p>Logical scalar that determines if the units of measurement are included in the first
+observation. If they are included, all vectors will be read in as character.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with with the raw data and the variable types defined if <code>defineVar = TRUE</code></p>
+    <p>A tibble with the formatted data and the variable types defined if <code>defineVar = TRUE</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>dr_readSonde</span>(<span class='st'>"~/fileLocation/data.csv"</span>)
-<span class='fu'>dr_readSonde</span>(<span class='st'>"~/fileLocation/data.csv"</span>, <span class='kw'>defineVar</span><span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dr_readSonde</span>(<span class='st'>"data.csv"</span>)
+<span class='fu'>dr_readSonde</span>(<span class='st'>"data.csv"</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
