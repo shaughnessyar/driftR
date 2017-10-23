@@ -1,20 +1,23 @@
 #' Creating correction factors
 #'
-#' A wrapper around `dplyr::mutate()` that creates a correction factor for each observation.
+#' @description A wrapper around `dplyr::mutate()` that creates a correction factor for each observation.
 #'
-#' Correction factors are calculated based on the time of the observation and the total amount of time
-#' that the instrument had been deployed.
+#' @details Correction factors are calculated based on the time of the observation and the total amount of time
+#'     that the instrument had been deployed.
 #'
 #' @usage dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
-#' @param dateVar Vector containing date data
-#' @param timeVar Vector containing time data
+#' @param dateVar Name of variable containing date data
+#' @param timeVar Name of variable containing time data
 #' @param format Either "MDY" or "YMD" for \code{dateVar}
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
 #' to the other data in \code{.data}.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom rlang :=
 #'
 #' @examples
 #' testData <- data.frame(
@@ -27,41 +30,55 @@
 #'
 #' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
 #'
-#' @importFrom dplyr mutate
-#' @importFrom dplyr select
-#' @importFrom glue glue
-#' @importFrom magrittr %>%
-#' @importFrom rlang :=
-#' @importFrom rlang enquo
-#' @importFrom rlang quo_name
-#'
 #' @export
 dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   dateTime = totTime = NULL
 
+  # check for missing parameters
+  if (missing(corrFactor)) {
+    stop('A new variable name must be specified for corrFactor')
+  }
+
+  if (missing(dateVar)) {
+    stop('An existing variable with date data must be specified for dateVar')
+  }
+
+  if (missing(timeVar)) {
+    stop('An existing variable with time data must be specified for timeVar')
+  }
+
+  if (missing(format)) {
+    stop('A format - either MDY or YMD - must be specified')
+  }
+
   # quote input variables
-  corrFactor <- quo_name(enquo(corrFactor))
-  date <- enquo(dateVar)
-  dateQ <- quo_name(enquo(dateVar))
-  time <- enquo(timeVar)
-  timeQ <- quo_name(enquo(timeVar))
+  corrFactor <- rlang::quo_name(rlang::enquo(corrFactor))
+  date <- rlang::enquo(dateVar)
+  dateQ <- rlang::quo_name(rlang::enquo(dateVar))
+  time <- rlang::enquo(timeVar)
+  timeQ <- rlang::quo_name(rlang::enquo(timeVar))
 
   # check variables
   if(!!dateQ %nin% colnames(.data)) {
-    stop(glue::glue('Variable {dv}, given for dateVar, cannot be found in the given data frame',
-                    dv = dateQ))
+    stop(glue::glue('Variable {var}, given for dateVar, cannot be found in the given data frame',
+                    var = dateQ))
   }
 
   if(!!timeQ %nin% colnames(.data)) {
-    stop(glue::glue('Variable {tv}, given for timeVar, cannot be found in the given data frame',
-                    tv = timeQ))
+    stop(glue::glue('Variable {var}, given for timeVar, cannot be found in the given data frame',
+                    var = timeQ))
   }
 
   if(!!corrFactor %in% colnames(.data)) {
-    stop(glue::glue('A variable named {cf}, given for corrFactor, already exists in the given data frame',
-                    cf = corrFactor))
+    stop(glue::glue('A variable named {var}, given for corrFactor, already exists in the given data frame',
+                    var = corrFactor))
+  }
+
+  # check format
+  if(format %nin% c("MDY", "YMD")) {
+    stop(glue::glue('The date-time format {format} is invalid - format should be MDY or YMD'))
   }
 
   # set format
@@ -71,9 +88,6 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   else if (format == "YMD"){
     dayTimeFormat <- "%Y-%m-%d %H:%M:%S"
   }
-  else {
-    stop("Invalid date-time format - use either MDY or YMD and ensure they are quoted")
-  }
 
   # concatenate date and time, apply date-time format, and calculate correction factor
   .data %>%
@@ -82,5 +96,5 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
     dplyr::mutate(dateTime = base::as.numeric(dateTime)) %>%
     dplyr::mutate(totTime = utils::tail(dateTime, n=1) - utils::head(dateTime, n=1)) %>%
     dplyr::mutate(!!corrFactor := (dateTime - utils::head(dateTime, n=1)) / totTime) %>%
-    select(-dateTime, -totTime)
+    dplyr::select(-dateTime, -totTime)
 }

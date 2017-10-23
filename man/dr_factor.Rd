@@ -11,9 +11,9 @@ dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 
 \item{corrFactor}{New variable name for correction factor data}
 
-\item{dateVar}{Vector containing date data}
+\item{dateVar}{Name of variable containing date data}
 
-\item{timeVar}{Vector containing time data}
+\item{timeVar}{Name of variable containing time data}
 
 \item{format}{Either "MDY" or "YMD" for \code{dateVar}}
 }
@@ -26,7 +26,7 @@ A wrapper around `dplyr::mutate()` that creates a correction factor for each obs
 }
 \details{
 Correction factors are calculated based on the time of the observation and the total amount of time
-that the instrument had been deployed.
+    that the instrument had been deployed.
 }
 \examples{
 testData <- data.frame(

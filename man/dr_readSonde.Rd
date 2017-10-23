@@ -18,8 +18,8 @@ A tibble with the formatted data and the variable types defined if \code{defineV
 }
 \description{
 This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
-If \code{defineVar} is set to \code{TRUE} (the default option), a consistent set of
-variable names will be applied.
+    If \code{defineVar} is set to \code{TRUE} (the default option), a consistent set of
+    variable names will be applied.
 }
 \examples{
 \dontrun{

@@ -20,13 +20,13 @@ An object of the same class as \code{.data} with specified observations removed.
 }
 \description{
 A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
-and the \code{tail}.
+    and the \code{tail}.
 }
 \details{
 When taking the instrument out of the water, there are often several observations that pass
-before the run can be downloaded. Additionally, once the instrument is in the water, it often
-takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-observations from the bottom and top of the dataset for each of those issues respectively.
+    before the run can be downloaded. Additionally, once the instrument is in the water, it often
+    takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
+    observations from the bottom and top of the dataset for each of those issues respectively.
 }
 \examples{
 testData <- data.frame(

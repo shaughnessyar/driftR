@@ -1,36 +1,29 @@
 context("test dr_drop function")
 
 # test errors ------------------------------------------------
-## input errors, head parameter
 
-test_that("input errors trigged", {
-  expect_error(dr_drop(test_data, head = -5), "Head value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = 2.3), "Head value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = 0), "Head value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = "foo"), "Head value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = TRUE), "Head value not acceptable - value should be NULL or integer >= 1")
+test_that("input errors trigged - head", {
+  expect_error(dr_drop(test_data, head = -5), "Head value -5 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = 2.3), "Head value 2.3 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = 0), "Head value 0 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = "foo"), "Head value foo not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = TRUE), "Head value TRUE not acceptable - value should be NULL or integer >= 1")
 })
 
-## input errors, head and tail parameters, unquoted string
-
-test_that("input errors trigged", {
+test_that("input errors trigged - unquoted string", {
   expect_error(dr_drop(test_data, head = foo), "object 'foo' not found")
   expect_error(dr_drop(test_data, tail = foo), "object 'foo' not found")
 })
 
-## input errors, tail parameter
-
-test_that("input errors trigged", {
-  expect_error(dr_drop(test_data, tail = -8), "Tail value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = 7.5), "Tail value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = 0), "Tail value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = "foo"), "Tail value not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = TRUE), "Tail value not acceptable - value should be NULL or integer >= 1")
+test_that("input errors trigged - tail", {
+  expect_error(dr_drop(test_data, tail = -8), "Tail value -8 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = 7.5), "Tail value 7.5 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = 0), "Tail value 0 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = "foo"), "Tail value foo not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = FALSE), "Tail value FALSE not acceptable - value should be NULL or integer >= 1")
 })
 
-## input errors, no parameters
-
-test_that("input errors trigged", {
+test_that("input errors trigged - no parameters", {
   expect_error(dr_drop(test_data), "At least 1 observation must be removed from the data frame")
   expect_error(dr_drop(test_data, head = NULL, tail = NULL), "At least 1 observation must be removed from the data frame")
 })

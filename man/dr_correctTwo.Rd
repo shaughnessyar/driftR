@@ -8,27 +8,38 @@ dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh,
   calStdHigh, factorVar)
 }
 \arguments{
-\item{.data}{The working data frame}
+\item{.data}{A tbl}
 
-\item{sourceVar}{The name of the variable to correct}
+\item{sourceVar}{Name of variable to correct}
 
-\item{cleanVar}{The new variable}
+\item{cleanVar}{New variable name for corrected data}
 
-\item{calValLow}{The number that the instrument was actually reading for the low standard}
+\item{calValLow}{A numeric value; the number that the instrument was actually reading for
+the low standard}
 
-\item{calStdLow}{The number that the instrument should have been reading for that standard; i.e. the low standard value}
+\item{calStdLow}{A numeric value; the number that the instrument should have been reading
+for that standard; i.e. the low standard value}
 
-\item{calValHigh}{The number that the instrument was actually reading for the high standard}
+\item{calValHigh}{A numeric value; the number that the instrument was actually reading
+for the high standard}
 
-\item{calStdHigh}{The number that the instrument should have been reading for that standard; i.e. the high standard value}
+\item{calStdHigh}{A numeric value; the number that the instrument should have been reading
+for that standard; i.e. the high standard value}
 
-\item{factorVar}{Name of value or variable generated from \code{\link{dr_factor}}}
+\item{factorVar}{Name of variable generated using \code{\link{dr_factor}}}
 }
 \value{
-A list of values for the specified \code{varName} corrected for drift
+An object of the same class as \code{.data} with the new corrected variable added
+to the other data in \code{.data}.
 }
 \description{
-This command takes the raw data from the water-quality instrument, utilizes the values generated from \code{\link{dr_factor}} and returns data that accounts for drift over time. This is done via a two point calibration standard, which it typical for pH and chloride.
+A wrapper around `dplyr::mutate()` that creates a corrected value for each observation of the
+    specified variable based on two data points.
+}
+\details{
+This command takes the raw data from the water-quality instrument, utilizes the values
+   generated from \code{\link{dr_factor}} and returns data that accounts for drift over time.
+   This is done via a two-point calibration standard, which it typical for pH and chloride.
 }
 \examples{
 \dontrun{

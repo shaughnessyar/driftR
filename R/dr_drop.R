@@ -1,12 +1,12 @@
 #' Dropping observations for equilibration period
 #'
-#' A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
-#' and the \code{tail}.
+#' @description A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
+#'     and the \code{tail}.
 #'
-#' When taking the instrument out of the water, there are often several observations that pass
-#' before the run can be downloaded. Additionally, once the instrument is in the water, it often
-#' takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-#' observations from the bottom and top of the dataset for each of those issues respectively.
+#' @details When taking the instrument out of the water, there are often several observations that pass
+#'     before the run can be downloaded. Additionally, once the instrument is in the water, it often
+#'     takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
+#'     observations from the bottom and top of the dataset for each of those issues respectively.
 #'
 #' @usage dr_drop(.data, head = NULL, tail = NULL)
 #'
@@ -18,7 +18,6 @@
 #'
 #' @return An object of the same class as \code{.data} with specified observations removed.
 #'
-#' @importFrom dplyr slice
 #' @importFrom dplyr n
 #'
 #' @examples
@@ -43,21 +42,21 @@ dr_drop <- function(.data, head = NULL, tail = NULL){
   # Check for input errors
   if (!is.null(head)) {
     if (!(typeof(head) %in% c('integer', 'double'))) {
-      return(stop('Head value not acceptable - value should be NULL or integer >= 1'))
+      return(stop(glue::glue('Head value {head} not acceptable - value should be NULL or integer >= 1')))
     }
 
     if ((head %% 1 != 0) | (head <= 0)) {
-      return(stop('Head value not acceptable - value should be NULL or integer >= 1'))
+      return(stop(glue::glue('Head value {head} not acceptable - value should be NULL or integer >= 1')))
     }
   }
 
   if (!is.null(tail)) {
     if (!(typeof(tail) %in% c('integer', 'double'))) {
-      return(stop('Tail value not acceptable - value should be NULL or integer >= 1'))
+      return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
     }
 
     if ((tail %% 1 != 0) | (tail <= 0)) {
-      return(stop('Tail value not acceptable - value should be NULL or integer >= 1'))
+      return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
     }
   }
 

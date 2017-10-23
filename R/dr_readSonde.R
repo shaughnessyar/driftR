@@ -1,8 +1,8 @@
 #' Import raw data from YSI Sonde
 #'
-#' This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
-#' If \code{defineVar} is set to \code{TRUE} (the default option), a consistent set of
-#' variable names will be applied.
+#' @description This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
+#'     If \code{defineVar} is set to \code{TRUE} (the default option), a consistent set of
+#'     variable names will be applied.
 #'
 #' @param file The name of the file which the data are to be read from. Each row of the table appears
 #'     as one line of the file. If it does not contain an absolute path, the file name is relative to
@@ -10,8 +10,6 @@
 #' @param defineVar Logical scalar that determines if the consistent variable names are applied
 #'
 #' @return A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
-#'
-#' @importFrom tibble as_tibble
 #'
 #' @examples
 #' \dontrun{
@@ -22,8 +20,14 @@
 #' @export
 dr_readSonde <- function(file, defineVar = FALSE) {
 
-  if (!is.logical(defineVar)) {
-    defineVar <- FALSE
+  # check file
+  if(!file.exists(file)){
+    stop('File cannot be found. Check file name spelling and ensure it is saved in the working directory.')
+  }
+
+  # check defineVar
+  if (!(typeof(defineVar) %in% c('logical'))) {
+    stop(glue::glue('defineVar value {defineVar} not acceptable - value should TRUE or FALSE'))
   }
 
   if (defineVar == FALSE) {
