@@ -33,7 +33,6 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang :=
 #' @importFrom rlang enquo
-#' @importFrom rlang quo
 #' @importFrom rlang quo_name
 #'
 #' @export
