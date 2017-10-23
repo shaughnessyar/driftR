@@ -45,6 +45,11 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   date <- enquo(dateVar)
   time <- enquo(timeVar)
 
+  # check variables
+  if(date %nin% colnames(.data)) {
+
+  }
+
   # set format
   if (format == "MDY"){
     dayTimeFormat <- "%m/%d/%Y %H:%M:%S"
@@ -53,7 +58,7 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
     dayTimeFormat <- "%Y-%m-%d %H:%M:%S"
   }
   else {
-    stop("invalid date-time format - use either MDY or YMD")
+    stop("Invalid date-time format - use either MDY or YMD and ensure they are quoted")
   }
 
   # concatenate date and time, apply date-time format, and calculate correction factor
