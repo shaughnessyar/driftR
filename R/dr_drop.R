@@ -1,6 +1,7 @@
 #' Dropping observations for equilibration period
 #'
-#' A wrapper around `dplyr::slice()` for removing observations from both the `head` and the `tail`.
+#' A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
+#' and the \code{tail}.
 #'
 #' When taking the instrument out of the water, there are often several observations that pass
 #' before the run can be downloaded. Additionally, once the instrument is in the water, it often
@@ -10,10 +11,12 @@
 #' @usage dr_drop(.data, head = NULL, tail = NULL)
 #'
 #' @param .data A tbl
-#' @param head An integer >= 1 specifying the number of rows to be removed from the top of \code{.data} (or \code{NULL})
-#' @param tail An integer >= 1 specifying the number of rows to be removed from the bottom of \code{.data} (or \code{NULL})
+#' @param head An integer >= 1 specifying the number of rows to be removed from the top
+#'     of \code{.data} (or \code{NULL})
+#' @param tail An integer >= 1 specifying the number of rows to be removed from the bottom
+#'     of \code{.data} (or \code{NULL})
 #'
-#' @return An object of the same class as \code{.data} with specified operations removed.
+#' @return An object of the same class as \code{.data} with specified observations removed.
 #'
 #' @importFrom dplyr slice
 #' @importFrom dplyr n

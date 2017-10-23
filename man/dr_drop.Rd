@@ -9,15 +9,18 @@ dr_drop(.data, head = NULL, tail = NULL)
 \arguments{
 \item{.data}{A tbl}
 
-\item{head}{An integer >= 1 specifying the number of rows to be removed from the top of \code{.data} (or \code{NULL})}
+\item{head}{An integer >= 1 specifying the number of rows to be removed from the top
+of \code{.data} (or \code{NULL})}
 
-\item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom of \code{.data} (or \code{NULL})}
+\item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom
+of \code{.data} (or \code{NULL})}
 }
 \value{
-An object of the same class as \code{.data} with specified operations removed.
+An object of the same class as \code{.data} with specified observations removed.
 }
 \description{
-A wrapper around `dplyr::slice()` for removing observations from both the `head` and the `tail`.
+A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
+and the \code{tail}.
 }
 \details{
 When taking the instrument out of the water, there are often several observations that pass
