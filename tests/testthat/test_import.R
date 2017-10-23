@@ -20,11 +20,21 @@ test_that("input errors trigged - defineVar parameter invalid", {
 
 # test data ------------------------------------------------
 
+## check default import
+
 test_data2 <- read.csv(system.file("extdata", "sondeClean2.csv", package = "driftR"), stringsAsFactors = FALSE)
-result <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = TRUE)
+result1 <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = TRUE)
 
 test_that("importing the data", {
-  expect_equal(result, test_data2)
+  expect_equal(result1, test_data2)
 })
 
+## check to ensure extra row is present if defineVar = FALSE
 
+result2 <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = FALSE)
+result2_n <- nrow(result2)
+result2_exp <- 1528
+
+test_that("importing the data", {
+  expect_equal(result2_n, result2_exp)
+})
