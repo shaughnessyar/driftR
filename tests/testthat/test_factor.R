@@ -14,6 +14,19 @@ test_that("quoted variables do not cause errors", {
   expect_error(dr_factor(result, corrFactor = "factors", dateVar = "Date", timeVar = "Time", format = "MDY"), NA)
 })
 
+## the tests above did not catch that the function was failing without an error - it would create
+## the new vector but it would be all NAs
+
+result4 <- dr_factor(result, corrFactor = factors, dateVar = "Date", timeVar = "Time", format = "MDY")
+
+test_that("quoted variables do not cause errors", {
+  expect_false(is.na(result4$factors[1]))
+  expect_false(is.na(result4$factors[2]))
+  expect_false(is.na(result4$factors[10]))
+  expect_false(is.na(result4$factors[20]))
+  expect_false(is.na(result4$factors[1527]))
+})
+
 # test errors ------------------------------------------------
 
 test_that("input errors trigged - missing parameters", {
