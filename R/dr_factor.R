@@ -66,10 +66,22 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
 
   # quote input variables
   corrFactor <- rlang::quo_name(rlang::enquo(corrFactor))
-  date <- rlang::enquo(dateVar)
-  dateQ <- rlang::quo_name(rlang::enquo(dateVar))
-  time <- rlang::enquo(timeVar)
-  timeQ <- rlang::quo_name(rlang::enquo(timeVar))
+
+  if (!is.character(paramList$dateVar)) {
+    date <- rlang::enquo(dateVar)
+  } else if (is.character(paramList$dateVar)) {
+    date <- rlang::quo(!! rlang::sym(dateVar))
+  }
+
+  dateQ <- rlang::quo_name(rlang::enquo(date))
+
+  if (!is.character(paramList$timeVar)) {
+    time <- rlang::enquo(timeVar)
+  } else if (is.character(paramList$timeVar)) {
+    time <- rlang::quo(!! rlang::sym(timeVar))
+  }
+
+  timeQ <- rlang::quo_name(rlang::enquo(time))
 
   # check variables
   if(!!dateQ %nin% colnames(.data)) {

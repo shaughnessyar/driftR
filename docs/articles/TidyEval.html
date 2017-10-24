@@ -78,7 +78,7 @@
       <h1>Tidy Evaluation in driftR</h1>
                         <h4 class="author">Christopher Prener</h4>
             
-            <h4 class="date">2017-10-23</h4>
+            <h4 class="date">2017-10-24</h4>
           </div>
 
     
@@ -107,20 +107,69 @@
 <p>In order to implement this philosophical, verb-driven approach to data cleaning, <code>driftR</code> provides a set of wrappers around two <code>dplyr</code> functions - <code>mutate()</code> for adding new variables and <code>slice()</code> for removing rows. When you call a <code>drifR</code> function, you are actually calling one or more linked instances of <code>mutate()</code> or <code>slice()</code> that perform specific tasks with particular inputs in a standardized order.</p>
 <p>Like the <code>tidyverse</code>, then, <code>driftR</code> is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducibile. While <code>driftR</code> does enforce a specific workflow on users, the trade-off is the package’s consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).</p>
 </div>
+<div id="some-sample-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#some-sample-data" class="anchor"></a>Some Sample Data</h2>
+<p>The following examples use these data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">driftData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">Date =</span> <span class="kw">c</span>(<span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>),
+  <span class="dt">Time =</span> <span class="kw">c</span>(<span class="st">"12:10:49"</span>, <span class="st">"12:15:50"</span>, <span class="st">"12:20:51"</span>, <span class="st">"12:25:51"</span>, <span class="st">"12:30:51"</span>, <span class="st">"12:35:51"</span>),
+  <span class="dt">Temp =</span> <span class="kw">c</span>(<span class="fl">14.76</span>, <span class="fl">14.64</span>, <span class="fl">14.57</span>, <span class="fl">14.51</span>, <span class="fl">14.50</span>, <span class="fl">14.63</span>),
+  <span class="dt">SpCond =</span> <span class="kw">c</span>(<span class="fl">0.754</span>, <span class="fl">0.750</span>, <span class="fl">0.750</span>, <span class="fl">0.749</span>, <span class="fl">0.749</span>, <span class="fl">0.749</span>),
+  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>
+)</code></pre></div>
+</div>
 <div id="quoting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quoting" class="anchor"></a>Quoting</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(mtcars<span class="op">$</span>mpg)
-[<span class="dv">1</span>] <span class="fl">20.09062</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>my_mean &lt;-<span class="st"> </span><span class="cf">function</span>(data, variable){
-<span class="op">+</span><span class="st">  </span><span class="kw">mean</span>(data[[variable]])
-<span class="op">+</span><span class="st"> </span>}</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">my_mean</span>(mtcars, mpg)
+<p>One advantage of using a tidy evaluation approach for packages is that it offers a more flexible way to accept inputs from end users.</p>
+<div id="a-quick-example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#a-quick-example" class="anchor"></a>A Quick Example</h3>
+<p>Many of the base <code>R</code> functions use the <code>$</code> symbol to differentiate between data frames and variables within them. The <code>mean()</code> function from the <code>stats</code> package provides an example of this behavior:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(driftData<span class="op">$</span>Temp)
+[<span class="dv">1</span>] <span class="fl">14.60167</span></code></pre></div>
+<p>Packages that are built on top of <code>tidyverse</code> functions often separate the data frame parameter from the variable parameter in their structure. For instance, we could write a “wrapper” around the <code>mean()</code> function that accepts the data frame and variable parameters separately:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidyMean &lt;-<span class="st"> </span><span class="cf">function</span>(data, variable){
+  <span class="kw">mean</span>(data[[variable]])
+}</code></pre></div>
+<p>This has consequences for how users interact with the function, however. If users do not quote the variable parameter, they will receive an error that the an object with the name of the input variable cannot be found:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidyMean</span>(driftData, Temp)
   Error <span class="cf">in</span> (<span class="cf">function</span>(x, i, exact) <span class="cf">if</span> (<span class="kw">is.matrix</span>(i)) <span class="kw">as.matrix</span>(x)[[i]] <span class="cf">else</span> <span class="kw">.subset2</span>(x,  <span class="op">:</span><span class="st"> </span>
-<span class="st">   </span>object <span class="st">'mpg'</span> not found 
-  
-<span class="op">&gt;</span><span class="st"> </span><span class="kw">my_mean</span>(mtcars, <span class="st">"mpg"</span>)
-[<span class="dv">1</span>] <span class="fl">20.09062</span></code></pre></div>
+<span class="st">   </span>object <span class="st">'Temp'</span> not found </code></pre></div>
+<p>If end users <em>do</em> quote the input parameter, the function will evaluate successfully:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidyMean</span>(driftData, <span class="st">"Temp"</span>)
+[<span class="dv">1</span>] <span class="fl">14.60167</span></code></pre></div>
+<p>This, of course, increases the cognitive burden on new users of <code>R</code> who are still learning how all of this works. There are other common examples of where this occurs in the <code>R</code> ecosystem. For example, the <code>install.packages()</code> function requires that package names be quoted while the <code>library()</code> function accepts either quoted <em>or</em> unquoted names.</p>
+</div>
+<div id="tidy-evaluation-in-driftr" class="section level3">
+<h3 class="hasAnchor">
+<a href="#tidy-evaluation-in-driftr" class="anchor"></a>Tidy Evaluation in <code>driftR</code>
+</h3>
+<p><code>driftR</code> makes use of tidy evaluation to work around this issue. All <code>driftR</code> functions will accept variable names as parameters that are either quoted <em>or</em> unquoted.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
+
+<span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> corrFac, 
+            <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)
+<span class="co">#        Date     Time  Temp SpCond   corrFac</span>
+<span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
+<span class="co"># 2 9/18/2015 12:15:50 14.64  0.750 0.2003995</span>
+<span class="co"># 3 9/18/2015 12:20:51 14.57  0.750 0.4007989</span>
+<span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span>
+<span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
+<span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span>
+
+<span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>, 
+            <span class="dt">dateVar =</span> <span class="st">"Date"</span>, <span class="dt">timeVar =</span> <span class="st">"Time"</span>, <span class="dt">format =</span> <span class="st">"MDY"</span>)
+<span class="co">#        Date     Time  Temp SpCond   corrFac</span>
+<span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
+<span class="co"># 2 9/18/2015 12:15:50 14.64  0.750 0.2003995</span>
+<span class="co"># 3 9/18/2015 12:20:51 14.57  0.750 0.4007989</span>
+<span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span>
+<span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
+<span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span></code></pre></div>
+<p>This mirrors the behavior of [<code>tidyverse</code>] functions.</p>
+</div>
 </div>
 </div>
   </div>
@@ -131,6 +180,7 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#the-tidyverse">The <code>tidyverse</code></a></li>
+      <li><a href="#some-sample-data">Some Sample Data</a></li>
       <li><a href="#quoting">Quoting</a></li>
       </ul>
 </div>

@@ -7,11 +7,12 @@ Authors@R: c(
     person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),
     person("Elizabeth", "Hasenmueller", , "elizabeth.hasenmueller@slu.edu", c("aut"))
     )
-Description: An tidy implamentation of data correction for instramental drift in continuous water- 
-    quality monotoring data. There are many sources of water-quality data including private 
-    (ex: YSI instruments) and open source (ex: USGS and NDBC), each of which are susceptible 
-    to errors/inaccuracies due to drift. This package allows the user to correct their data 
-    using one or two standard reference values in a uniform, reproducible way.
+Description: A tidy implamentation of equations that correct for instramental drift in 
+    continuous water-quality monotoring data.  There are many sources of water-quality data 
+    including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of 
+    which are susceptible to errors/inaccuracies due to drift. This package allows the 
+    user to correct their data using one or two standard reference values in a uniform, 
+    reproducible way.
 License: MIT + file LICENSE
 URL: https://github.com/shaughnessyar/driftR
 BugReports: https://github.com/shaughnessyar/driftR/issues

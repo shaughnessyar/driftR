@@ -19,11 +19,11 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR)
 
-`driftR` is to provide tidy corrections of continuous water-quality monitoring data for intramental drift.
-
+`driftR` provides a "tidy" implamentation of equations that correct for instramental drift in continuous water-quality monotoring data. There are many sources of water-quality data including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of which are susceptible to errors/inaccuracies due to drift. This package allows the user to correct their data using one or two standard reference values in a uniform, reproducible way.
+    
 ## Installation
 
-`driftR` is not available from CRAN yet. In the meantime, you can install the development version of `driftR` from Github with devtools:
+`driftR` is not available from CRAN yet. In the meantime, you can install the development version of `driftR` from Github with `devtools`:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
@@ -78,7 +78,7 @@ df <- dr_drop(df, head=10, tail=5)
 
 ### Use with `%>%`
 
-All of the core functions return data frames and make use of the tidy evaluation pronoun `.data`, so using them in concert with the pipe (`%>%`) is straightforward:
+All of the core functions return tibbles (or data frames) and make use of the tidy evaluation pronoun `.data`, so using them in concert with the pipe (`%>%`) is straightforward:
 
 ```{r, eval=FALSE}
 # load the driftR package
@@ -109,8 +109,9 @@ df <- df %>%
 ```
 
 ## Additional Documentation
+See the [package website](https://shaughnessyar.github.io/driftR/) for details on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing how to get started with `driftR`. 
 
-See the [package website](https://shaughnessyar.github.io/driftR/) for details on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing their use. An [additional vignette]() describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Finally, we provide a [third vignette]() designed for users of non-YSI Sonde instruments who wish to use `driftR` with their data.
+An [additional vignette](https://shaughnessyar.github.io/driftR/articles/TidyEval.html) describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also [provide some introductory examples](https://shaughnessyar.github.io/driftR/articles/eda.html) for how to use [`tidyr`](http://tidyr.tidyverse.org), [`ggplot2`](http://ggplot2.tidyverse.org), and several other `R` packages to conduct some initial exploratory data analysis of `driftR` output. Finally, we provide a [fourth vignette](https://shaughnessyar.github.io/driftR/articles/OtherData.html) designed for users of non-YSI Sonde instruments who wish to use `driftR` with their data.
 
 You can also view the help files from within R:
 
@@ -118,12 +119,32 @@ You can also view the help files from within R:
 ?dr_readSonde
 ```
 
+## Want to Contribute?
+### Have a Concern?
+If `driftR` does not seem to be working as advertised, please help us creating a reproducible example, or [`reprex`](https://github.com/tidyverse/reprex), that makes it easy to [get help](https://www.tidyverse.org/help/). 
+
+```{r, eval = FALSE}
+install.packages("reprex")
+library("reprex")
+```
+
+After loading the `reprex` package, copy some code to your clipboard that includes the library() functions, the process you used to get you to where you are at (ideally simplified), and the functions that are creating issues. Once it is copied, you can use `reprex` to format your example with:
+
+```{r, eval=FALSE}
+reprex()
+```
+
+Your clipboard will now contain a nicely formatted set of output that you can copy and paste into a GitHub  [Issue](https://github.com/shaughnessyar/driftR/issues) that describes your problem.
+
+### Adding `dr_read` Functions
+We are interested in expanding the built-in capabilities of `driftR` to read in water-quality data from other sources. We are currently working on a function for YSI Exo output. If you have some sample data (~500 observations are ideal) from another type or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an [Issue](https://github.com/shaughnessyar/driftR/issues). If you have some `R` skills and want to write the function yourself, feel free to [fork](https://help.github.com/articles/fork-a-repo/) `driftR`, make your edits, and then open a [pull request](https://help.github.com/articles/about-pull-requests/).
+
+### Contributor Code of Conduct
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/shaughnessyar/driftR/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.
+
 ## About the Authors
 Andrew Shaughnessy led the development of this package. He is a senior at [Saint Louis University](https://www.slu.edu) studying Chemistry and Environmental Science.
 
 [Christopher Prener, Ph.D.](https://chris-prener.github.io) assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at [Saint Louis University](https://www.slu.edu). He has a broad interest in computational social science as well as the development of `R` packages to make research more reproducibile and to generalize research code.
 
 [Elizabeth Hasenmueller, Ph.D.](https://hasenmuellerlab.weebly.com) developed the original equations that this package implements and provided the example data. She is an Assistant Professor in the Department of Earth and Atmospheric Science at [Saint Louis University](https://www.slu.edu).
-
-## Contributor Code of Conduct
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/shaughnessyar/driftR/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.

@@ -85,11 +85,11 @@
 <a href="#driftr" class="anchor"></a>driftR <img src="reference/figures/logo.png" align="right">
 </h1></div>
 
-<p><code>driftR</code> is to provide tidy corrections of continuous water-quality monitoring data for intramental drift.</p>
+<p><code>driftR</code> provides a “tidy” implamentation of equations that correct for instramental drift in continuous water-quality monotoring data. There are many sources of water-quality data including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of which are susceptible to errors/inaccuracies due to drift. This package allows the user to correct their data using one or two standard reference values in a uniform, reproducible way.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p><code>driftR</code> is not available from CRAN yet. In the meantime, you can install the development version of <code>driftR</code> from Github with devtools:</p>
+<p><code>driftR</code> is not available from CRAN yet. In the meantime, you can install the development version of <code>driftR</code> from Github with <code>devtools</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
 </div>
@@ -144,7 +144,7 @@ df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.htm
 <h3 class="hasAnchor">
 <a href="#use-with" class="anchor"></a>Use with <code>%&gt;%</code>
 </h3>
-<p>All of the core functions return data frames and make use of the tidy evaluation pronoun <code>.data</code>, so using them in concert with the pipe (<code>%&gt;%</code>) is straightforward:</p>
+<p>All of the core functions return tibbles (or data frames) and make use of the tidy evaluation pronoun <code>.data</code>, so using them in concert with the pipe (<code>%&gt;%</code>) is straightforward:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the driftR package</span>
 <span class="kw">library</span>(driftR)
 
@@ -175,9 +175,34 @@ df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
 <div id="additional-documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additional-documentation" class="anchor"></a>Additional Documentation</h2>
-<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for details on these functions and a <a href="https://shaughnessyar.github.io/driftR/articles/driftR.html">detailed vignette</a> describing their use. An <a href="">additional vignette</a> describes <code>driftR</code>’s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Finally, we provide a <a href="">third vignette</a> designed for users of non-YSI Sonde instruments who wish to use <code>driftR</code> with their data.</p>
+<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for details on these functions and a <a href="https://shaughnessyar.github.io/driftR/articles/driftR.html">detailed vignette</a> describing how to get started with <code>driftR</code>.</p>
+<p>An <a href="https://shaughnessyar.github.io/driftR/articles/TidyEval.html">additional vignette</a> describes <code>driftR</code>’s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also <a href="https://shaughnessyar.github.io/driftR/articles/eda.html">provide some introductory examples</a> for how to use <a href="http://tidyr.tidyverse.org"><code>tidyr</code></a>, <a href="http://ggplot2.tidyverse.org"><code>ggplot2</code></a>, and several other <code>R</code> packages to conduct some initial exploratory data analysis of <code>driftR</code> output. Finally, we provide a <a href="https://shaughnessyar.github.io/driftR/articles/OtherData.html">fourth vignette</a> designed for users of non-YSI Sonde instruments who wish to use <code>driftR</code> with their data.</p>
 <p>You can also view the help files from within R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><a href="reference/dr_readSonde.html">?dr_readSonde</a></code></pre></div>
+</div>
+<div id="want-to-contribute" class="section level2">
+<h2 class="hasAnchor">
+<a href="#want-to-contribute" class="anchor"></a>Want to Contribute?</h2>
+<div id="have-a-concern" class="section level3">
+<h3 class="hasAnchor">
+<a href="#have-a-concern" class="anchor"></a>Have a Concern?</h3>
+<p>If <code>driftR</code> does not seem to be working as advertised, please help us creating a reproducible example, or <a href="https://github.com/tidyverse/reprex"><code>reprex</code></a>, that makes it easy to <a href="https://www.tidyverse.org/help/">get help</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"reprex"</span>)
+<span class="kw">library</span>(<span class="st">"reprex"</span>)</code></pre></div>
+<p>After loading the <code>reprex</code> package, copy some code to your clipboard that includes the library() functions, the process you used to get you to where you are at (ideally simplified), and the functions that are creating issues. Once it is copied, you can use <code>reprex</code> to format your example with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/reprex/topics/reprex">reprex</a></span>()</code></pre></div>
+<p>Your clipboard will now contain a nicely formatted set of output that you can copy and paste into a GitHub <a href="https://github.com/shaughnessyar/driftR/issues">Issue</a> that describes your problem.</p>
+</div>
+<div id="adding-dr_read-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#adding-dr_read-functions" class="anchor"></a>Adding <code>dr_read</code> Functions</h3>
+<p>We are interested in expanding the built-in capabilities of <code>driftR</code> to read in water-quality data from other sources. We are currently working on a function for YSI Exo output. If you have some sample data (~500 observations are ideal) from another type or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an <a href="https://github.com/shaughnessyar/driftR/issues">Issue</a>. If you have some <code>R</code> skills and want to write the function yourself, feel free to <a href="https://help.github.com/articles/fork-a-repo/">fork</a> <code>driftR</code>, make your edits, and then open a <a href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p>
+</div>
+<div id="contributor-code-of-conduct" class="section level3">
+<h3 class="hasAnchor">
+<a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h3>
+<p>Please note that this project is released with a <a href="https://github.com/shaughnessyar/driftR/blob/master/CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
+</div>
 </div>
 <div id="about-the-authors" class="section level2">
 <h2 class="hasAnchor">
@@ -185,11 +210,6 @@ df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
 <p>Andrew Shaughnessy led the development of this package. He is a senior at <a href="https://www.slu.edu">Saint Louis University</a> studying Chemistry and Environmental Science.</p>
 <p><a href="https://chris-prener.github.io">Christopher Prener, Ph.D.</a> assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at <a href="https://www.slu.edu">Saint Louis University</a>. He has a broad interest in computational social science as well as the development of <code>R</code> packages to make research more reproducibile and to generalize research code.</p>
 <p><a href="https://hasenmuellerlab.weebly.com">Elizabeth Hasenmueller, Ph.D.</a> developed the original equations that this package implements and provided the example data. She is an Assistant Professor in the Department of Earth and Atmospheric Science at <a href="https://www.slu.edu">Saint Louis University</a>.</p>
-</div>
-<div id="contributor-code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h2>
-<p>Please note that this project is released with a <a href="https://github.com/shaughnessyar/driftR/blob/master/CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
 </div>
