@@ -1,14 +1,15 @@
 #' Not In Operator
 #'
 #' Provides the compliment to the base R \code{\%in\%} operator. Included here instead of via import
-#' due to stability issues with the source package, \href{\code{Hmsic}}{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s},
-#' during original package development in October, 2017. Used under terms of \href{\code{Hmisc}}{https://cran.r-project.org/web/packages/Hmisc/index.html}'s
-#' \href{GPL-3 License}{https://cran.r-project.org/web/licenses/GPL-3}.
+#' due to stability issues with the source package, \href{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s}{\code{Hmsic}},
+#' during original package development in October, 2017. Used under terms of
+#' \href{https://cran.r-project.org/web/packages/Hmisc/index.html}{\code{Hmisc}}'s
+#' \href{https://cran.r-project.org/web/licenses/GPL-3}{GPL-3 License}.
 #'
 #' @param x vector or \code{NULL}: the values to be matched
-#' @param table vector or \code{NULL}: the values to be matched against
+#' @param y vector or \code{NULL}: the values to be matched against
 #'
-#' @source \href{\code{Hmsic}}{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s}
+#' @source \href{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s}{\code{Hmsic}}
 #'
 #' @examples
 #' x <- 2
@@ -22,4 +23,4 @@
 #' x %nin% z
 #'
 #' @export
-"%nin%" <- function(x, table) match(x, table, nomatch = 0) == 0
+"%nin%" <- function(x, y) match(x, y, nomatch = 0) == 0

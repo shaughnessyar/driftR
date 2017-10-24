@@ -4,21 +4,22 @@
 \alias{\%nin\%}
 \title{Not In Operator}
 \source{
-\href{\code{Hmsic}}{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s}
+\href{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s}{\code{Hmsic}}
 }
 \usage{
-x \%nin\% table
+x \%nin\% y
 }
 \arguments{
 \item{x}{vector or \code{NULL}: the values to be matched}
 
-\item{table}{vector or \code{NULL}: the values to be matched against}
+\item{y}{vector or \code{NULL}: the values to be matched against}
 }
 \description{
 Provides the compliment to the base R \code{\%in\%} operator. Included here instead of via import
-due to stability issues with the source package, \href{\code{Hmsic}}{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s},
-during original package development in October, 2017. Used under terms of \href{\code{Hmisc}}{https://cran.r-project.org/web/packages/Hmisc/index.html}'s
-\href{GPL-3 License}{https://cran.r-project.org/web/licenses/GPL-3}.
+due to stability issues with the source package, \href{https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s}{\code{Hmsic}},
+during original package development in October, 2017. Used under terms of
+\href{https://cran.r-project.org/web/packages/Hmisc/index.html}{\code{Hmisc}}'s
+\href{https://cran.r-project.org/web/licenses/GPL-3}{GPL-3 License}.
 }
 \examples{
 x <- 2

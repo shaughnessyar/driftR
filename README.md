@@ -46,7 +46,7 @@ df <- dr_factor(df, corrFactor = corrFac,
                 format = "MDY")
 
 # apply one-point calibration to SpConde;
-# results stored in new vector SPConde_Corr
+# results stored in new vector SpConde_Corr
 df <- dr_correctOne(df, sourceVar = SpConde, 
                     cleanVar = SpConde_Corr, 
                     calVal = 1.07, 

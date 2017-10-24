@@ -25,7 +25,7 @@ An object of the same class as \code{.data} with the new corrected variable adde
 to the other data in \code{.data}.
 }
 \description{
-A wrapper around `dplyr::mutate()` that creates a corrected value for each observation of the
+A wrapper around \code{dplyr::mutate()} that creates a corrected value for each observation of the
     specified variable based on one data point.
 }
 \details{
@@ -46,4 +46,8 @@ testData <- data.frame(
 dr_correctOne(testData, sourceVar = SpCond, cleanVar = SpCond_Corr,
     calVal = 1.05, calStd = 1, factorVar = corrFac)
 
+}
+\seealso{
+\code{\link{dr_factor}} for correction factor creation,
+    \code{\link{dr_correctTwo}} for the two-point drift correction
 }

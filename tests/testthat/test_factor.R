@@ -50,3 +50,26 @@ result <- dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time
 test_that("creating correction factors", {
   expect_equal(result$factors, test_data1$corrFactors)
 })
+
+testData2 <- data.frame(
+  Date = c("2015-9-18", "2015-9-18", "2015-9-18", "2015-9-18", "2015-9-18", "2015-9-18"),
+  Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
+  Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
+  SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
+  stringsAsFactors = FALSE
+)
+
+testData3 <- data.frame(
+  Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
+  Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
+  Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
+  SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
+  stringsAsFactors = FALSE
+)
+
+result2 <- dr_factor(testData2, corrFactor = factors, dateVar = Date, timeVar = Time, format = "YMD")
+result3 <- dr_factor(testData3, corrFactor = factors, dateVar = Date, timeVar = Time, format = "MDY")
+
+test_that("creating correction factors", {
+  expect_equal(result2$factors, result3$factors)
+})

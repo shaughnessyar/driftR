@@ -1,0 +1,49 @@
+---
+title: "Tidy Evaluation in driftR"
+author: "Christopher Prener"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+`driftR` implements [tidy evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html), an opinionated approach to capturing and processing expressions using [`tidyverse`](https://www.tidyverse.org) packages [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org). These packages are automatically installed when you install `driftR` if they are not already packages you use. This article is meant to be a quick introduction to tidy eval for users who have not encountered it before.
+
+## The `tidyverse`
+The [`tidyverse`](https://www.tidyverse.org) is a group of packages the provide a shared grammar and philosophy for conducting many of the most common tasks in data analysis: cleaning and wrangling data, and visualizing data by creating plots and figures. The `tidyverse` is made up of a number of packages, including:
+
+* [`ggplot2`](http://ggplot2.tidyverse.org) - a set of tools for implementing the [Grammar of Graphics](http://vita.had.co.nz/papers/layered-grammar.pdf)
+* [`dplyr`](http://dplyr.tidyverse.org) - a set of common verbs for cleaning and wrangling data
+* [`tidyr`](http://tidyr.tidyverse.org) - functions for consistently tidying data so that "(1) each variable is in a column, (2) each observation is in a row, and (3) each value is a cell"
+* [`tibble`](http://tibble.tidyverse.org) - a re-imagining of `R`'s data frame
+* [`rlang`](http://rlang.tidyverse.org) - a set of programming tools for writing `dplyr`-like functions
+
+As I noted above, `driftR` is built on [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org) in both literal and philosophical terms. Like `dplyr`, `driftR` is built around the idea of verbs for wrangling data. While `dplyr`'s verbs are meant to be general, `driftR`'s verbs are specifically tailored for correcting water-quality monitoring data. 
+
+In order to implement this philosophical, verb-driven approach to data cleaning, `driftR` provides a set of wrappers around two `dplyr` functions - `mutate()` for adding new variables and `slice()` for removing rows. When you call a `drifR` function, you are actually calling one or more linked instances of `mutate()` or `slice()` that perform specific tasks with particular inputs in a standardized order. 
+
+Like the `tidyverse`, then, `driftR` is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducibile. While `driftR` does enforce a specific workflow on users, the trade-off is the package's consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).
+
+## Quoting
+
+```{r, eval=FALSE}
+> mean(mtcars$mpg)
+[1] 20.09062
+```
+
+```{r, eval=FALSE}
+> my_mean <- function(data, variable){
++  mean(data[[variable]])
++ }
+```
+
+```{r, eval=FALSE}
+> my_mean(mtcars, mpg)
+  Error in (function(x, i, exact) if (is.matrix(i)) as.matrix(x)[[i]] else .subset2(x,  : 
+   object 'mpg' not found 
+  
+> my_mean(mtcars, "mpg")
+[1] 20.09062
+```

@@ -33,7 +33,7 @@ An object of the same class as \code{.data} with the new corrected variable adde
 to the other data in \code{.data}.
 }
 \description{
-A wrapper around `dplyr::mutate()` that creates a corrected value for each observation of the
+A wrapper around \code{dplyr::mutate()} that creates a corrected value for each observation of the
     specified variable based on two data points.
 }
 \details{
@@ -47,4 +47,8 @@ dr_correctTwo(df, pH, 7.05, 7, 10.25, 10, corrfactors)
 dr_correctTwo(df, Chloride, 7.95, 10, 847, 1000, df$corrections)
 }
 
+}
+\seealso{
+\code{\link{dr_factor}} for correction factor creation,
+    \code{\link{dr_correctOne}} for the two-point drift correction
 }

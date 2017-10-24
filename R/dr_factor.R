@@ -1,9 +1,10 @@
 #' Creating correction factors
 #'
-#' @description A wrapper around `dplyr::mutate()` that creates a correction factor for each observation.
+#' @description A wrapper around \code{dplyr::mutate()} that creates a correction factor for each observation.
 #'
 #' @details Correction factors are calculated based on the time of the observation and the total amount of time
-#'     that the instrument had been deployed.
+#'     that the instrument had been deployed. They are used in the equations for both the one-point and two-point
+#'     drift corrections.
 #'
 #' @usage dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 #'
@@ -15,6 +16,9 @@
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
 #' to the other data in \code{.data}.
+#'
+#' @seealso \code{\link{dr_correctOne}} for correction factor creation,
+#'     \code{\link{dr_correctTwo}} for the two-point drift correction
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang :=

@@ -1,6 +1,6 @@
 #' Two-point drift correction
 #'
-#' @description A wrapper around `dplyr::mutate()` that creates a corrected value for each observation of the
+#' @description A wrapper around \code{dplyr::mutate()} that creates a corrected value for each observation of the
 #'     specified variable based on two data points.
 #'
 #' @details This command takes the raw data from the water-quality instrument, utilizes the values
@@ -22,6 +22,9 @@
 #'
 #' @return An object of the same class as \code{.data} with the new corrected variable added
 #' to the other data in \code{.data}.
+#'
+#' @seealso \code{\link{dr_factor}} for correction factor creation,
+#'     \code{\link{dr_correctOne}} for the two-point drift correction
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang :=

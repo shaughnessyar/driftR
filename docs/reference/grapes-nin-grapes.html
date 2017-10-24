@@ -63,6 +63,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">News</a>
 </li>
@@ -91,12 +103,13 @@
 
     
     <p>Provides the compliment to the base R <code>%in%</code> operator. Included here instead of via import
-due to stability issues with the source package, <a href='\code{Hmsic}'>https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s</a>,
-during original package development in October, 2017. Used under terms of <a href='\code{Hmisc}'>https://cran.r-project.org/web/packages/Hmisc/index.html</a>'s
-<a href='GPL-3 License'>https://cran.r-project.org/web/licenses/GPL-3</a>.</p>
+due to stability issues with the source package, <a href='https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s'><code>Hmsic</code></a>,
+during original package development in October, 2017. Used under terms of
+<a href='https://cran.r-project.org/web/packages/Hmisc/index.html'><code>Hmisc</code></a>'s
+<a href='https://cran.r-project.org/web/licenses/GPL-3'>GPL-3 License</a>.</p>
     
 
-    <pre class="usage"><span class='no'>x</span> <span class='kw'>%nin%</span> <span class='no'>table</span></pre>
+    <pre class="usage"><span class='no'>x</span> <span class='kw'>%nin%</span> <span class='no'>y</span></pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -106,14 +119,14 @@ during original package development in October, 2017. Used under terms of <a hre
       <td><p>vector or <code>NULL</code>: the values to be matched</p></td>
     </tr>
     <tr>
-      <th>table</th>
+      <th>y</th>
       <td><p>vector or <code>NULL</code>: the values to be matched against</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p><a href='\code{Hmsic}'>https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s</a></p>
+    <p><a href='https://github.com/harrelfe/Hmisc/blob/master/R/in.operator.s'><code>Hmsic</code></a></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
