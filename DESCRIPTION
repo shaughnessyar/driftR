@@ -1,6 +1,6 @@
 Package: driftR
 Type: Package
-Title: Software for Drift Correcting Water-quality Data
+Title: A Grammar for Drift Correcting Water-quality Data
 Version: 0.2.0
 Authors@R: c(
     person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),

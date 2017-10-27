@@ -5,7 +5,7 @@ driftR <img src="man/figures/logo.png" align="right" />
 
 [![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR)
 
-`driftR` provides a "tidy" implamentation of equations that correct for instramental drift in continuous water-quality monotoring data. There are many sources of water-quality data including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of which are susceptible to errors/inaccuracies due to drift. This package allows the user to correct their data using one or two standard reference values in a uniform, reproducible way.
+There are many sources of water-quality data including instruments (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of which are susceptible to errors/inaccuracies due to drift. `driftR` provides a grammar for cleaning and correcting these data in a "tidy", reproducible manner.
 
 Installation
 ------------
@@ -45,10 +45,10 @@ df <- dr_factor(df, corrFactor = corrFac,
                 timeVar = Time, 
                 format = "MDY")
 
-# apply one-point calibration to SpConde;
+# apply one-point calibration to SpCond;
 # results stored in new vector SpConde_Corr
-df <- dr_correctOne(df, sourceVar = SpConde, 
-                    cleanVar = SpConde_Corr, 
+df <- dr_correctOne(df, sourceVar = SpCond, 
+                    cleanVar = SpCond_Corr, 
                     calVal = 1.07, 
                     calStd = 1, 
                     factorVar = corrFac)
@@ -84,8 +84,8 @@ df <- df %>%
             dateVar = Date, 
             timeVar = Time, 
             format = "MDY") %>%
-  dr_correctOne(sourceVar = SpConde, 
-                cleanVar = SpConde_Corr, 
+  dr_correctOne(sourceVar = SpCond, 
+                cleanVar = SpCond_Corr, 
                 calVal = 1.07, 
                 calStd = 1, 
                 factorVar = corrFac) %>%
@@ -124,7 +124,7 @@ install.packages("reprex")
 library("reprex")
 ```
 
-After loading the `reprex` package, copy some code to your clipboard that includes the library() functions, the process you used to get you to where you are at (ideally simplified), and the functions that are creating issues. Once it is copied, you can use `reprex` to format your example with:
+After loading the `reprex` package, copy some code to your clipboard that includes the `library()` functions, the process you used to get you to where you are at (ideally simplified), and the functions that are creating issues. Once it is copied, you can use `reprex()` to format your example:
 
 ``` r
 reprex()
