@@ -40,6 +40,21 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -63,12 +78,16 @@
       <h1>Applying Drift Corrections with driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-10-21</h4>
+            <h4 class="date">2017-10-26</h4>
           </div>
 
     
     
 <div class="contents">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(driftR)</code></pre></div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -103,11 +122,11 @@
 <li>
 <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> - import data from the Sonde</li>
 <li>
-<code><a href="../reference/dr_correct.html">dr_correct()</a></code> - apply correction factors</li>
+<code>dr_correct()</code> - apply correction factors</li>
 <li>
-<code><a href="../reference/dr_clean1.html">dr_clean1()</a></code> - one point calibration</li>
+<code>dr_clean1()</code> - one point calibration</li>
 <li>
-<code><a href="../reference/dr_clean2.html">dr_clean2()</a></code> - two point claibration</li>
+<code>dr_clean2()</code> - two point claibration</li>
 <li>
 <code><a href="../reference/dr_drop.html">dr_drop()</a></code> - drop observations to account for equilibration</li>
 </ol>
@@ -120,21 +139,21 @@
 <div id="creating-correction-factors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#creating-correction-factors" class="anchor"></a>Creating correction factors</h3>
-<p>The next step in the data cleaning process is creating correction factors using <code><a href="../reference/dr_correct.html">dr_correct(dataFrame, dateVar, timeVar, format)</a></code>. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total dataset. The argument <code>dataFrame</code> is the working data frame for the correction. The argument <code>dateVar</code> is the date variable for the dataset and <code>timeVar</code> is the time variable. The argument <code>format</code> describes the way that the date data is stored in the data frame and can be either “YMD” or “DMY”. If the <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> function is used to import the data, then <code>format = "MDY"</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corrFactors &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dr_correct.html">dr_correct</a></span>(df, Date, Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)</code></pre></div>
+<p>The next step in the data cleaning process is creating correction factors using <code>dr_correct(dataFrame, dateVar, timeVar, format)</code>. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total dataset. The argument <code>dataFrame</code> is the working data frame for the correction. The argument <code>dateVar</code> is the date variable for the dataset and <code>timeVar</code> is the time variable. The argument <code>format</code> describes the way that the date data is stored in the data frame and can be either “YMD” or “DMY”. If the <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> function is used to import the data, then <code>format = "MDY"</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corrFactors &lt;-<span class="st"> </span><span class="kw">dr_correct</span>(df, Date, Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)</code></pre></div>
 </div>
 <div id="cleaning-the-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#cleaning-the-data" class="anchor"></a>Cleaning the data</h3>
-<p>After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function <code><a href="../reference/dr_clean1.html">dr_clean1(dataFrame,varName,calVal,calStd,correctVar)</a></code> will be used. The argument <code>dataFrame</code> is the working data frame for the correction and <code>varName</code> is the variable name that you want to correct. The arguments <code>calVal</code> and <code>calStd</code> are what the instrument was reading and what it should have been reading respecively. The <code>correctVar</code> argument is the result generated from the <code><a href="../reference/dr_correct.html">dr_correct()</a></code> function.</p>
-<p>If two standard measurements are taken, then the function <code><a href="../reference/dr_clean2.html">dr_clean2(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar)</a></code> is utilized. The <code>calValLow</code> and <code>calValHigh</code> arguments are what the instrument was reading for the low and high concentration measurements respectively and the <code>calStdLow</code> and <code>calStdHigh</code> areguments are what the instrument should have been reading for the low and high concentration measurements respectively.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df<span class="op">$</span>SpCond_Corr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dr_clean1.html">dr_clean1</a></span>(df, SpCond, <span class="fl">1.07</span>, <span class="dv">1</span>, corrFactors)
-df<span class="op">$</span>pH_Corr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dr_clean2.html">dr_clean2</a></span>(df, pH, <span class="fl">7.01</span>, <span class="dv">7</span>, <span class="fl">11.8</span>, <span class="dv">10</span>, corrFactors)</code></pre></div>
+<p>After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function <code>dr_clean1(dataFrame,varName,calVal,calStd,correctVar)</code> will be used. The argument <code>dataFrame</code> is the working data frame for the correction and <code>varName</code> is the variable name that you want to correct. The arguments <code>calVal</code> and <code>calStd</code> are what the instrument was reading and what it should have been reading respecively. The <code>correctVar</code> argument is the result generated from the <code>dr_correct()</code> function.</p>
+<p>If two standard measurements are taken, then the function <code>dr_clean2(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar)</code> is utilized. The <code>calValLow</code> and <code>calValHigh</code> arguments are what the instrument was reading for the low and high concentration measurements respectively and the <code>calStdLow</code> and <code>calStdHigh</code> areguments are what the instrument should have been reading for the low and high concentration measurements respectively.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df<span class="op">$</span>SpCond_Corr &lt;-<span class="st"> </span><span class="kw">dr_clean1</span>(df, SpCond, <span class="fl">1.07</span>, <span class="dv">1</span>, corrFactors)
+df<span class="op">$</span>pH_Corr &lt;-<span class="st"> </span><span class="kw">dr_clean2</span>(df, pH, <span class="fl">7.01</span>, <span class="dv">7</span>, <span class="fl">11.8</span>, <span class="dv">10</span>, corrFactors)</code></pre></div>
 </div>
 <div id="dropping-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dropping-data" class="anchor"></a>Dropping Data</h3>
-<p>After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using <code><a href="../reference/dr_clean1.html">dr_clean1()</a></code> or <code><a href="../reference/dr_clean2.html">dr_clean2()</a></code> will result in the corrections being non-consistant. To do this, the <code><a href="../reference/dr_drop.html">dr_drop(dataFrame,head=NULL,tail=NULL)</a></code> function will be used. The argument <code>dataFrame</code> is the working data frame for the correction. The arguments <code>head</code> and <code>tail</code> are the number of observations to be dropped from the begining and the end of the dataset respectively. It is recommended that at least 30 minutes are dropped from both the begining and end of the dataset (i.e. if an observation is taken every 5 minutes, then <code>head = 6</code>and <code>tail = 6</code>).</p>
+<p>After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using <code>dr_clean1()</code> or <code>dr_clean2()</code> will result in the corrections being non-consistant. To do this, the <code><a href="../reference/dr_drop.html">dr_drop(dataFrame,head=NULL,tail=NULL)</a></code> function will be used. The argument <code>dataFrame</code> is the working data frame for the correction. The arguments <code>head</code> and <code>tail</code> are the number of observations to be dropped from the begining and the end of the dataset respectively. It is recommended that at least 30 minutes are dropped from both the begining and end of the dataset (i.e. if an observation is taken every 5 minutes, then <code>head = 6</code>and <code>tail = 6</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dr_drop.html">dr_drop</a></span>(df, <span class="dv">6</span>, <span class="dv">6</span>)</code></pre></div>
 </div>
 </div>

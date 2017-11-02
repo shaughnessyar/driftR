@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import raw data from YSI Sonde — dr_readSonde • driftR</title>
+<title>driftR: A Grammar for Drift Correcting Water-quality Data — driftR • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,54 +98,79 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import raw data from YSI Sonde</h1>
+    <h1>driftR: A Grammar for Drift Correcting Water-quality Data</h1>
     </div>
 
     
-    <p>This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
-    If <code>defineVar</code> is set to <code>TRUE</code> (the default option), units of measurement will not be
-    included in the first observation.</p>
+    <p>There are many sources of water-quality data including instruments
+    (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
+    which are susceptible to errors/inaccuracies due to drift. <code>driftR</code> provides
+    a grammar for cleaning and correcting these data in a "tidy", reproducible
+    manner.</p>
     
 
-    <pre class="usage"><span class='fu'>dr_readSonde</span>(<span class='no'>file</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>file</th>
-      <td><p>The name of the file which the data are to be read from. Each row of the table appears
-as one line of the file. If it does not contain an absolute path, the file name is relative to
-the current working directory.</p></td>
-    </tr>
-    <tr>
-      <th>defineVar</th>
-      <td><p>Logical scalar that determines if the units of measurement are included in the first
-observation. If they are included, all vectors will be read in as character.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+        
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A tibble with the formatted data and the variable types defined if <code>defineVar = TRUE</code></p>
+    <p>The <code>driftR</code> package implements a series of equations used in
+    <a href='https://hasenmuellerlab.weebly.com'>Dr. Elizabeth Hasenmueller's</a> hydrology
+    and geochemistry research. These equations correct continuous water-quality
+    monitoring data for incramental drift that occurs over time. There are two
+    forms of corrections included in the package - a one-point calibration and
+    a two-point calibration. One-point and two-point callibration values are suited
+    for different types of measurements. The package is currently written for the
+    easiest use with YSI Sonde products.</p>
+<p>There are four key verbs that are introduced in <code>driftR</code>:</p><ul>
+<li><p><em>read</em>: The <code><a href='dr_readSonde.html'>dr_readSonde</a></code> function imports and properly
+        formats output from YSI Sonde istruments</p></li>
+<li><p><em>factor</em>: The <code><a href='dr_factor.html'>dr_factor</a></code> function calculates factors
+        based on the time of the observation and the total amount of time that the
+        instrument had been deployed. They are used in the equations for both the
+        one-point and two-point drift corrections.</p></li>
+<li><p><em>correct</em>: The <code><a href='dr_correctOne.html'>dr_correctOne</a></code> and <code><a href='dr_correctTwo.html'>dr_correctTwo</a></code>
+        functions take both the factors and standard values as parameters for calculating
+        drift corrected versions of specific measurements.</p></li>
+<li><p><em>drop</em>: The <code><a href='dr_drop.html'>dr_drop</a></code> function allows for removing erroneous
+        observations from both the head and the tail of the data.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="tidy-evaluation"><a class="anchor" href="#tidy-evaluation"></a>Tidy Evaluation</h2>
+
+    
+    <p><code>driftR</code> makes use of tidy evaluation and the pronoun <code>.data</code>, meaning
+    that variable references may be either quoted or unquoted (i.e. bare). This also
+    means that <code>driftR</code> works seamlessly with <code>magrittr</code> pipe operators.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Useful links:</p><ul>
+<li><p><a href='https://shaughnessyar.github.io/driftR/'>Package Website and Documentation</a></p></li>
+<li><p><a href='https://github.com/shaughnessyar/driftR'>Source Code on GitHub</a></p></li>
+<li><p><a href='https://github.com/shaughnessyar/driftR/issues'>Bug Reports and Feature Requests</a></p></li>
+</ul>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>dr_readSonde</span>(<span class='st'>"data.csv"</span>)
-<span class='fu'>dr_readSonde</span>(<span class='st'>"data.csv"</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#tidy-evaluation">Tidy Evaluation</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
+
+    <h2>Author</h2>
+    
+<strong>Maintainer:</strong> Andrew Shaughnessy
+
+    Authors:
+    <ul>
+<li><p>Christopher Prener, Ph.D. <a href='chris.prener@slu.edu'>chris.prener@slu.edu</a></p></li>
+<li><p>Elizabeth Hasenmueller, Ph.D.</p></li>
+</ul>
 
   </div>
 </div>

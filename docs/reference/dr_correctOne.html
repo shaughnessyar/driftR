@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dropping observations for equilibration period — dr_drop • driftR</title>
+<title>One-point drift correction — dr_correctOne • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,15 +98,15 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Dropping observations for equilibration period</h1>
+    <h1>One-point drift correction</h1>
     </div>
 
     
-    <p>A wrapper around <code><a href='http://dplyr.tidyverse.org/reference/slice.html'>dplyr::slice()</a></code> for removing observations from both the <code>head</code>
-    and the <code>tail</code>.</p>
+    <p>A wrapper around <code><a href='http://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code> that creates a corrected value for each observation of the
+    specified variable based on one data point.</p>
     
 
-    <pre class="usage"><span class='fu'>dr_drop</span>(<span class='no'>.data</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>dr_correctOne</span>(<span class='no'>.data</span>, <span class='no'>sourceVar</span>, <span class='no'>cleanVar</span>, <span class='no'>calVal</span>, <span class='no'>calStd</span>, <span class='no'>factorVar</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -116,27 +116,43 @@
       <td><p>A tbl</p></td>
     </tr>
     <tr>
-      <th>head</th>
-      <td><p>An integer &gt;= 1 specifying the number of rows to be removed from the top
-of <code>.data</code> (or <code>NULL</code>)</p></td>
+      <th>sourceVar</th>
+      <td><p>Name of variable to correct</p></td>
     </tr>
     <tr>
-      <th>tail</th>
-      <td><p>An integer &gt;= 1 specifying the number of rows to be removed from the bottom
-of <code>.data</code> (or <code>NULL</code>)</p></td>
+      <th>cleanVar</th>
+      <td><p>New variable name for corrected data</p></td>
+    </tr>
+    <tr>
+      <th>calVal</th>
+      <td><p>A numeric value; the value that the instrument was actually reading for the parameter</p></td>
+    </tr>
+    <tr>
+      <th>calStd</th>
+      <td><p>A numeric value; the value that the instrument should have been reading for that
+standard; i.e. the standard value</p></td>
+    </tr>
+    <tr>
+      <th>factorVar</th>
+      <td><p>Name of variable generated using <code><a href='dr_factor.html'>dr_factor</a></code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of the same class as <code>.data</code> with specified observations removed.</p>
+    <p>An object of the same class as <code>.data</code> with the new corrected variable added
+to the other data in <code>.data</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When taking the instrument out of the water, there are often several observations that pass
-    before the run can be downloaded. Additionally, once the instrument is in the water, it often
-    takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-    observations from the bottom and top of the dataset for each of those issues respectively.</p>
+    <p>This function takes the raw data from the water-quality instrument, utilizes the values generated from
+    <code><a href='dr_factor.html'>dr_factor</a></code> and returns data that accounts for drift over time. This is done via a one-point
+    calibration standard, which it typical for specific conductivity, dissolved oxygen, and turbidity.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='dr_factor.html'>dr_factor</a></code> for correction factor creation,
+    <code><a href='dr_correctTwo.html'>dr_correctTwo</a></code> for the two-point drift correction</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -145,28 +161,18 @@ of <code>.data</code> (or <code>NULL</code>)</p></td>
    <span class='kw'>Time</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"12:10:49"</span>, <span class='st'>"12:15:50"</span>, <span class='st'>"12:20:51"</span>, <span class='st'>"12:25:51"</span>, <span class='st'>"12:30:51"</span>, <span class='st'>"12:35:51"</span>),
    <span class='kw'>Temp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>14.76</span>, <span class='fl'>14.64</span>, <span class='fl'>14.57</span>, <span class='fl'>14.51</span>, <span class='fl'>14.50</span>, <span class='fl'>14.63</span>),
    <span class='kw'>SpCond</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.754</span>, <span class='fl'>0.750</span>, <span class='fl'>0.750</span>, <span class='fl'>0.749</span>, <span class='fl'>0.749</span>, <span class='fl'>0.749</span>),
+   <span class='kw'>corrFac</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.0000000</span>, <span class='fl'>0.2003995</span>, <span class='fl'>0.4007989</span>, <span class='fl'>0.6005326</span>, <span class='fl'>0.8002663</span>, <span class='fl'>1.0000000</span>),
    <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
  )
 
- <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 4
-#&gt;        Date     Time  Temp SpCond
-#&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 9/18/2015 12:20:51 14.57  0.750
-#&gt; 2 9/18/2015 12:25:51 14.51  0.749
-#&gt; 3 9/18/2015 12:30:51 14.50  0.749
-#&gt; 4 9/18/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 4
-#&gt;        Date     Time  Temp SpCond
-#&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 9/18/2015 12:10:49 14.76  0.754
-#&gt; 2 9/18/2015 12:15:50 14.64  0.750
-#&gt; 3 9/18/2015 12:20:51 14.57  0.750
-#&gt; 4 9/18/2015 12:25:51 14.51  0.749
-#&gt; 5 9/18/2015 12:30:51 14.50  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 4
-#&gt;        Date     Time  Temp SpCond
-#&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 9/18/2015 12:20:51 14.57  0.750
-#&gt; 2 9/18/2015 12:25:51 14.51  0.749
-#&gt; 3 9/18/2015 12:30:51 14.50  0.749</div><div class='input'>
+<span class='fu'>dr_correctOne</span>(<span class='no'>testData</span>, <span class='kw'>sourceVar</span> <span class='kw'>=</span> <span class='no'>SpCond</span>, <span class='kw'>cleanVar</span> <span class='kw'>=</span> <span class='no'>SpCond_Corr</span>,
+    <span class='kw'>calVal</span> <span class='kw'>=</span> <span class='fl'>1.05</span>, <span class='kw'>calStd</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>factorVar</span> <span class='kw'>=</span> <span class='no'>corrFac</span>)</div><div class='output co'>#&gt;        Date     Time  Temp SpCond   corrFac SpCond_Corr
+#&gt; 1 9/18/2015 12:10:49 14.76  0.754 0.0000000   0.7540000
+#&gt; 2 9/18/2015 12:15:50 14.64  0.750 0.2003995   0.7600200
+#&gt; 3 9/18/2015 12:20:51 14.57  0.750 0.4007989   0.7700399
+#&gt; 4 9/18/2015 12:25:51 14.51  0.749 0.6005326   0.7790266
+#&gt; 5 9/18/2015 12:30:51 14.50  0.749 0.8002663   0.7890133
+#&gt; 6 9/18/2015 12:35:51 14.63  0.749 1.0000000   0.7990000</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -177,6 +183,8 @@ of <code>.data</code> (or <code>NULL</code>)</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

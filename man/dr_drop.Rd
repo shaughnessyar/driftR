@@ -4,26 +4,41 @@
 \alias{dr_drop}
 \title{Dropping observations for equilibration period}
 \usage{
-dr_drop(dataFrame, head = NULL, tail = NULL)
+dr_drop(.data, head = NULL, tail = NULL)
 }
 \arguments{
-\item{dataFrame}{The working data frame}
+\item{.data}{A tbl}
 
-\item{head}{A number}
+\item{head}{An integer >= 1 specifying the number of rows to be removed from the top
+of \code{.data} (or \code{NULL})}
 
-\item{tail}{A number}
+\item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom
+of \code{.data} (or \code{NULL})}
 }
 \value{
-A data frame with fewer observations
+An object of the same class as \code{.data} with specified observations removed.
 }
 \description{
-When taking the instrument out of the water, there is often several observations that pass before the run can be downloaded. Additionally, once the instrument is in the water, it often takes about 30 minutes for the sensors to equilibrate. This function allows you to drop observations from the bottom and top of the dataset for each of those issues respectively.
+A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
+    and the \code{tail}.
+}
+\details{
+When taking the instrument out of the water, there are often several observations that pass
+    before the run can be downloaded. Additionally, once the instrument is in the water, it often
+    takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
+    observations from the bottom and top of the dataset for each of those issues respectively.
 }
 \examples{
-\dontrun{
-dr_drop(df, 3, 9)
-dr_drop(df, , 4)
-dr_drop(df, 7,)
-}
+testData <- data.frame(
+   Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
+   Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
+   Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
+   SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
+   stringsAsFactors = FALSE
+ )
+
+ dr_drop(testData, head = 2)
+ dr_drop(testData, tail = 1)
+ dr_drop(testData, head = 2, tail = 1)
 
 }
