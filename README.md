@@ -22,6 +22,14 @@ Background
 
 The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI Sonde products.
 
+The figure below illustrates the difference in `pH` values between the raw data and the same data with the drift corrections implemented by `driftR` applied. There is a notable difference in the trend line between the raw data and the corrected data, which illustrates the importance of accounting for incramental drift.
+
+![](man/figures/pH_noDrop.png)
+
+The plot above also illustrates the importance of removing both the initial and the trailing observations in a given series of data. In this case, the initial observations are inaccurate due to recent equilibration of the instrument. The last few observations are inaccurate due to the removal of the instrument from the water for data download and equilibration. The figure below illustrates the impact of removing these observations on the data:
+
+![](man/figures/pH_Drop.png)
+
 Usage
 -----
 

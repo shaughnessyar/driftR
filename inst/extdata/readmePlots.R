@@ -23,9 +23,9 @@ ggplot(data = df) +
   ) +
   scale_colour_discrete(labels=c("Raw pH", "Corrected pH"))
 
-ggsave("man/figures/pH_noDrop.png", dpi = 300)
+ggsave("man/figures/pH_noDrop.png", width = 200, height = 150, units = "mm", dpi = 300)
 
-df <- dr_drop(df, head=70, tail=10)
+df <- dr_drop(df, head=35, tail=10)
 
 ggplot(data = df) +
   geom_smooth(mapping = aes(x = dateTime, y = pH, color = "pH")) +
@@ -40,4 +40,5 @@ ggplot(data = df) +
   ) +
   scale_colour_discrete(labels=c("Raw pH", "Corrected pH"))
 
-ggsave("man/figures/pH_Drop.png", dpi = 300)
+ggsave("man/figures/pH_Drop.png", width = 200, height = 150, units = "mm", dpi = 300)
+
