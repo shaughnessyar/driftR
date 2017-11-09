@@ -90,7 +90,7 @@
     
     
 <div class="contents">
-<p>While <code>driftR</code> is designed to work seemlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy <code>driftR</code> format. Below is a snapshot of the example data after they have been imported using the <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> function. This is the expected format that <code>driftR</code> requires.</p>
+<p>While <code>driftR</code> is designed to work seamlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy <code>driftR</code> format. Below is a snapshot of the example data after they have been imported using the <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> function. This is the expected format that <code>driftR</code> requires.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A tibble: 1,527 x 11</span>
         Date     Time  Temp SpCond    pH  pHmV Chloride AmmoniumN NitrateN  Turbidity    DO
        <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>
@@ -105,18 +105,34 @@
  <span class="dv">9</span> <span class="dv">9</span><span class="op">/</span><span class="dv">18</span><span class="op">/</span><span class="dv">2015</span> <span class="dv">12</span><span class="op">:</span><span class="dv">50</span><span class="op">:</span><span class="dv">52</span> <span class="fl">14.65</span>  <span class="fl">0.749</span>  <span class="fl">7.12</span> <span class="op">-</span><span class="fl">33.3</span>    <span class="fl">50.49</span>      <span class="fl">4.89</span>        <span class="dv">0</span>       <span class="op">-</span><span class="fl">0.2</span> <span class="fl">93.58</span>
 <span class="dv">10</span> <span class="dv">9</span><span class="op">/</span><span class="dv">18</span><span class="op">/</span><span class="dv">2015</span> <span class="dv">12</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">51</span> <span class="fl">14.69</span>  <span class="fl">0.749</span>  <span class="fl">7.12</span> <span class="op">-</span><span class="fl">33.1</span>    <span class="fl">50.04</span>      <span class="fl">4.60</span>        <span class="dv">0</span>       <span class="op">-</span><span class="fl">0.2</span> <span class="fl">93.80</span>
 <span class="co"># ... with 1,517 more rows</span></code></pre></div>
+<p>The sections below detail pre-processing steps that you may have to take to ready your data for use with <code>driftR</code>.</p>
+<div id="importing-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#importing-data" class="anchor"></a>Importing Data</h2>
+<p>Data come in a variety of formats, and importing them into <code>R</code> can occasionally be a challenge.</p>
+<ul>
+<li>If your data are included in a flat file like a <code>csv</code>, <code>tsv</code>, <code>txt</code>, or another delimited file format, we recommend using the <a href="http://readr.tidyverse.org"><code>readr</code> package</a>.</li>
+<li>If your data are included in a Microsoft Excel file, we recommend using the <a href="http://readxl.tidyverse.org"><code>readxl</code> package</a>.</li>
+<li>If your data are included in a SPSS, SAS, or Stata file, we recommend using the <a href="http://haven.tidyverse.org"><code>haven</code> package</a>.<br>
+</li>
+<li>If your data are are in a Microsoft Access database, we recommend using the <a href=""><code>RODBC</code> package</a>.</li>
+<li>If your data are in another database format, we recommend <a href="http://db.rstudio.com/">this article</a> on using Databases with <code>R</code>
+</li>
+</ul>
+<p>All of the example code below assumes you have a data frame named <code>waterData</code>.</p>
+</div>
 <div id="metadata" class="section level2">
 <h2 class="hasAnchor">
 <a href="#metadata" class="anchor"></a>Metadata</h2>
 <p>No metadata should be stored in observations. If metadata is present, remove it using the following technique. This example assumes that metadata is stored in row 1:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span>df[<span class="op">-</span><span class="dv">1</span>,]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterData &lt;-<span class="st"> </span>waterData[<span class="op">-</span><span class="dv">1</span>,]</code></pre></div>
 <p>If there are multiple lines of metadata, they can be removed like so:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span>df[<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterData &lt;-<span class="st"> </span>waterData[<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),]</code></pre></div>
 </div>
 <div id="tibbles" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tibbles" class="anchor"></a>Tibbles</h2>
-<p>Given the large size of data sets typical for these instruments, we encourage (but do not enforce) data to be stored as <a href="http://tibble.tidyverse.org">tibbles</a>. Tibbles are the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tiblle, use the function <a href="http://tibble.tidyverse.org/reference/as_tibble.html"><code><a href="http://www.rdocumentation.org/packages/tibble/topics/as_tibble">as_tibble()</a></code></a>:</p>
+<p>Given the large size of data sets typical for these instruments, we encourage (but do not enforce) data to be stored as <a href="http://tibble.tidyverse.org">tibbles</a>. Tibbles are the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tibble, use the function <a href="http://tibble.tidyverse.org/reference/as_tibble.html"><code><a href="http://www.rdocumentation.org/packages/tibble/topics/as_tibble">as_tibble()</a></code></a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tibble)
 
 waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/as_tibble">as_tibble</a></span>(waterData)</code></pre></div>
@@ -124,16 +140,19 @@ waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="http://www.r
 <div id="variable-names" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variable-names" class="anchor"></a>Variable Names</h2>
-<p>Variable names should be short and descriptive. We recommend using <code>camelCase</code> or <code>snake_case</code> to name variables. Use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>rename()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to accomplish this. The function accepts the data frame name followed by a commoa and the new name set equal to the old name:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">rename</span>(df, <span class="dt">date =</span> a.very.long.date.variable.name)</code></pre></div>
+<p>Variable names should be short and descriptive. We recommend using <code>camelCase</code> or <code>snake_case</code> to name variables. Use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>rename()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to accomplish this. The function accepts the data frame name followed by a comma and the new name set equal to the old name:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">rename</span>(waterTibble, <span class="dt">date =</span> a.very.long.date.variable.name)</code></pre></div>
 <p>If you have a number of variables to rename, you can pipe them together:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">rename</span>(df, <span class="dt">date =</span> a.very.long.date.variable.name) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">rename</span>(df, <span class="dt">time =</span> a.very.long.time.variable.name)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">date =</span> a.very.long.date.variable.name) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">time =</span> a.very.long.time.variable.name)</code></pre></div>
 </div>
-<div id="date" class="section level2">
+<div id="specific-variables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#date" class="anchor"></a>Date</h2>
+<a href="#specific-variables" class="anchor"></a>Specific Variables</h2>
+<div id="date" class="section level3">
+<h3 class="hasAnchor">
+<a href="#date" class="anchor"></a>Date</h3>
 <p><code>driftR</code> expects date data to be stored in a character vector. The date variable should be formatted as either as <code>mm/dd/yyyy</code> or <code>yyyy-mm-dd</code>. To convert your date data to <code>mm/dd/yyyy</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"2016/12/30"</span>, <span class="st">"2016/12/31"</span>, <span class="st">"2017/01/01"</span>, <span class="st">"2017/01/02"</span>, <span class="st">"2017/01/03"</span>)
 cleanDate &lt;-<span class="st"> </span><span class="kw">as.Date</span>(dates, <span class="dt">format =</span> <span class="st">"%Y/%m/%d"</span>)
@@ -144,25 +163,42 @@ cleanDate &lt;-<span class="st"> </span><span class="kw">as.Date</span>(dates, <
 cleanDate &lt;-<span class="st"> </span><span class="kw">as.character</span>(cleanDate)</code></pre></div>
 <p>Post-processing, if you have additional needs to work with your date data, we strongly suggest using the <a href="http://lubridate.tidyverse.org"><code>lubridate</code> package</a>.</p>
 </div>
-<div id="time" class="section level2">
-<h2 class="hasAnchor">
-<a href="#time" class="anchor"></a>Time</h2>
+<div id="time" class="section level3">
+<h3 class="hasAnchor">
+<a href="#time" class="anchor"></a>Time</h3>
 <p><code>driftR</code> expects time data to be stored in a character vector. The time variable should be formatted in <code>hh:mm:ss</code> format using a 24-hour clock. To convert your time data to <code>hh:mm:ss</code> in a 24-hour format:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">times &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"10:06 AM"</span>, <span class="st">"3:24 PM"</span>, <span class="st">"1:08 PM"</span>, <span class="st">"12:00 PM"</span>, <span class="st">"3:38 AM"</span>)
 cleanTime &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">strptime</span>(times, <span class="st">"%I:%M %p"</span>), <span class="dt">format=</span><span class="st">"%H:%M:%S"</span>)</code></pre></div>
 </div>
-<div id="temperature" class="section level2">
-<h2 class="hasAnchor">
-<a href="#temperature" class="anchor"></a>Temperature</h2>
-<p><code>driftR</code> makes no direct use of the <code>Temp</code> data included in output. The <a href="https://cran.r-project.org/web/packages/weathermetrics/index.html"><code>weathermetrics</code> package</a> includes functions for conversions between celsius and fahrenheit.</p>
+<div id="temperature" class="section level3">
+<h3 class="hasAnchor">
+<a href="#temperature" class="anchor"></a>Temperature</h3>
+<p><code>driftR</code> makes no direct use of the <code>Temp</code> data included in output. The <a href="https://cran.r-project.org/web/packages/weathermetrics/index.html"><code>weathermetrics</code> package</a> includes functions for conversions between Celsius and Fahrenheit.</p>
 </div>
-<div id="other-measures" class="section level2">
-<h2 class="hasAnchor">
-<a href="#other-measures" class="anchor"></a>Other Measures</h2>
+<div id="other-measures" class="section level3">
+<h3 class="hasAnchor">
+<a href="#other-measures" class="anchor"></a>Other Measures</h3>
 <p>Beyond date and time data, all measures should be stored as either double, integer, or numeric values:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(measure)
-df<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.integer</span>(measure)
-df<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.double</span>(measure)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(waterTibble<span class="op">$</span>measure)
+waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.integer</span>(waterTibble<span class="op">$</span>measure)
+waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.double</span>(waterTibble<span class="op">$</span>measure)</code></pre></div>
+</div>
+<div id="building-pipes-with-date-time-and-other-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#building-pipes-with-date-time-and-other-functions" class="anchor"></a>Building Pipes with Date, Time, and Other Functions</h3>
+<p>You can integrate all of the non-tidyverse functions described here into <a href="http://dplyr.tidyverse.org/reference/mutate.html"><code>mutate()</code></a> function calls. The <code>mutate()</code> function is from the <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">temp =</span> <span class="kw">as.double</span>(temp)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pH =</span> <span class="kw">as.double</span>(pH)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NitrateN =</span> <span class="kw">as.integer</span>(NitrateN))</code></pre></div>
+</div>
+</div>
+<div id="removing-unneeded-variables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#removing-unneeded-variables" class="anchor"></a>Removing Unneeded Variables</h2>
+<p>Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and the new name set equal to the old name:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(a.very.long.pH.variable.name, a.very.long.cholride.variable.name))<span class="er">)</span></code></pre></div>
+<p>Like all other <code>dplyr</code> functions, <code>select()</code> can be included in a pipe as well.</p>
 </div>
 </div>
   </div>
@@ -172,13 +208,12 @@ df<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#metadata">Metadata</a></li>
+<li><a href="#importing-data">Importing Data</a></li>
+      <li><a href="#metadata">Metadata</a></li>
       <li><a href="#tibbles">Tibbles</a></li>
       <li><a href="#variable-names">Variable Names</a></li>
-      <li><a href="#date">Date</a></li>
-      <li><a href="#time">Time</a></li>
-      <li><a href="#temperature">Temperature</a></li>
-      <li><a href="#other-measures">Other Measures</a></li>
+      <li><a href="#specific-variables">Specific Variables</a></li>
+      <li><a href="#removing-unneeded-variables">Removing Unneeded Variables</a></li>
       </ul>
 </div>
       </div>
