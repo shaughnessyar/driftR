@@ -16,7 +16,7 @@ df <- dr_drop(df, head=10, tail=5)
 ggplot(data = df) +
   geom_histogram(mapping = aes(x = pH), bins = 10)
 
-ggsave("vignettes/pH_hist.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pH_hist.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(dateTime = stringr::str_c(Date, Time, sep = " ", collapse = NULL)) %>%
@@ -24,7 +24,7 @@ df %>%
   ggplot() +
   geom_line(mapping = aes(x = dateTime, y = SpCond))
 
-ggsave("vignettes/SpCond_line.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/SpCond_line.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(dateTime = str_c(Date, Time, sep = " ", collapse = NULL)) %>%
@@ -35,7 +35,7 @@ df %>%
   ggplot() +
     geom_line(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
 
-ggsave("vignettes/SpCond_corrLine.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/SpCond_corrLine.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(dateTime = str_c(Date, Time, sep = " ", collapse = NULL)) %>%
@@ -45,7 +45,7 @@ df %>%
   ggplot() +
     geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
 
-ggsave("vignettes/SpCond_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/SpCond_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 
 df %>%
@@ -56,7 +56,7 @@ df %>%
   ggplot() +
     geom_line(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
 
-ggsave("vignettes/pH_corrLine.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pH_corrLine.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(dateTime = str_c(Date, Time, sep = " ", collapse = NULL)) %>%
@@ -66,37 +66,37 @@ df %>%
   ggplot() +
   geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
 
-ggsave("vignettes/pH_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pH_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 ggplot(data = df) +
   geom_point(mapping = aes(x = Temp, y = pH_Corr))
 
-ggsave("vignettes/pHTemp.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pHTemp.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 ggplot(data = df) +
   geom_point(mapping = aes(x = Temp, y = pH_Corr, color = Date))
 
-ggsave("vignettes/pHTempDate.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pHTempDate.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
   geom_point() +
   facet_wrap(~ Date)
 
-ggsave("vignettes/pHTempByDate.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pHTempByDate.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
   geom_point() +
   geom_smooth() +
   facet_wrap(~ Date)
 
-ggsave("vignettes/pHTempByDate_smooth.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pHTempByDate_smooth.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(secondHalf = ifelse(Date == "9/21/2015" | Date == "9/22/2015" | Date == "9/23/2015", TRUE, FALSE)) %>%
   ggplot() +
   geom_boxplot(mapping = aes(x = secondHalf, y = pH_Corr))
 
-ggsave("vignettes/pHTempByDate_box.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/pHTempByDate_box.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(dateTime = str_c(Date, Time, sep = " ", collapse = NULL)) %>%
@@ -114,4 +114,4 @@ df %>%
     caption = "Smoothed using a generalized additive model; \nPlot produced by the Saint Louis University Hydrology and Geochemistry Research Lab"
   )
 
-ggsave("vignettes/disseminationPlot.png", width = 200, height = 150, units = "mm", dpi = 300)
+ggsave("vignettes/disseminationPlot.png", width = 200, height = 150, units = "mm", dpi = 100)

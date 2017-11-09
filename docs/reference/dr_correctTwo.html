@@ -171,10 +171,23 @@ to the other data in <code>.data</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>dr_correctTwo</span>(<span class='no'>df</span>, <span class='no'>pH</span>, <span class='fl'>7.05</span>, <span class='fl'>7</span>, <span class='fl'>10.25</span>, <span class='fl'>10</span>, <span class='no'>corrfactors</span>)
-<span class='fu'>dr_correctTwo</span>(<span class='no'>df</span>, <span class='no'>Chloride</span>, <span class='fl'>7.95</span>, <span class='fl'>10</span>, <span class='fl'>847</span>, <span class='fl'>1000</span>, <span class='no'>df</span>$<span class='no'>corrections</span>)
-<span class='co'># }</span><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>testData</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
+   <span class='kw'>Date</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>),
+   <span class='kw'>Time</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"12:10:49"</span>, <span class='st'>"12:15:50"</span>, <span class='st'>"12:20:51"</span>, <span class='st'>"12:25:51"</span>, <span class='st'>"12:30:51"</span>, <span class='st'>"12:35:51"</span>),
+   <span class='kw'>Temp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>14.76</span>, <span class='fl'>14.64</span>, <span class='fl'>14.57</span>, <span class='fl'>14.51</span>, <span class='fl'>14.50</span>, <span class='fl'>14.63</span>),
+   <span class='kw'>pH</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>7.18</span>, <span class='fl'>7.14</span>, <span class='fl'>7.14</span>, <span class='fl'>7.13</span>, <span class='fl'>7.13</span>, <span class='fl'>7.13</span>),
+   <span class='kw'>corrFac</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.0000000</span>, <span class='fl'>0.2003995</span>, <span class='fl'>0.4007989</span>, <span class='fl'>0.6005326</span>, <span class='fl'>0.8002663</span>, <span class='fl'>1.0000000</span>),
+   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+ )
+
+ <span class='fu'>dr_correctTwo</span>(<span class='no'>testData</span>, <span class='kw'>sourceVar</span> <span class='kw'>=</span> <span class='no'>pH</span>, <span class='kw'>cleanVar</span> <span class='kw'>=</span> <span class='no'>pH_Corr</span>, <span class='kw'>calValLow</span> <span class='kw'>=</span> <span class='fl'>7.01</span>, <span class='kw'>calStdLow</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+     <span class='kw'>calValHigh</span> <span class='kw'>=</span> <span class='fl'>11.8</span>, <span class='kw'>calStdHigh</span> <span class='kw'>=</span>  <span class='fl'>10</span>, <span class='kw'>factorVar</span> <span class='kw'>=</span> <span class='no'>corrFac</span>)</div><div class='output co'>#&gt;        Date     Time  Temp   pH   corrFac  pH_Corr
+#&gt; 1 9/18/2015 12:10:49 14.76 7.18 0.0000000 7.180000
+#&gt; 2 9/18/2015 12:15:50 14.64 7.14 0.2003995 7.126687
+#&gt; 3 9/18/2015 12:20:51 14.57 7.14 0.4007989 7.115966
+#&gt; 4 9/18/2015 12:25:51 14.51 7.13 0.6005326 7.099834
+#&gt; 5 9/18/2015 12:30:51 14.50 7.13 0.8002663 7.093067
+#&gt; 6 9/18/2015 12:35:51 14.63 7.13 1.0000000 7.087318</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
