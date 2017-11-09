@@ -104,4 +104,37 @@ library("driftR")
 # 6 9/18/2015 12:35:51 14.63  0.749 1.0000000
 ```
 
-This mirrors the behavior of [`tidyverse`] functions.
+This mirrors the behavior of [`tidyverse`](https://www.tidyverse.org) functions.
+
+## Piping
+The pipe operator (`%>%`) is a product of the `tidyverse` package [`magrittr`](http://magrittr.tidyverse.org). It offers users the ability to make code more readable by changing together a series of related functions. Pipes are ideal for situations where there is only one input and output, and where there are not a significant number of steps being performed. [Wickham and Grolemund)[http://r4ds.had.co.nz] recommend keeping pipes to ten lines or fewer.
+
+### "Reading" Pipes
+
+Pipes are designed to be "read" like lines of literal text. For example:
+
+```{r, eval=FALSE}
+library("driftR")
+
+driftData <- driftData %>%
+  dr_factor(corrFactor = corrFac, 
+            dateVar = Date, 
+            timeVar = Time, 
+            format = "MDY") %>%
+  dr_correctOne(sourceVar = SpCond, 
+                cleanVar = SpCond_Corr, 
+                calVal = 1.07, 
+                calStd = 1, 
+                factorVar = corrFac)
+```
+
+One could read the pipe above in the following way:
+
+* We are going to assign (`<-`) to the object `driftData` the result of taking the existing `driftData` object and **then**
+* creating a factor variable named `corrFac` and **then**
+* making a one-point drift correction to `SpCond` that will be stored in a new variable named `SpCond_Corr`.
+
+Each time we say the word **then**, we use the pipe operator. We include the pipe operator at the end of each function we wish to chain together.
+
+### `.data`
+One thing you'll notice is that we do not make reference to the `driftData` object in either `dr_factor()` or `dr_correctOne()` when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in `driftR` section above, which includes explicit reference to `driftData` in the `dr_function()`. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun [`.data`](http://rlang.tidyverse.org/reference/tidyeval-data.html). Each of the `driftR` functions incorporates `.data`, allowing the data frame object's name to be easily passed from one function to the next in a pipe.

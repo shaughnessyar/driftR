@@ -78,7 +78,7 @@
       <h1>Tidy Evaluation in driftR</h1>
                         <h4 class="author">Christopher Prener</h4>
             
-            <h4 class="date">2017-11-02</h4>
+            <h4 class="date">2017-11-09</h4>
           </div>
 
     
@@ -168,7 +168,44 @@
 <span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span>
 <span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
 <span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span></code></pre></div>
-<p>This mirrors the behavior of [<code>tidyverse</code>] functions.</p>
+<p>This mirrors the behavior of <a href="https://www.tidyverse.org"><code>tidyverse</code></a> functions.</p>
+</div>
+</div>
+<div id="piping" class="section level2">
+<h2 class="hasAnchor">
+<a href="#piping" class="anchor"></a>Piping</h2>
+<p>The pipe operator (<code>%&gt;%</code>) is a product of the <code>tidyverse</code> package <a href="http://magrittr.tidyverse.org"><code>magrittr</code></a>. It offers users the ability to make code more readable by changing together a series of related functions. Pipes are ideal for situations where there is only one input and output, and where there are not a significant number of steps being performed. [Wickham and Grolemund)[<a href="http://r4ds.had.co.nz" class="uri">http://r4ds.had.co.nz</a>] recommend keeping pipes to ten lines or fewer.</p>
+<div id="reading-pipes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#reading-pipes" class="anchor"></a>“Reading” Pipes</h3>
+<p>Pipes are designed to be “read” like lines of literal text. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
+
+driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
+            <span class="dt">dateVar =</span> Date, 
+            <span class="dt">timeVar =</span> Time, 
+            <span class="dt">format =</span> <span class="st">"MDY"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
+                <span class="dt">cleanVar =</span> SpCond_Corr, 
+                <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
+                <span class="dt">calStd =</span> <span class="dv">1</span>, 
+                <span class="dt">factorVar =</span> corrFac)</code></pre></div>
+<p>One could read the pipe above in the following way:</p>
+<ul>
+<li>We are going to assign (<code>&lt;-</code>) to the object <code>driftData</code> the result of taking the existing <code>driftData</code> object and <strong>then</strong>
+</li>
+<li>creating a factor variable named <code>corrFac</code> and <strong>then</strong>
+</li>
+<li>making a one-point drift correction to <code>SpCond</code> that will be stored in a new variable named <code>SpCond_Corr</code>.</li>
+</ul>
+<p>Each time we say the word <strong>then</strong>, we use the pipe operator. We include the pipe operator at the end of each function we wish to chain together.</p>
+</div>
+<div id="data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data" class="anchor"></a><code>.data</code>
+</h3>
+<p>One thing you’ll notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="../reference/dr_factor.html">dr_factor()</a></code> or <code><a href="../reference/dr_correctOne.html">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code>dr_function()</code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
 </div>
 </div>
 </div>
@@ -182,6 +219,7 @@
 <li><a href="#the-tidyverse">The <code>tidyverse</code></a></li>
       <li><a href="#some-sample-data">Some Sample Data</a></li>
       <li><a href="#quoting">Quoting</a></li>
+      <li><a href="#piping">Piping</a></li>
       </ul>
 </div>
       </div>
