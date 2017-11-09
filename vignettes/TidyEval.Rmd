@@ -24,7 +24,7 @@ As I noted above, `driftR` is built on [`dplyr`](http://dplyr.tidyverse.org) and
 
 In order to implement this philosophical, verb-driven approach to data cleaning, `driftR` provides a set of wrappers around two `dplyr` functions - `mutate()` for adding new variables and `slice()` for removing rows. When you call a `drifR` function, you are actually calling one or more linked instances of `mutate()` or `slice()` that perform specific tasks with particular inputs in a standardized order. 
 
-Like the `tidyverse`, then, `driftR` is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducibile. While `driftR` does enforce a specific workflow on users, the trade-off is the package's consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).
+Like the `tidyverse`, then, `driftR` is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducible. While `driftR` does enforce a specific workflow on users, the trade-off is the package's consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).
 
 ## Some Sample Data
 The following examples use these data:
