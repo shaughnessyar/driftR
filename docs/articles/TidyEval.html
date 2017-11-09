@@ -51,6 +51,9 @@
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
+      <a href="../articles/OtherData.html">Using Data From Other Sources</a>
+    </li>
+    <li>
       <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
     </li>
   </ul>
@@ -108,7 +111,7 @@
 </ul>
 <p>As I noted above, <code>driftR</code> is built on <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> and <a href="http://rlang.tidyverse.org"><code>rlang</code></a> in both literal and philosophical terms. Like <code>dplyr</code>, <code>driftR</code> is built around the idea of verbs for wrangling data. While <code>dplyr</code>’s verbs are meant to be general, <code>driftR</code>’s verbs are specifically tailored for correcting water-quality monitoring data.</p>
 <p>In order to implement this philosophical, verb-driven approach to data cleaning, <code>driftR</code> provides a set of wrappers around two <code>dplyr</code> functions - <code>mutate()</code> for adding new variables and <code>slice()</code> for removing rows. When you call a <code>drifR</code> function, you are actually calling one or more linked instances of <code>mutate()</code> or <code>slice()</code> that perform specific tasks with particular inputs in a standardized order.</p>
-<p>Like the <code>tidyverse</code>, then, <code>driftR</code> is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducibile. While <code>driftR</code> does enforce a specific workflow on users, the trade-off is the package’s consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).</p>
+<p>Like the <code>tidyverse</code>, then, <code>driftR</code> is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducible. While <code>driftR</code> does enforce a specific workflow on users, the trade-off is the package’s consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).</p>
 </div>
 <div id="some-sample-data" class="section level2">
 <h2 class="hasAnchor">

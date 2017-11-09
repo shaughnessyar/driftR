@@ -51,6 +51,9 @@
       <a href="articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
+      <a href="articles/OtherData.html">Using Data From Other Sources</a>
+    </li>
+    <li>
       <a href="articles/TidyEval.html">Tidy Evaluation in driftR</a>
     </li>
   </ul>
@@ -99,8 +102,8 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>The <code>driftR</code> package implements a series of equations used in <a href="https://hasenmuellerlab.weebly.com">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI Sonde products.</p>
-<p>The figure below illustrates the difference in <code>pH</code> values between the raw data and the same data with the drift corrections implemented by <code>driftR</code> applied. There is a notable difference in the trend line between the raw data and the corrected data, which illustrates the importance of accounting for incramental drift.</p>
+<p>The <code>driftR</code> package implements a series of equations used in <a href="https://hasenmuellerlab.weebly.com">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incremental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point calibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI Sonde products.</p>
+<p>The figure below illustrates the difference in <code>pH</code> values between the raw data and the same data with the drift corrections implemented by <code>driftR</code> applied. There is a notable difference in the trend line between the raw data and the corrected data, which illustrates the importance of accounting for incremental drift.</p>
 <div class="figure">
 <img src="reference/figures/pH_noDrop.png">
 </div>
@@ -219,7 +222,7 @@ df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
 <h2 class="hasAnchor">
 <a href="#about-the-authors" class="anchor"></a>About the Authors</h2>
 <p>Andrew Shaughnessy led the development of this package. He is a senior at <a href="https://www.slu.edu">Saint Louis University</a> studying Chemistry and Environmental Science.</p>
-<p><a href="https://chris-prener.github.io">Christopher Prener, Ph.D.</a> assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at <a href="https://www.slu.edu">Saint Louis University</a>. He has a broad interest in computational social science as well as the development of <code>R</code> packages to make research more reproducibile and to generalize research code.</p>
+<p><a href="https://chris-prener.github.io">Christopher Prener, Ph.D.</a> assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at <a href="https://www.slu.edu">Saint Louis University</a>. He has a broad interest in computational social science as well as the development of <code>R</code> packages to make research more reproducible and to generalize research code.</p>
 <p><a href="https://hasenmuellerlab.weebly.com">Elizabeth Hasenmueller, Ph.D.</a> developed the original equations that this package implements and provided the example data. She is an Assistant Professor in the Department of Earth and Atmospheric Science at <a href="https://www.slu.edu">Saint Louis University</a>.</p>
 </div>
 </div>

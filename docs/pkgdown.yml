@@ -4,5 +4,6 @@ urls:
 articles:
   driftR: driftR.html
   ExploringData: ExploringData.html
+  OtherData: OtherData.html
   TidyEval: TidyEval.html
 

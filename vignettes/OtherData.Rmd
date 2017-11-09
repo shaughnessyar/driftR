@@ -1,0 +1,111 @@
+---
+title: "Using Data From Other Sources"
+author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+While `driftR` is designed to work seemlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy `driftR` format. Below is a snapshot of the example data after they have been imported using the `dr_readSonde()` function. This is the expected format that `driftR` requires. 
+
+```{r, eval=FALSE}
+# A tibble: 1,527 x 11
+        Date     Time  Temp SpCond    pH  pHmV Chloride AmmoniumN NitrateN  Turbidity    DO
+       <chr>    <chr> <dbl>  <dbl> <dbl> <dbl>    <dbl>     <dbl>    <int>      <dbl> <dbl>
+ 1 9/18/2015 12:10:49 14.76  0.754  7.18 -36.4    51.22      3.35        0        3.7 92.65
+ 2 9/18/2015 12:15:50 14.64  0.750  7.14 -34.1    49.62      6.29        0       -0.2 93.73
+ 3 9/18/2015 12:20:51 14.57  0.750  7.14 -33.9    49.75      7.84        0       -0.1 93.95
+ 4 9/18/2015 12:25:51 14.51  0.749  7.13 -33.9    50.32      7.67        0       -0.2 93.23
+ 5 9/18/2015 12:30:51 14.50  0.749  7.13 -33.6    50.74      7.13        0        0.0 92.74
+ 6 9/18/2015 12:35:51 14.63  0.749  7.13 -33.5    50.84      6.49        0        0.0 93.71
+ 7 9/18/2015 12:40:51 14.69  0.749  7.13 -33.6    50.66      5.78        0       -0.2 94.56
+ 8 9/18/2015 12:45:51 14.66  0.749  7.12 -33.3    50.23      5.32        0       -0.2 94.16
+ 9 9/18/2015 12:50:52 14.65  0.749  7.12 -33.3    50.49      4.89        0       -0.2 93.58
+10 9/18/2015 12:55:51 14.69  0.749  7.12 -33.1    50.04      4.60        0       -0.2 93.80
+# ... with 1,517 more rows
+```
+
+## Metadata
+No metadata should be stored in observations. If metadata is present, remove it using the following technique. This example assumes that metadata is stored in row 1:
+
+```{r, eval=FALSE}
+df <- df[-1,]
+```
+
+If there are multiple lines of metadata, they can be removed like so:
+
+```{r, eval=FALSE}
+df <- df[-c(1, 2),]
+```
+
+## Tibbles
+
+Given the large size of data sets typical for these instruments, we encourage (but do not enforce) data to be stored as [tibbles](http://tibble.tidyverse.org). Tibbles are the [`tidyverse`](https://www.tidyverse.org) implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tiblle, use the function [`as_tibble()`](http://tibble.tidyverse.org/reference/as_tibble.html):
+
+```{r, eval=FALSE}
+library(tibble)
+
+waterTibble <- as_tibble(waterData)
+```
+
+## Variable Names
+
+Variable names should be short and descriptive. We recommend using `camelCase` or `snake_case` to name variables. Use the [`rename()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to accomplish this. The function accepts the data frame name followed by a commoa and the new name set equal to the old name:
+
+```{r, eval=FALSE}
+df <- rename(df, date = a.very.long.date.variable.name)
+```
+
+If you have a number of variables to rename, you can pipe them together:
+
+```{r, eval=FALSE}
+df <- df %>%
+  rename(df, date = a.very.long.date.variable.name) %>%
+  rename(df, time = a.very.long.time.variable.name)
+```
+
+## Date
+
+`driftR` expects date data to be stored in a character vector. The date variable should be formatted as either as `mm/dd/yyyy` or `yyyy-mm-dd`. To convert your date data to `mm/dd/yyyy`:
+
+```{r, eval=FALSE}
+dates <- c("2016/12/30", "2016/12/31", "2017/01/01", "2017/01/02", "2017/01/03")
+cleanDate <- as.Date(dates, format = "%Y/%m/%d")
+cleanDate <- strftime(cleanDate, format = "%m/%d/%Y")
+```
+
+The `format` argument for `as.Date()` will need to be adapted based on the structure of the date data that you have. To convert your date data to `yyy-mm-dd`, alter the third line of code:
+
+```{r, eval=FALSE}
+dates <- c("2016/12/30", "2016/12/31", "2017/01/01", "2017/01/02", "2017/01/03")
+cleanDate <- as.Date(dates, format = "%Y/%m/%d")
+cleanDate <- as.character(cleanDate)
+```
+
+Post-processing, if you have additional needs to work with your date data, we strongly suggest using the [`lubridate` package](http://lubridate.tidyverse.org).
+
+## Time
+
+`driftR` expects time data to be stored in a character vector. The time variable should be formatted in `hh:mm:ss` format using a 24-hour clock. To convert your time data to `hh:mm:ss` in a 24-hour format:
+
+```{r, eval=FALSE}
+times <- c("10:06 AM", "3:24 PM", "1:08 PM", "12:00 PM", "3:38 AM")
+cleanTime <- format(strptime(times, "%I:%M %p"), format="%H:%M:%S")
+```
+
+## Temperature
+
+`driftR` makes no direct use of the `Temp` data included in output. The [`weathermetrics` package](https://cran.r-project.org/web/packages/weathermetrics/index.html) includes functions for conversions between celsius and fahrenheit.
+
+## Other Measures
+
+Beyond date and time data, all measures should be stored as either double, integer, or numeric values:
+
+```{r, eval=FALSE}
+df$measure <- as.numeric(measure)
+df$measure <- as.integer(measure)
+df$measure <- as.double(measure)
+```
