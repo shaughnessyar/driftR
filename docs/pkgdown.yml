@@ -1,0 +1,8 @@
+urls:
+  reference: https://shaughnessyar.github.io/driftR//reference
+  article: https://shaughnessyar.github.io/driftR//articles
+articles:
+  driftR: driftR.html
+  ExploringData: ExploringData.html
+  TidyEval: TidyEval.html
+
