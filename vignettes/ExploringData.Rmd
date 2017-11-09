@@ -275,8 +275,10 @@ df %>%
       subtitle = "Example Creek, Eastern Missouri",
       x = "Date",
       y = "Specific Conductance",
-      caption = "Smoothed using a generalized additive model; \nPlot produced by the Saint Louis University Hydrology and Geochemistry Research Lab"
-    )
+      caption = "Smoothed using a generalized additive model; \nPlot produced by the Saint Louis University Hydrology and Geochemistry Research Lab",
+      color = "Series"
+    ) +
+    scale_colour_discrete(labels=c("Raw Conductivity", "Corrected Conductivity"))
 ```
 
 ![](disseminationPlot.png)
