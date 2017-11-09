@@ -119,7 +119,7 @@ df <- df %>%
 ## Additional Documentation
 See the [package website](https://shaughnessyar.github.io/driftR/) for details on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing how to get started with `driftR`. 
 
-An [additional vignette](https://shaughnessyar.github.io/driftR/articles/TidyEval.html) describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also [provide some introductory examples](https://shaughnessyar.github.io/driftR/articles/eda.html) for how to use [`tidyr`](http://tidyr.tidyverse.org), [`ggplot2`](http://ggplot2.tidyverse.org), and several other `R` packages to conduct some initial exploratory data analysis of `driftR` output. Finally, we provide a [fourth vignette](https://shaughnessyar.github.io/driftR/articles/OtherData.html) designed for users of non-YSI Sonde instruments who wish to use `driftR` with their data.
+An [additional vignette](https://shaughnessyar.github.io/driftR/articles/TidyEval.html) describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also [provide some introductory examples](https://shaughnessyar.github.io/driftR/articles/ExploringData.html) for how to use [`tidyr`](http://tidyr.tidyverse.org), [`ggplot2`](http://ggplot2.tidyverse.org), and several other `R` packages to conduct some initial exploratory data analysis of `driftR` output. Finally, we provide a [fourth vignette](https://shaughnessyar.github.io/driftR/articles/OtherData.html) designed for users of non-YSI Sonde instruments who wish to use `driftR` with their data.
 
 You can also view the help files from within R:
 

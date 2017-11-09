@@ -1,0 +1,42 @@
+---
+title: "Exploring Data in R"
+author: "Christopher Prener"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Once data have been corrected using `driftR`, `R` provides a host of tools for exploring them. This article will quickly cover a few techniques for both doing exploratory data analysis using [`ggplot2`] and obtaining some basic descriptive statistics. This article assumes you've completed the cleaning of the example data included in this package (see the "Getting Started" vignette).
+
+## Packages
+
+The packages that we'll use, beyond the `base` package, are all a core part of the [`tidyverse`](https://www.tidyverse.org):
+
+* [`ggplot2`](http://ggplot2.tidyverse.org) - a set of tools for implementing the [Grammar of Graphics](http://vita.had.co.nz/papers/layered-grammar.pdf)
+* [`dplyr`](http://dplyr.tidyverse.org) - a set of common verbs for cleaning and wrangling data
+* [`tidyr`](http://tidyr.tidyverse.org) - functions for consistently tidying data so that "(1) each variable is in a column, (2) each observation is in a row, and (3) each value is a cell"
+* [`stringr`](http://stringr.tidyverse.org) - a set of functions for manipulating string (text) data
+
+## Descriptive Statistics
+
+The `base` package, which is part of the "base" `R` distribution that users typically download from CRAN or one of its mirrors, can be used for obtaining basic descriptive statistics. In particular, the `summary()` function provides a number of useful statistics including range, median, and mean:
+
+```{r, eval=FALSE}
+> summary(df$SpCond)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.7450  0.7520  0.7670  0.7719  0.7900  0.8180 
+> summary(df$SpCond_Corr)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.7495  0.7677  0.8018  0.8067  0.8422  0.8872 
+```
+
+## Exploratory Data Analysis
+
+[Exploratory data analysis](https://en.wikipedia.org/wiki/Exploratory_data_analysis) is a set of techniques promoted by [John Tukey](https://en.wikipedia.org/wiki/John_Tukey) for visually assessing data sets.
+
+### Visualizing Drift Over Time
+
+The key feature of `driftR` is the correction of drift that occurs over time. `ggplot2` and the tidyverse make it easy to plot those data. 
