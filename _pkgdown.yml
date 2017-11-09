@@ -1,0 +1,22 @@
+url: https://shaughnessyar.github.io/driftR/
+
+referece:
+  - title: Import Data
+    desc: Import data from various water-quality monitoring instruments.
+    contents:
+    - dr_readSonde
+  - title: Correct Data
+    desc: Correct the data for incramental drift.
+    contents:
+    - dr_factor
+    - dr_correctOne
+    - dr_correctTwo
+    - dr_drop
+  - title: Helper Functions
+    desc: Additional functions included in package.
+    contents:
+    - %nin%
+  - title: Data
+    desc: Data sets included in package.
+    contents:
+    - starts_with("data")
