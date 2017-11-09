@@ -31,9 +31,9 @@ devtools::install_github("shaughnessyar/driftR")
 ```
 
 ## Background
-The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incramental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point callibration values are suited for different types of measurements.  The package is currently written for the easiest use with YSI Sonde products. 
+The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) hydrology and geochemistry research. These equations correct continuous water-quality monitoring data for incremental drift that occurs over time. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point calibration values are suited for different types of measurements.  The package is currently written for the easiest use with YSI Sonde products. 
 
-The figure below illustrates the difference in `pH` values between the raw data and the same data with the drift corrections implemented by `driftR` applied. There is a notable difference in the trend line between the raw data and the corrected data, which illustrates the importance of accounting for incramental drift.
+The figure below illustrates the difference in `pH` values between the raw data and the same data with the drift corrections implemented by `driftR` applied. There is a notable difference in the trend line between the raw data and the corrected data, which illustrates the importance of accounting for incremental drift.
 
 ![](man/figures/pH_noDrop.png)
 
@@ -153,6 +153,6 @@ Please note that this project is released with a [Contributor Code of Conduct](h
 ## About the Authors
 Andrew Shaughnessy led the development of this package. He is a senior at [Saint Louis University](https://www.slu.edu) studying Chemistry and Environmental Science.
 
-[Christopher Prener, Ph.D.](https://chris-prener.github.io) assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at [Saint Louis University](https://www.slu.edu). He has a broad interest in computational social science as well as the development of `R` packages to make research more reproducibile and to generalize research code.
+[Christopher Prener, Ph.D.](https://chris-prener.github.io) assisted in the development of this package. He is an Assistant Professor in the Department of Sociology and Anthropology at [Saint Louis University](https://www.slu.edu). He has a broad interest in computational social science as well as the development of `R` packages to make research more reproducible and to generalize research code.
 
 [Elizabeth Hasenmueller, Ph.D.](https://hasenmuellerlab.weebly.com) developed the original equations that this package implements and provided the example data. She is an Assistant Professor in the Department of Earth and Atmospheric Science at [Saint Louis University](https://www.slu.edu).
