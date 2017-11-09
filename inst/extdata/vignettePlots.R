@@ -43,8 +43,9 @@ df %>%
   select(dateTime, SpCond, SpCond_Corr) %>%
   gather(key = "measure", value = "value", SpCond, SpCond_Corr) %>%
   ggplot() +
-    geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure, linetype = measure)) +
-    scale_x_datetime(labels = date_format("%m-%d-%Y"), date_breaks = "1 day")
+    geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
+
+ggsave("vignettes/SpCond_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 300)
 
 
 df %>%
@@ -53,8 +54,9 @@ df %>%
   select(dateTime, pH, pH_Corr) %>%
   gather(key = "measure", value = "value", pH, pH_Corr) %>%
   ggplot() +
-    geom_line(mapping = aes(x = dateTime, y = value, group = measure, color = measure, linetype = measure)) +
-    scale_x_datetime(labels = date_format("%m-%d-%Y"), date_breaks = "1 day")
+    geom_line(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
+
+ggsave("vignettes/pH_corrLine.png", width = 200, height = 150, units = "mm", dpi = 300)
 
 df %>%
   mutate(dateTime = str_c(Date, Time, sep = " ", collapse = NULL)) %>%
@@ -62,6 +64,54 @@ df %>%
   select(dateTime, pH, pH_Corr) %>%
   gather(key = "measure", value = "value", pH, pH_Corr) %>%
   ggplot() +
-  geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure, linetype = measure)) +
-  scale_x_datetime(labels = date_format("%m-%d-%Y"), date_breaks = "1 day")
+  geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure))
 
+ggsave("vignettes/pH_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 300)
+
+ggplot(data = df) +
+  geom_point(mapping = aes(x = Temp, y = pH_Corr))
+
+ggsave("vignettes/pHTemp.png", width = 200, height = 150, units = "mm", dpi = 300)
+
+ggplot(data = df) +
+  geom_point(mapping = aes(x = Temp, y = pH_Corr, color = Date))
+
+ggsave("vignettes/pHTempDate.png", width = 200, height = 150, units = "mm", dpi = 300)
+
+ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
+  geom_point() +
+  facet_wrap(~ Date)
+
+ggsave("vignettes/pHTempByDate.png", width = 200, height = 150, units = "mm", dpi = 300)
+
+ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
+  geom_point() +
+  geom_smooth() +
+  facet_wrap(~ Date)
+
+ggsave("vignettes/pHTempByDate_smooth.png", width = 200, height = 150, units = "mm", dpi = 300)
+
+df %>%
+  mutate(secondHalf = ifelse(Date == "9/21/2015" | Date == "9/22/2015" | Date == "9/23/2015", TRUE, FALSE)) %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = secondHalf, y = pH_Corr))
+
+ggsave("vignettes/pHTempByDate_box.png", width = 200, height = 150, units = "mm", dpi = 300)
+
+df %>%
+  mutate(dateTime = str_c(Date, Time, sep = " ", collapse = NULL)) %>%
+  mutate(dateTime = as.POSIXct(dateTime, format = "%m/%d/%Y %H:%M:%S")) %>%
+  select(dateTime, SpCond, SpCond_Corr) %>%
+  gather(key = "measure", value = "value", SpCond, SpCond_Corr) %>%
+  ggplot() +
+  geom_smooth(mapping = aes(x = dateTime, y = value, group = measure, color = measure)) +
+  scale_x_datetime(labels = date_format("%m-%d-%Y"), date_breaks = "1 day") +
+  labs(
+    title = "Comparison of Corrected and Uncorrected Specific Conductance Values",
+    subtitle = "Example Creek, Eastern Missouri",
+    x = "Date",
+    y = "Specific Conductance",
+    caption = "Smoothed using a generalized additive model; \nPlot produced by the Saint Louis University Hydrology and Geochemistry Research Lab"
+  )
+
+ggsave("vignettes/disseminationPlot.png", width = 200, height = 150, units = "mm", dpi = 300)

@@ -131,7 +131,7 @@
 <p>Histograms are a classic way to assess the shape of the distribution of a single variable. They also make for an easy introduction to <code>ggplot2</code>. Every <code>ggplot2</code> call has at least two components - an initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> function and a “geom” that defines the way the underlying data are transformed for plotting purposes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> pH), <span class="dt">bins =</span> <span class="dv">10</span>)</code></pre></div>
-<p>We assign the <em>data source</em> in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code>, and describe the <em>aesthetic mapping</em> (the connection of data to visual properties) in the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram()</a></code> call. The code shown above will produce this plot:</p>
+<p>We assign the <em>data source</em> in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code>, and describe the <em>aesthetic mapping</em> (the connection of data to visual properties) in the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram()</a></code> call. The code shown above will produce this plot of the distribution of pH values:</p>
 <div class="figure">
 <img src="pH_hist.png">
 </div>
@@ -139,17 +139,18 @@
 <div id="visualizing-drift-over-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualizing-drift-over-time" class="anchor"></a>Visualizing Drift Over Time</h3>
-<p>The key feature of <code>driftR</code> is the correction of drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our <code>Date</code> and <code>Time</code> data created by <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code>. We need to concatenate these two variables togther using <code><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c()</a></code>, and then store them as properly identified date-time data (which <code>R</code> calls <code>POSIXct</code>) using <code>as.POSIXct()</code>. These changes are both made using the <a href="http://dplyr.tidyverse.org/reference/mutate.html"><code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a>, which allows us to create new variables. Once we have a date-time variable, we can use it as the <code>x</code> variable on our plot and plot a measure like specific conductance (<code>SpCond</code>) against it:</p>
+<p>The key feature of <code>driftR</code> is the correction of drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our <code>Date</code> and <code>Time</code> data created by <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code>. We need to concatenate these two variables together using <code><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c()</a></code>, and then store them as properly identified date-time data (which <code>R</code> calls <code>POSIXct</code>) using <code>as.POSIXct()</code>. These changes are both made using the <a href="http://dplyr.tidyverse.org/reference/mutate.html"><code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a>, which allows us to create new variables. Once we have a date-time variable, we can use it as the <code>x</code> variable on our plot and plot a measure like specific conductance (<code>SpCond</code>) against it using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line()</a></code> geom from <code>ggplot2</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> SpCond))</code></pre></div>
-<p>This code is an example of piping, a technique that is described in our article on <a href="TidyEval.html">tidy evaluation</a>. Note that we did not need to reference the data source in the initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call - this is “passed” through the piped code. It will produce the following plot:</p>
+<p>This code is an example of piping, a technique that is described in our article on <a href="TidyEval.html">tidy evaluation</a>. The pipe operator (<code>%&gt;%</code>) is loaded with the <code>dplyr</code> package. One advantage of using piped code is that we did not need to reference the data source in the initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call - this is “passed” through the pipe. It will produce the following plot:</p>
 <div class="figure">
 <img src="SpCond_line.png">
 </div>
-<p>This code should be portable from session to session with little modification (you’ll have to change the dataframe name if you use something other than <code>df</code>).</p>
+<p>This code should be portable from session to session with little modification (you’ll have to change the data frame name if you use something other than <code>df</code>).</p>
+<p>The use of piping here is important, because it allows us to make temporary changes to the shape and structure of the data frame without actually altering the underlying data in a permanent way. In this example, we can create a temporary date-time variable without needing to make it a permanent addition to the data. In the next section, we can temporarily reshape the data without, again, making that a permanent change.</p>
 </div>
 <div id="comparing-corrected-and-uncorrected-data" class="section level3">
 <h3 class="hasAnchor">
@@ -183,7 +184,7 @@
 <span class="dv">10</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">51</span> SpCond_Corr <span class="fl">0.7506379</span>
 <span class="co"># ... with 3,014 more rows</span></code></pre></div>
 <p>You’ll notice that each date-time point now has two rows, one for <code>SpCond</code> and one for <code>SpCond_Corr</code>. This is the hallmark of “long” formatted data.</p>
-<p>We can extend this example by adding a <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call to use the “long” data to plot the difference between the corrected and uncorrected values. We’ve omitted the <code><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> function here because it does not have a practicel impact on how our data are plotted.</p>
+<p>We can extend this example by adding a <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call to use the “long” data to plot the difference between the corrected and uncorrected values. We’ve omitted the <code><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> function here because it does not have a practical impact on how our data are plotted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
@@ -196,6 +197,118 @@
 <img src="SpCond_corrLine.png">
 </div>
 </div>
+<div id="smoothing-lines" class="section level3">
+<h3 class="hasAnchor">
+<a href="#smoothing-lines" class="anchor"></a>Smoothing Lines</h3>
+<p>The data in the previous plot show the variance that happens between individual readings clearly - these are the jagged increases and decreases along the line. In certain circumstances it may make sense to smooth these lines to highlight a general trend rather than the individual readings. This can be done with a single modification to the previous pipe of functions. In place of the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line()</a></code>, we can use <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> to apply smoothing. If we do not specify a specific method and formula, <code>ggplot2</code> will select what it believes to be the best approach for smoothing the data based on sample size and linearity. In this case, <code>ggplot2</code> defaults to using a generalized additive model with the equation <code>y ~ s(x, bs = "cs")</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure)) </code></pre></div>
+<p>This does not produce a radically different plot in the case of specific conductance:</p>
+<div class="figure">
+<img src="SpCond_corrSmooth.png">
+</div>
+<p>The use of <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> does, however, make a considerable difference in the case of pH. This is a line plot of the corrected and uncorrected pH variables (<code>ph_Corr</code> and <code>pH</code> respectively). They were made using the same approach as the last two plots, expect the references to specific conductance variables were swapped out for the pH variables.</p>
+<div class="figure">
+<img src="pH_corrLine.png">
+</div>
+<p>The impact of diurnal variation is pronounced here, giving the plot a block-y look because of the clustering of values around particular pH levels at particular times of day. The smoothed version of the plot removes much of the variation associated with diurnal fluctuation, but retains the more general trends in pH levels between the different days in the example data:</p>
+<div class="figure">
+<img src="pH_corrSmooth.png">
+</div>
+</div>
+<div id="scatterplots" class="section level3">
+<h3 class="hasAnchor">
+<a href="#scatterplots" class="anchor"></a>Scatterplots</h3>
+<p>Scatter plots offer a convenient way to visualize the relationship between two variables. For instance, there is a strong relationship between temperature and pH level in the example data. We can visualize this relationship using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point()</a></code> geom in <code>ggplot2</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> temp, <span class="dt">y =</span> pH_Corr))</code></pre></div>
+<div class="figure">
+<img src="pHTemp.png">
+</div>
+<p>We can see a general trend in the relationship between temperature and pH level, with generally higher levels of pH associated with generally higher temperatures (in Celsius). This is interesting, but we can use <code>ggplot2</code> to dig further into the relationship. For instance, we can highlight each point on the scatter plot by its value on a third variable. In the example data, we can use the date variable for this purpose by referencing it in the <code>color</code> argument:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> temp, <span class="dt">y =</span> pH_Corr, <span class="dt">color =</span> Date))</code></pre></div>
+<div class="figure">
+<img src="pHTempDate.png">
+</div>
+<p>Adding color to each point shows how individual days within the example data have particular patterns.</p>
+</div>
+<div id="faceted-scatterplots" class="section level3">
+<h3 class="hasAnchor">
+<a href="#faceted-scatterplots" class="anchor"></a>Faceted Scatterplots</h3>
+<p>While the patterning stands out in the previous plot, we can go further by “faceting” it. This will produce a 2 x 4 matrix of scatter plots, one for each day in the data. To do this, we add the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> function to our <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code>, and indicate in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> that we want to base the faceting on the <code>Date</code> variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Temp, <span class="dt">y =</span> pH_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>Date)</code></pre></div>
+<div class="figure">
+<img src="pHTempByDate.png">
+</div>
+<p>We can now see the variation between days as well as within them more clearly. Note that the inclusion of the tilde (<code>~</code>) in the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> function is important!</p>
+<p>Finally, we can build in a bit more complexity by overlaying the points with a smoothed line. We do this by adding the same <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> function from earlier in the article between the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point()</a></code> and <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Temp, <span class="dt">y =</span> pH_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Temp, <span class="dt">y =</span> pH_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>Date)</code></pre></div>
+<div class="figure">
+<img src="pHTempByDate_smooth.png">
+</div>
+<p>As before, we did not specify a method for smoothing. Recall that <code>ggplot2</code> will attempt to pick the best smoother for the given data. In this case, <code>ggplot2</code>’s assessment is that the <a href="https://en.wikipedia.org/wiki/Local_regression">LOESS</a> method is most appropriate.</p>
+<p>The code we used above builds clearly on the previous <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> calls we have written, but the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point()</a></code> and <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> functions contain the exact same data. Since <code>ggplot2</code> is particularly flexible, we have an alternative approach to writing the call that reduces the redundant code. This involves moving the aesthetic mapping from being specified in the individual geoms to being specified in the initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df, <span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> Temp, <span class="dt">y =</span> pH_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>Date)</code></pre></div>
+<p>This code will produce the same data, but with fewer characters needed. This makes debugging the code easier and, if shared, the code is easier to read and understand.</p>
+</div>
+<div id="comparing-two-groups" class="section level3">
+<h3 class="hasAnchor">
+<a href="#comparing-two-groups" class="anchor"></a>Comparing Two Groups</h3>
+<p>A final common task we’ll describe here is comparing two groups of data. In this case, we’ll compare the distribution of pH values for the first three days and the second three days using a box plot. To do this, we’ll need to create a temporary logical variable that is <code>TRUE</code> if the date is between 9/21 and 9/23 and <code>FALSE</code> if the date is between 9/18 and 9/20. We reference these dates in a <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> function that uses <code>ifelse()</code> to set up a logical test. If the date is either 9/21, 9/22, 9/23, our new variable is assigned <code>TRUE</code> for that observation. Otherwise, that observation is assigned a <code>FALSE</code> value. We can then use this temporary variable as the <code>x</code> variable in our plot:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">secondHalf =</span> <span class="kw">ifelse</span>(Date <span class="op">==</span><span class="st"> "9/21/2015"</span> <span class="op">|</span><span class="st"> </span>Date <span class="op">==</span><span class="st"> "9/22/2015"</span> <span class="op">|</span><span class="st"> </span>Date <span class="op">==</span><span class="st"> "9/23/2015"</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot">geom_boxplot</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> secondHalf, <span class="dt">y =</span> pH_Corr))</code></pre></div>
+<div class="figure">
+<img src="pHTempByDate_box.png">
+</div>
+<p>We can see in this plot that values for <code>pH</code> were generally higher in the second half of the data collection period, though there were some outlier values in the first half of the data collection period that may warrant further exploration.</p>
+</div>
+</div>
+<div id="plotting-for-dissemination" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plotting-for-dissemination" class="anchor"></a>Plotting for Dissemination</h2>
+<p>One final task with <code>ggplot2</code> is to add some additional information to each plot. We can easily add a title, subtitle, adjust the text of the <code>x</code> and <code>y</code> labels, and add a caption using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs()</a></code> function. We can also change the <code>x</code> axis to include a tick and value for each day instead of every other day. For example, we can edit the smoothed specific conductance that looked like this after it was first produced above:</p>
+<div class="figure">
+<img src="SpCond_corrSmooth.png">
+</div>
+<p>The following code re-builds that plot with changes both to the <code>x</code> axis values and to the plot as a whole:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure)) <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_datetime</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/scales/topics/date_format">date_format</a></span>(<span class="st">"%m-%d-%Y"</span>), <span class="dt">date_breaks =</span> <span class="st">"1 day"</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(
+      <span class="dt">title =</span> <span class="st">"Comparison of Corrected and Uncorrected Specific Conductance Values"</span>,
+      <span class="dt">subtitle =</span> <span class="st">"Example Creek, Eastern Missouri"</span>,
+      <span class="dt">x =</span> <span class="st">"Date"</span>,
+      <span class="dt">y =</span> <span class="st">"Specific Conductance"</span>,
+      <span class="dt">caption =</span> <span class="st">"Smoothed using a generalized additive model; </span><span class="ch">\n</span><span class="st">Plot produced by the Saint Louis University Hydrology and Geochemistry Research Lab"</span>
+    )</code></pre></div>
+<div class="figure">
+<img src="disseminationPlot.png">
+</div>
+<p>Note the use of <code>\n</code> in the <code>caption</code> argument of <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs()</a></code>. This forces a line break in the caption to improve the readability of the text.</p>
+<p>Finally, we can save the plot using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave()</a></code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave</a></span>(<span class="st">"plotName.png"</span>, <span class="dt">width =</span> <span class="dv">800</span>, <span class="dt">height =</span> <span class="dv">600</span>, <span class="dt">units =</span> <span class="st">"mm"</span>, <span class="dt">dpi =</span> <span class="dv">300</span>)</code></pre></div>
+<p>This function will save whatever is currently in RStudio’s Plots tab to the specified file in the specified dimensions and dots per inch resolution.</p>
 </div>
 </div>
   </div>
@@ -208,6 +321,7 @@
 <li><a href="#packages">Packages</a></li>
       <li><a href="#descriptive-statistics">Descriptive Statistics</a></li>
       <li><a href="#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+      <li><a href="#plotting-for-dissemination">Plotting for Dissemination</a></li>
       </ul>
 </div>
       </div>
