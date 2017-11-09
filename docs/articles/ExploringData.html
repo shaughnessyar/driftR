@@ -118,11 +118,83 @@
 <div id="exploratory-data-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exploratory-data-analysis" class="anchor"></a>Exploratory Data Analysis</h2>
-<p><a href="https://en.wikipedia.org/wiki/Exploratory_data_analysis">Exploratory data analysis</a> is a set of techniques promoted by <a href="https://en.wikipedia.org/wiki/John_Tukey">John Tukey</a> for visually assessing data sets.</p>
+<p><a href="https://en.wikipedia.org/wiki/Exploratory_data_analysis">Exploratory data analysis</a> (EDA) is a set of techniques promoted by <a href="https://en.wikipedia.org/wiki/John_Tukey">John Tukey</a> for visually assessing data sets. <code>ggplot2</code> and the tidyverse make it easy to conduct EDA on your data. You’ll need to have each of the packages above loaded in your <code>R</code> session:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)  <span class="co"># data visualization</span>
+<span class="kw">library</span>(scales)   <span class="co"># date/time scales for plots</span>
+
+<span class="kw">library</span>(dplyr)    <span class="co"># data wrangling</span>
+<span class="kw">library</span>(tidyr)    <span class="co"># reshaping data</span>
+<span class="kw">library</span>(stringr)  <span class="co"># tools for strings</span></code></pre></div>
+<div id="histograms" class="section level3">
+<h3 class="hasAnchor">
+<a href="#histograms" class="anchor"></a>Histograms</h3>
+<p>Histograms are a classic way to assess the shape of the distribution of a single variable. They also make for an easy introduction to <code>ggplot2</code>. Every <code>ggplot2</code> call has at least two components - an initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> function and a “geom” that defines the way the underlying data are transformed for plotting purposes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> pH), <span class="dt">bins =</span> <span class="dv">10</span>)</code></pre></div>
+<p>We assign the <em>data source</em> in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code>, and describe the <em>aesthetic mapping</em> (the connection of data to visual properties) in the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram()</a></code> call. The code shown above will produce this plot:</p>
+<div class="figure">
+<img src="pH_hist.png">
+</div>
+</div>
 <div id="visualizing-drift-over-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualizing-drift-over-time" class="anchor"></a>Visualizing Drift Over Time</h3>
-<p>The key feature of <code>driftR</code> is the correction of drift that occurs over time. <code>ggplot2</code> and the tidyverse make it easy to plot those data.</p>
+<p>The key feature of <code>driftR</code> is the correction of drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our <code>Date</code> and <code>Time</code> data created by <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code>. We need to concatenate these two variables togther using <code><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c()</a></code>, and then store them as properly identified date-time data (which <code>R</code> calls <code>POSIXct</code>) using <code>as.POSIXct()</code>. These changes are both made using the <a href="http://dplyr.tidyverse.org/reference/mutate.html"><code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a>, which allows us to create new variables. Once we have a date-time variable, we can use it as the <code>x</code> variable on our plot and plot a measure like specific conductance (<code>SpCond</code>) against it:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> SpCond))</code></pre></div>
+<p>This code is an example of piping, a technique that is described in our article on <a href="TidyEval.html">tidy evaluation</a>. Note that we did not need to reference the data source in the initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call - this is “passed” through the piped code. It will produce the following plot:</p>
+<div class="figure">
+<img src="SpCond_line.png">
+</div>
+<p>This code should be portable from session to session with little modification (you’ll have to change the dataframe name if you use something other than <code>df</code>).</p>
+</div>
+<div id="comparing-corrected-and-uncorrected-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#comparing-corrected-and-uncorrected-data" class="anchor"></a>Comparing Corrected and Uncorrected Data</h3>
+<p><code>driftR</code> produces “wide” data, where each row is a single observation taken by the instrument and each column represents a measurement of a particular characteristic. If we want to compare two characteristics on a plot, like the corrected and uncorrected versions of specific conductance, we need to convert our data to long using the <a href="http://tidyr.tidyverse.org/reference/gather.html"><code><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather()</a></code></a> function from the <a href="http://tidyr.tidyverse.org"><code>tidyr</code></a> package. This conversion is done only on the variables we are interested in (our <code>dateTime</code> measure plus <code>SpCond</code> and <code>SpCond_Corr</code>).</p>
+<p>The following code:</p>
+<ul>
+<li>takes the initial <code>df</code> data, then</li>
+<li>creates our date-time measure as before, uses the <a href="http://dplyr.tidyverse.org/reference/select.html"><code><a href="http://dplyr.tidyverse.org/reference/select.html">select()</a></code></a> function to retain only the variables of interest, then</li>
+<li>converts them to wide to long with a new variable <code>measure</code> containing an indicator of whether the data are corrected or not and a new variable <code>value</code> containing the actual measured (or corrected) value, then</li>
+<li>re-orders the variables so that each date-time pair are in contiguous rows:</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>df <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(dateTime)
+<span class="co"># A tibble: 3,024 x 3</span>
+              dateTime     measure     value
+                <span class="op">&lt;</span>dttm<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>
+<span class="st"> </span><span class="dv">1</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7490000</span>
+ <span class="dv">2</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7494559</span>
+ <span class="dv">3</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">05</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7490000</span>
+ <span class="dv">4</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">05</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7495014</span>
+ <span class="dv">5</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7500000</span>
+ <span class="dv">6</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7505470</span>
+ <span class="dv">7</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7500000</span>
+ <span class="dv">8</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7505925</span>
+ <span class="dv">9</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">51</span>      SpCond <span class="fl">0.7500000</span>
+<span class="dv">10</span> <span class="dv">2015</span><span class="op">-</span><span class="dv">09</span><span class="op">-</span><span class="dv">18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">51</span> SpCond_Corr <span class="fl">0.7506379</span>
+<span class="co"># ... with 3,014 more rows</span></code></pre></div>
+<p>You’ll notice that each date-time point now has two rows, one for <code>SpCond</code> and one for <code>SpCond_Corr</code>. This is the hallmark of “long” formatted data.</p>
+<p>We can extend this example by adding a <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call to use the “long” data to plot the difference between the corrected and uncorrected values. We’ve omitted the <code><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> function here because it does not have a practicel impact on how our data are plotted.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure))</code></pre></div>
+<p>The <code>group</code> argument in the aesthetic mapping ensures that our data are split by whether they are the raw <code>SpCond</code> values or the corrected <code>SpCond_Corr</code> values. The <code>color</code> argument assigns different colors to each of the two lines produced. This call gives us the following plot:</p>
+<div class="figure">
+<img src="SpCond_corrLine.png">
+</div>
 </div>
 </div>
 </div>
