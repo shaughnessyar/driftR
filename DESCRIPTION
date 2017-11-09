@@ -13,7 +13,7 @@ Description: A tidy implamentation of equations that correct for instramental dr
     which are susceptible to errors/inaccuracies due to drift. This package allows the 
     user to correct their data using one or two standard reference values in a uniform, 
     reproducible way.
-License: MIT + file LICENSE
+License: GPL-3 + file LICENSE
 URL: https://github.com/shaughnessyar/driftR
 BugReports: https://github.com/shaughnessyar/driftR/issues
 Encoding: UTF-8
