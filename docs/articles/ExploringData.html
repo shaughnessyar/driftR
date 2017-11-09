@@ -82,7 +82,7 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Exploring Data in R</h1>
-                        <h4 class="author">Christopher Prener</h4>
+                        <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
             <h4 class="date">2017-11-09</h4>
           </div>
@@ -106,6 +106,19 @@
 <li>
 <a href="http://stringr.tidyverse.org"><code>stringr</code></a> - a set of functions for manipulating string (text) data</li>
 </ul>
+</div>
+<div id="reading-and-binding-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#reading-and-binding-data" class="anchor"></a>Reading and Binding Data</h2>
+<p>Following the <a href="driftR.html">Getting Started</a> vignette, we assume that data are stored on your computer in <code>csv</code> format. To open these data in <code>R</code>, we recommend using the <a href="http://readr.tidyverse.org"><code>readr</code> package’s</a> <a href="http://readr.tidyverse.org/reference/write_delim.html"><code>write_csv()</code></a> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData.csv"</span>)</code></pre></div>
+<p>Using <code>read_csv()</code> ensures that data are brought back into <code>R</code> as <a href="http://tibble.tidyverse.org">tibbles</a>. Tibbles are the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> implementation of data frames. They print in a more organized manner and they behave in a more stable fashion.</p>
+<p>If you have multiple tables to read in and combine, use as many instances of <code>read_csv()</code> as necessary and then the <a href="http://dplyr.tidyverse.org"><code>dplyr</code> package’s</a> <a href="http://dplyr.tidyverse.org/reference/bind.html"><code><a href="http://dplyr.tidyverse.org/reference/bind.html">bind_rows()</a></code> function</a> to combine them:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df1 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData_Jan17.csv"</span>)
+df2 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData_Feb17.csv"</span>)
+
+df &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df1, df2)</code></pre></div>
+<p>Make sure that each data frame has identically named and formatted columns before binding. If changes need to be made, see our <a href="OtherData.html">article on bringing data in from other sources</a>.</p>
 </div>
 <div id="descriptive-statistics" class="section level2">
 <h2 class="hasAnchor">
@@ -322,6 +335,7 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#packages">Packages</a></li>
+      <li><a href="#reading-and-binding-data">Reading and Binding Data</a></li>
       <li><a href="#descriptive-statistics">Descriptive Statistics</a></li>
       <li><a href="#exploratory-data-analysis">Exploratory Data Analysis</a></li>
       <li><a href="#plotting-for-dissemination">Plotting for Dissemination</a></li>

@@ -1,6 +1,6 @@
 ---
 title: "Exploring Data in R"
-author: "Christopher Prener"
+author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -19,6 +19,27 @@ The packages that we'll use, beyond the `base` package, are all a core part of t
 * [`dplyr`](http://dplyr.tidyverse.org) - a set of common verbs for cleaning and wrangling data
 * [`tidyr`](http://tidyr.tidyverse.org) - functions for consistently tidying data so that "(1) each variable is in a column, (2) each observation is in a row, and (3) each value is a cell"
 * [`stringr`](http://stringr.tidyverse.org) - a set of functions for manipulating string (text) data
+
+## Reading and Binding Data
+
+Following the [Getting Started](driftR.html) vignette, we assume that data are stored on your computer in `csv` format. To open these data in `R`, we recommend using the [`readr` package's](http://readr.tidyverse.org) [`write_csv()`](http://readr.tidyverse.org/reference/write_delim.html) function:
+
+```{r, eval=FALSE}
+df <- read_csv("waterData.csv")
+```
+
+Using `read_csv()` ensures that data are brought back into `R` as [tibbles](http://tibble.tidyverse.org). Tibbles are the [`tidyverse`](https://www.tidyverse.org) implementation of data frames. They print in a more organized manner and they behave in a more stable fashion.
+
+If you have multiple tables to read in and combine, use as many instances of `read_csv()` as necessary and then the [`dplyr` package's](http://dplyr.tidyverse.org) [`bind_rows()` function ](http://dplyr.tidyverse.org/reference/bind.html) to combine them:
+
+```{r, eval=FALSE}
+df1 <- read_csv("waterData_Jan17.csv")
+df2 <- read_csv("waterData_Feb17.csv")
+
+df <- bind_rows(df1, df2)
+```
+
+Make sure that each data frame has identically named and formatted columns before binding. If changes need to be made, see our [article on bringing data in from other sources](OtherData.html).
 
 ## Descriptive Statistics
 

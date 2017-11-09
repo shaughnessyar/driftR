@@ -101,7 +101,7 @@ df <- select(df, -c(variable1, variable2)))
 ```
 
 ## Exporting Data
-Finally, data can be exported to `csv` (our recommended file format) using the [`readr` package](http://readr.tidyverse.org) using the [`write_csv()`](http://readr.tidyverse.org/reference/write_delim.html) function:
+Finally, data can be exported to `csv` (our recommended file format because it is plain-text and non-proprietary) using the [`readr` package](http://readr.tidyverse.org) using the [`write_csv()`](http://readr.tidyverse.org/reference/write_delim.html) function:
 
 ```{r, eval=FALSE}
 write_csv(df, path = "waterData.csv", na = "NA")
