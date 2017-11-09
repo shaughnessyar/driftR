@@ -196,7 +196,7 @@ waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span 
 <div id="removing-unneeded-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#removing-unneeded-variables" class="anchor"></a>Removing Unneeded Variables</h2>
-<p>Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and the new name set equal to the old name:</p>
+<p>Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and a list of the variables to be removed inside <code>-c(varlist)</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(a.very.long.pH.variable.name, a.very.long.cholride.variable.name))<span class="er">)</span></code></pre></div>
 <p>Like all other <code>dplyr</code> functions, <code>select()</code> can be included in a pipe as well.</p>
 </div>

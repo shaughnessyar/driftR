@@ -138,7 +138,7 @@ waterTibble <- waterTibble %>%
 
 ## Removing Unneeded Variables
 
-Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to remove them. The function accepts the data frame name followed by a comma and the new name set equal to the old name:
+Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to remove them. The function accepts the data frame name followed by a comma and a list of the variables to be removed inside `-c(varlist)`:
 
 ```{r, eval=FALSE}
 waterTibble <- select(waterTibble, -c(a.very.long.pH.variable.name, a.very.long.cholride.variable.name)))

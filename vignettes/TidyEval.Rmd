@@ -1,6 +1,6 @@
 ---
 title: "Tidy Evaluation in driftR"
-author: "Christopher Prener"
+author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
