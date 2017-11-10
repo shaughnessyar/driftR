@@ -63,40 +63,59 @@ $$ C=\left( \frac { m-a_{ t } }{ { b }_{ t }-{ a }_{ t }  }  \right) \cdot \left
 There are five main functions in the `driftR` which each serve their own purpose in data cleaning process:
 
 1. `dr_readSonde()` - import data from the Sonde 
-2. `dr_correct()` - apply correction factors
-3. `dr_clean1()` - one point calibration 
-4. `dr_clean2()` - two point calibration
+2. `dr_factor()` - apply correction factors
+3. `dr_cleanOne()` - one point calibration 
+4. `dr_cleanTwo()` - two point calibration
 5. `dr_drop()` - drop observations to account for equilibration
 
 ### Importing data
-First, to import a data set, the `dr_sondeClean(fileExtention, defineVar= FALSE)` function will be utilized. The argument `fileExtention` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" observation will be removed and the different variables will be defined as the correct data type (i.e. Date as a date variable, Time as a time variable, everything else as a numeric variable). Using `defineVar = TRUE` will format the date as Year-Month-Day.
+First, to import a data set, the `dr_sondeClean()` function will be utilized. The argument `file` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" observation will be removed and the collected data will be stored as numeric variables. Using `defineVar = TRUE` will format the date as Month/Day/Year.
 
 ```{r, eval=FALSE}
 df <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = TRUE)
 ```
 
 ### Creating correction factors
-The next step in the data cleaning process is creating correction factors using `dr_correct(dataFrame, dateVar, timeVar, format)`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `dataFrame` is the working data frame for the correction. The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
+The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the vairiable that will contain the correction factors.The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
 
 ```{r, eval=FALSE}
-corrFactors <- dr_correct(df, Date, Time, format = "MDY")
+df <- dr_factor(df,
+                 corrFactor = corfac,
+                 dateVar= Date, 
+                 timeVar = Time, 
+                 format = "MDY")
 ```
 
 ### Cleaning the data
-After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_clean1(dataFrame,varName,calVal,calStd,correctVar)` will be used. The argument `dataFrame` is the working data frame for the correction and `varName` is the variable name that you want to correct. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respectively. The `correctVar` argument is the result generated from the `dr_correct()` function. 
+After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_cleanOne()` will be used. The argument `.data` is the working data frame for the correction.  `sourceVar` is the variable name that you want to correct and `cleanVar` is the name of the variable that will contain the corrected data. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respectively. The `factorVar` argument is the result generated from the `dr_correct()` function. 
 
-If two standard measurements are taken, then the function `dr_clean2(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar)` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` arguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
+If two standard measurements are taken, then the function `dr_clean2()` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` arguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
 
 ```{r, eval=FALSE}
-df$SpCond_Corr <- dr_clean1(df, SpCond, 1.07, 1, corrFactors)
-df$pH_Corr <- dr_clean2(df, pH, 7.01, 7, 11.8, 10, corrFactors)
+df <- dr_cleanOne(df,
+                  sourceVar = SpCond, 
+                  cleanVar = SpCond_corr, 
+                  calVal = 1.07, 
+                  calStd = 1, 
+                  factorVar = corfac)
+
+df <- dr_cleanTwo(df, 
+                  sourceVar = pH, 
+                  cleanVar = pH_corr,
+                  calValLow = 7.01, 
+                  calStdLow = 7, 
+                  calValHigh = 11.8, 
+                  calStdHigh = 10, 
+                  factorVar = corfac)
 ```
 
 ### Dropping Data
-After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using `dr_clean1()` or `dr_clean2()` will result in the corrections being non-consistent. To do this, the `dr_drop(dataFrame,head=NULL,tail=NULL)` function will be used. The argument `dataFrame` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the beginning and the end of the data set respectively. It is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
+After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using `dr_clean1()` or `dr_clean2()` will result in the corrections being non-consistent. To do this, the `dr_drop()` function will be used. The argument `.data` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the beginning and the end of the data set respectively. It is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
 
 ```{r, eval=FALSE}
-df <- dr_drop(df, 6, 6)
+df <- dr_drop(df, 
+              head = 6, 
+              tail = 6)
 ```
 
 ## Tidying Data
