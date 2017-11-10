@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -84,13 +84,13 @@
       <h1>Using Data From Other Sources</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-11-09</h4>
+            <h4 class="date">2017-11-10</h4>
           </div>
 
     
     
 <div class="contents">
-<p>While <code>driftR</code> is designed to work seamlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy <code>driftR</code> format. Below is a snapshot of the example data after they have been imported using the <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> function. This is the expected format that <code>driftR</code> requires.</p>
+<p>While <code>driftR</code> is designed to work seamlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy <code>driftR</code> format. Below is a snapshot of the example data after they have been imported using the <code>dr_readSonde()</code> function. This is the expected format that <code>driftR</code> requires.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A tibble: 1,527 x 11</span>
         Date     Time  Temp SpCond    pH  pHmV Chloride AmmoniumN NitrateN  Turbidity    DO
        <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>

@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
+  <a href="/index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -124,18 +124,18 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <span class="kw">library</span>(driftR)
 
 <span class="co"># import data exported from a Sonde </span>
-df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">define =</span> <span class="ot">TRUE</span>)
+df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_readSonde">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">define =</span> <span class="ot">TRUE</span>)
 
 <span class="co"># calculate correction factor</span>
 <span class="co"># results stored in new vector corrFac</span>
-df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_factor.html">dr_factor</a></span>(df, <span class="dt">corrFactor =</span> corrFac, 
+df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor</a></span>(df, <span class="dt">corrFactor =</span> corrFac, 
                 <span class="dt">dateVar =</span> Date, 
                 <span class="dt">timeVar =</span> Time, 
                 <span class="dt">format =</span> <span class="st">"MDY"</span>)
 
 <span class="co"># apply one-point calibration to SpCond;</span>
 <span class="co"># results stored in new vector SpConde_Corr</span>
-df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctOne.html">dr_correctOne</a></span>(df, <span class="dt">sourceVar =</span> SpCond, 
+df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(df, <span class="dt">sourceVar =</span> SpCond, 
                     <span class="dt">cleanVar =</span> SpCond_Corr, 
                     <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
                     <span class="dt">calStd =</span> <span class="dv">1</span>, 
@@ -143,7 +143,7 @@ df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctO
 
 <span class="co"># apply two-point calibration to pH;</span>
 <span class="co"># results stored in new vector ph_Corr</span>
-df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctTwo.html">dr_correctTwo</a></span>(df, <span class="dt">sourceVar =</span> pH, 
+df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctTwo">dr_correctTwo</a></span>(df, <span class="dt">sourceVar =</span> pH, 
                     <span class="dt">cleanVar =</span> pH_Corr, 
                     <span class="dt">calValLow =</span> <span class="fl">7.01</span>, 
                     <span class="dt">calStdLow =</span> <span class="dv">7</span>,
@@ -152,7 +152,7 @@ df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctT
                     <span class="dt">factorVar =</span> corrFac)
 
 <span class="co"># drop observations to account for instrument equilibration</span>
-df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(df, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
+df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_drop">dr_drop</a></span>(df, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
 </div>
 <div id="use-with" class="section level3">
 <h3 class="hasAnchor">
@@ -163,27 +163,27 @@ df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.htm
 <span class="kw">library</span>(driftR)
 
 <span class="co"># import data exported from a Sonde </span>
-df &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">define =</span> <span class="ot">TRUE</span>)
+df &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_readSonde">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">define =</span> <span class="ot">TRUE</span>)
 
 <span class="co"># caclulate correction factors, apply corrections, and drop observations</span>
 df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
             <span class="dt">dateVar =</span> Date, 
             <span class="dt">timeVar =</span> Time, 
             <span class="dt">format =</span> <span class="st">"MDY"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
                 <span class="dt">cleanVar =</span> SpCond_Corr, 
                 <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
                 <span class="dt">calStd =</span> <span class="dv">1</span>, 
                 <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, 
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctTwo">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, 
                 <span class="dt">cleanVar =</span> pH_Corr, 
                 <span class="dt">calValLow =</span> <span class="fl">7.01</span>, 
                 <span class="dt">calStdLow =</span> <span class="dv">7</span>,
                 <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
                 <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, 
                 <span class="dt">factorVar =</span> corrFac)<span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_drop">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</code></pre></div>
 </div>
 </div>
 <div id="additional-documentation" class="section level2">
@@ -192,7 +192,7 @@ df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span>
 <p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for details on these functions and a <a href="https://shaughnessyar.github.io/driftR/articles/driftR.html">detailed vignette</a> describing how to get started with <code>driftR</code>.</p>
 <p>An <a href="https://shaughnessyar.github.io/driftR/articles/TidyEval.html">additional vignette</a> describes <code>driftR</code>’s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also <a href="https://shaughnessyar.github.io/driftR/articles/ExploringData.html">provide some introductory examples</a> for how to use <a href="http://tidyr.tidyverse.org"><code>tidyr</code></a>, <a href="http://ggplot2.tidyverse.org"><code>ggplot2</code></a>, and several other <code>R</code> packages to conduct some initial exploratory data analysis of <code>driftR</code> output. Finally, we provide a <a href="https://shaughnessyar.github.io/driftR/articles/OtherData.html">fourth vignette</a> designed for users of non-YSI Sonde instruments who wish to use <code>driftR</code> with their data.</p>
 <p>You can also view the help files from within R:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><a href="reference/dr_readSonde.html">?dr_readSonde</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_readSonde">?dr_readSonde</a></code></pre></div>
 </div>
 <div id="want-to-contribute" class="section level2">
 <h2 class="hasAnchor">

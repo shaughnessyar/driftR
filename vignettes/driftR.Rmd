@@ -9,13 +9,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, eval=FALSE}
-library(readr)
-library(dplyr)
-library(ggplot2)
-library(driftR)
-```
-
 ## Overview
 
 In-situ water-quality monitoring instruments take a continuous measurements of a various chemical and physical parameters. The longer these instruments are allowed to stay in the field, the further the readings of the various sensors drift from the true value of the parameter. The purpose of this package is to correct water-quality monitoring data sets for instrumental drift in a reliable, reproducible method.
@@ -23,15 +16,48 @@ In-situ water-quality monitoring instruments take a continuous measurements of a
 ## Equations
 The equations that are implemented were originally published as part of [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) [dissertation research](http://openscholarship.wustl.edu/cgi/viewcontent.cgi?article=1584&amp=&context=etd&amp=&sei-redir=1&referer=https%253A%252F%252Fscholar.google.com%252Fscholar%253Fhl%253Den%2526as_sdt%253D0%25252C26%2526q%253Dhasenmueller%252Bwash%252Bu%2526btnG%253D#search=%22hasenmueller%20wash%20u%22) (see page 32).
 
-### One-Point Calibration
-The one-point calibration equation is as follows:
+### Correction Factor
+The correction factor equation (implemented in `dr_factor()`) is as follows:
 
-![](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/onePointCorrection.png)
+$\textrm{Let:}$
+
+* ${f}_{t} = \textrm{correction factor}$
+* $t = \textrm{time interval}$
+* $\sum{t} = \textrm{total time}$
+
+$$ {f}_{t} = \left( \frac { t }{ \sum { t }  }  \right) $$
+
+### One-Point Calibration
+The one-point calibration equation (implemented in `dr_correctOne()`) is as follows:
+
+$\textrm{Let:}$
+
+* $C = \textrm{drift corrected parameter}$
+* $m = \textrm{uncorrected \textit{in-situ} measurement parameter}$
+* ${f}_{t} = \textrm{correction factor}$
+* ${s}_{i} = \textrm{calibration standard}$
+* ${s}_{f} = \textrm{calibration standard after drift}$
+
+$$ C =  m + {f}_{t} \cdot \left( { s }_{ i }-{ s }_{ f } \right) $$
 
 ### Two-Point Calibration 
-The two-point calibration equation is as follows:
+The two-point calibration equation (implemented in `dr_correctTwo()`) is as follows:
 
-![](https://raw.githubusercontent.com/shaughnessyar/driftR/master/man/figures/twoPointCorrection.png)
+$\textrm{Let:}$
+
+* $C = \textrm{drift corrected parameter}$
+* $m = \textrm{uncorrected \textit{in-situ} measurement parameter}$
+* ${f}_{t} = \textrm{correction factor}$
+* ${a}_{t} = \textrm{lower concentration calibration}$
+* ${b}_{t} = \textrm{higher concentration calibration}$
+* ${a}_{i} = \textrm{lower calibration standard}$
+* ${b}_{i} = \textrm{higher calibration standard}$
+* ${a}_{f} = \textrm{lower calibration standard after drift}$
+* ${b}_{f} = \textrm{higher calibration standard after drift}$
+
+$$ { a }_{ t } = { a }_{ i } + {f}_{t} \cdot \left( { a }_{ i }-{ a }_{ f } \right) $$
+$$ { b }_{ t } = { b }_{ i } - {f}_{t} \cdot \left( { b }_{ i }-{ b }_{ f } \right) $$
+$$ C=\left( \frac { m-a_{ t } }{ { b }_{ t }-{ a }_{ t }  }  \right) \cdot \left( { b }_{ i }-{ a }_{ i } \right) + { a }_{ i } $$
 
 ## Using driftR
 There are five main functions in the `driftR` which each serve their own purpose in data cleaning process:

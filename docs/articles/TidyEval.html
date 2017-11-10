@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -84,7 +84,7 @@
       <h1>Tidy Evaluation in driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-11-09</h4>
+            <h4 class="date">2017-11-10</h4>
           </div>
 
     
@@ -155,7 +155,7 @@
 <p><code>driftR</code> makes use of tidy evaluation to work around this issue. All <code>driftR</code> functions will accept variable names as parameters that are either quoted <em>or</em> unquoted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
 
-<span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> corrFac, 
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">dr_factor</span>(driftData, <span class="dt">corrFactor =</span> corrFac, 
             <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)
 <span class="co">#        Date     Time  Temp SpCond   corrFac</span>
 <span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
@@ -165,7 +165,7 @@
 <span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
 <span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span>
 
-<span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>, 
+<span class="op">&gt;</span><span class="st"> </span><span class="kw">dr_factor</span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>, 
             <span class="dt">dateVar =</span> <span class="st">"Date"</span>, <span class="dt">timeVar =</span> <span class="st">"Time"</span>, <span class="dt">format =</span> <span class="st">"MDY"</span>)
 <span class="co">#        Date     Time  Temp SpCond   corrFac</span>
 <span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
@@ -188,11 +188,11 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
 
 driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
             <span class="dt">dateVar =</span> Date, 
             <span class="dt">timeVar =</span> Time, 
             <span class="dt">format =</span> <span class="st">"MDY"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
                 <span class="dt">cleanVar =</span> SpCond_Corr, 
                 <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
                 <span class="dt">calStd =</span> <span class="dv">1</span>, 
@@ -211,7 +211,7 @@ driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
 <h3 class="hasAnchor">
 <a href="#data" class="anchor"></a><code>.data</code>
 </h3>
-<p>One thing you’ll notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="../reference/dr_factor.html">dr_factor()</a></code> or <code><a href="../reference/dr_correctOne.html">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code>dr_function()</code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
+<p>One thing you’ll notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code> or <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code>dr_function()</code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
 </div>
 </div>
 </div>
