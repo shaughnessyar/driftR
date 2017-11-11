@@ -13,8 +13,5 @@ os:
   - linux
   - osx
 
-install:
-  - R -e 'install.packages(c("dplyr", "ggplot2", "glue", "magrittr", "readr", "rlang", "stringr", "tibble"))'
-
 after_success:
   - Rscript -e 'covr::codecov()'
