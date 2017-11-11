@@ -21,11 +21,9 @@ environment:
 
   matrix:
   - R_VERSION: devel
-    PKGTYPE: source
     R_ARCH: x64
 
   - R_VERSION: devel
-    PKGTYPE: source
 
   - R_VERSION: patched
     R_ARCH: x64
