@@ -11,7 +11,7 @@ install:
   ps: Bootstrap
 
 cache:
-  #- C:\RLibrary
+  - C:\RLibrary
 
 # Adapt as necessary starting from here
 
@@ -20,8 +20,6 @@ environment:
     WARNINGS_ARE_ERRORS: 1
 
   matrix:
-    fast_finish: true
-
     - R_VERSION: devel
       R_ARCH: x64
 
@@ -42,12 +40,13 @@ environment:
 
     - R_VERSION: oldrel
 
-    allow_failures:
-    - R_VERSION: devel
-      R_ARCH: x64
+matrix:
+  fast_finish: true
+  allow_failures:
+  - R_VERSION: devel
+    R_ARCH: x64
 
-    - R_VERSION: devel
-
+  - R_VERSION: devel
 
 build_script:
   - travis-tool.sh install_deps
