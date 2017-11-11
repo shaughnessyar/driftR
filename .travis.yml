@@ -13,5 +13,11 @@ os:
   - linux
   - osx
 
+matrix:
+  fast_finish: true
+  allow_failures:
+    - r: devel
+      os: osx
+
 after_success:
   - Rscript -e 'covr::codecov()'
