@@ -44,35 +44,26 @@ The following example shows a simple workflow for applying these verbs to some h
 library(driftR)
 
 # import data exported from a Sonde 
-df <- dr_readSonde(file = "data.csv", define = TRUE)
+waterTibble <- dr_readSonde(file = "data.csv", define = TRUE)
 
 # calculate correction factor
 # results stored in new vector corrFac
-df <- dr_factor(df, corrFactor = corrFac, 
-                dateVar = Date, 
-                timeVar = Time, 
-                format = "MDY")
+waterTibble <- dr_factor(waterTibble, corrFactor = corrFac, dateVar = Date, 
+                         timeVar = Time, format = "MDY")
 
 # apply one-point calibration to SpCond;
 # results stored in new vector SpConde_Corr
-df <- dr_correctOne(df, sourceVar = SpCond, 
-                    cleanVar = SpCond_Corr, 
-                    calVal = 1.07, 
-                    calStd = 1, 
-                    factorVar = corrFac)
+waterTibble <- dr_correctOne(waterTibble, sourceVar = SpCond, cleanVar = SpCond_Corr, 
+                             calVal = 1.07, calStd = 1, factorVar = corrFac)
 
 # apply two-point calibration to pH;
 # results stored in new vector pH_Corr
-df <- dr_correctTwo(df, sourceVar = pH, 
-                    cleanVar = pH_Corr, 
-                    calValLow = 7.01, 
-                    calStdLow = 7,
-                    calValHigh = 11.8, 
-                    calStdHigh =  10, 
-                    factorVar = corrFac)
+waterTibble <- dr_correctTwo(waterTibble, sourceVar = pH, cleanVar = pH_Corr, 
+                             calValLow = 7.01, calStdLow = 7, calValHigh = 11.8, 
+                             calStdHigh =  10, factorVar = corrFac)
 
 # drop observations to account for instrument equilibration
-df <- dr_drop(df, head=10, tail=5)
+waterTibble <- dr_drop(waterTibble, head=10, tail=5)
 ```
 
 ### Use with `%>%`
@@ -84,94 +75,16 @@ All of the core functions return tibbles (or data frames) and make use of the ti
 library(driftR)
 
 # import data exported from a Sonde 
-df <- dr_readSonde(file = "data.csv", define = TRUE)
+df <- dr_readSonde(file = "sondeData.csv", define = TRUE)
 
 # caclulate correction factors, apply corrections, and drop observations
-df <- df %>%
-  dr_factor(corrFactor = corrFac, 
-            dateVar = Date, 
-            timeVar = Time, 
-            format = "MDY") %>%
-  dr_correctOne(sourceVar = SpCond, 
-                cleanVar = SpCond_Corr, 
-                calVal = 1.07, 
-                calStd = 1, 
-                factorVar = corrFac) %>%
-  dr_correctTwo(sourceVar = pH, 
-                cleanVar = pH_Corr, 
-                calValLow = 7.01, 
-                calStdLow = 7,
-                calValHigh = 11.8, 
-                calStdHigh =  10, 
-                factorVar = corrFac)%>%
+waterTibble <- waterTibble %>%
+  dr_factor(corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY") %>%
+  dr_correctOne(sourceVar = SpCond, cleanVar = SpCond_Corr, calVal = 1.07, 
+                calStd = 1, factorVar = corrFac) %>%
+  dr_correctTwo(sourceVar = pH, cleanVar = pH_Corr, calValLow = 7.01, calStdLow = 7, 
+                calValHigh = 11.8, calStdHigh =  10, factorVar = corrFac) %>%
   dr_drop(head=10, tail=5)
-```
-
-### A full correction session
-
-Bellow is an example of what a full correction of a dataset should look like:
-
-``` r
-# load the driftR package
-library(driftR)
-
-# import data exported from a Sonde 
-# example file located in the package
-df <- dr_readSonde(file = system.file("extdata", "rawData.csv", package="driftR"), define = TRUE)
-
-# calculate correction factors
-# results stored in new vector corrFac
-df <- dr_factor(df, corrFactor = corrFac, 
-                dateVar = Date, 
-                timeVar = Time, 
-                format = "MDY")
-
-# apply one-point calibration to SpCond;
-# results stored in new vector SpConde_Corr
-df <- dr_correctOne(df, sourceVar = SpCond, 
-                    cleanVar = SpCond_Corr, 
-                    calVal = 1.07, 
-                    calStd = 1, 
-                    factorVar = corrFac)
-
-# apply one-point calibration to Turbidity.;
-# results stored in new vector Turbidity_Corr
-df <- dr_correctOne(df, sourceVar = `Turbidity.`, 
-                    cleanVar = Turbidity_Corr, 
-                    calVal = 1.3, 
-                    calStd = 0, 
-                    factorVar = corrFac)
-
-# apply one-point calibration to DO;
-# results stored in new vector DO_Corr
-df <- dr_correctOne(df, sourceVar = DO, 
-                    cleanVar = DO_Corr, 
-                    calVal = 97.6, 
-                    calStd = 99, 
-                    factorVar = corrFac)
-
-# apply two-point calibration to pH;
-# results stored in new vector ph_Corr
-df <- dr_correctTwo(df, sourceVar = pH, 
-                    cleanVar = pH_Corr, 
-                    calValLow = 7.01, 
-                    calStdLow = 7,
-                    calValHigh = 11.8, 
-                    calStdHigh =  10, 
-                    factorVar = corrFac)
-
-# apply two-point calibration to Chloride;
-# results stored in new vector Chloride_Corr
-df <- dr_correctTwo(df, sourceVar = Chloride, 
-                    cleanVar = Chloride_Corr, 
-                    calValLow = 11.6, 
-                    calStdLow = 10,
-                    calValHigh = 1411, 
-                    calStdHigh =  1000, 
-                    factorVar = corrFac)
-
-# drop observations to account for instrument equilibration
-df <- dr_drop(df, head=6, tail=6)
 ```
 
 Additional Documentation
