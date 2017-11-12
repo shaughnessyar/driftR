@@ -14,7 +14,7 @@ ggplot(data = df) +
   geom_smooth(mapping = aes(x = dateTime, y = pH, color = "pH")) +
   geom_smooth(mapping = aes(x = dateTime, y = pH_Corr, color = "pH_Corr")) +
   labs(
-    title = "Comparison of Corrected and Un-Corrected pH Values",
+    title = "Comparison of Corrected and Uncorrected pH Values",
     subtitle = "Equilibration Not Accounted For",
     x = "Date/Time",
     y = "pH Value",
@@ -25,13 +25,13 @@ ggplot(data = df) +
 
 ggsave("man/figures/pH_noDrop.png", width = 200, height = 150, units = "mm", dpi = 100)
 
-df <- dr_drop(df, head=10, tail=5)
+df <- dr_drop(df, head=10, tail=6)
 
 ggplot(data = df) +
   geom_smooth(mapping = aes(x = dateTime, y = pH, color = "pH")) +
   geom_smooth(mapping = aes(x = dateTime, y = pH_Corr, color = "pH_Corr")) +
   labs(
-    title = "Comparison of Corrected and Un-Corrected pH Values",
+    title = "Comparison of Corrected and Uncorrected pH Values",
     subtitle = "Equilibration Accounted For Using dr_drop()",
     x = "Date/Time",
     y = "pH Value",
