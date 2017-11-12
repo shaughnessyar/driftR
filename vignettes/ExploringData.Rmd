@@ -67,7 +67,7 @@ library(tidyr)    # reshaping data
 library(stringr)  # tools for strings
 ```
 
-### Histograms
+## Histograms
 
 Histograms are a classic way to assess the shape of the distribution of a single variable. They also make for an easy introduction to `ggplot2`. Every `ggplot2` call has at least two components - an initial `ggplot()` function and a "geom" that defines the way the underlying data are transformed for plotting purposes:
 
@@ -80,7 +80,7 @@ We assign the *data source* in `ggplot()`, and describe the *aesthetic mapping* 
 
 ![](pH_hist.png)
 
-### Visualizing Drift Over Time
+## Visualizing Drift Over Time
 
 The key feature of `driftR` is the correction of drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our `Date` and `Time` data created by `dr_readSonde()`. We need to concatenate these two variables together using `str_c()`, and then store them as properly identified date-time data (which `R` calls `POSIXct`) using `as.POSIXct()`. These changes are both made using the [`mutate()`](http://dplyr.tidyverse.org/reference/mutate.html) function from [`dplyr`](http://dplyr.tidyverse.org), which allows us to create new variables. Once we have a date-time variable, we can use it as the `x` variable on our plot and plot a measure like specific conductance (`SpCond`) against it using the `geom_line()` geom from `ggplot2`:
 
@@ -152,7 +152,7 @@ The `group` argument in the aesthetic mapping ensures that our data are split by
 
 ![](SpCond_corrLine.png)
 
-### Smoothing Lines
+## Smoothing Lines
 
 The data in the previous plot show the variance that happens between individual readings clearly - these are the jagged increases and decreases along the line. In certain circumstances it may make sense to smooth these lines to highlight a general trend rather than the individual readings. This can be done with a single modification to the previous pipe of functions. In place of the `geom_line()`, we can use `geom_smooth()` to apply smoothing. If we do not specify a specific method and formula, `ggplot2` will select what it believes to be the best approach for smoothing the data based on sample size and linearity. In this case, `ggplot2` defaults to using a generalized additive model with the equation `y ~ s(x, bs = "cs")`.
 
@@ -178,67 +178,73 @@ The impact of diurnal variation is pronounced here, giving the plot a block-y lo
 
 ![](pH_corrSmooth.png)
 
-### Scatterplots
+## Scatter Plots
 
-Scatter plots offer a convenient way to visualize the relationship between two variables. For instance, there is a strong relationship between temperature and pH level in the example data. We can visualize this relationship using the `geom_point()` geom in `ggplot2`:
+Scatter plots offer a convenient way to visualize the relationship between two variables. For instance, there is a strong relationship between specific conductance (`SpCond`) and chloride (`Chloride`) levels in the example data. We would expect most of the conductivity to be coming from Ca, CO3, Na, Cl, and a few other ions. Changes in the Chloride-SpCond curve could tell you about pulses of different dissolved constituents. 
 
-```{r, eval=FALSE}
-ggplot(data = df) +
-  geom_point(mapping = aes(x = temp, y = pH_Corr))
-```
-
-![](pHTemp.png)
-
-We can see a general trend in the relationship between temperature and pH level, with generally higher levels of pH associated with generally higher temperatures (in Celsius). This is interesting, but we can use `ggplot2` to dig further into the relationship. For instance, we can highlight each point on the scatter plot by its value on a third variable. In the example data, we can use the date variable for this purpose by referencing it in the `color` argument:
+We can visualize this relationship using the `geom_point()` geom in `ggplot2`:
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
-  geom_point(mapping = aes(x = temp, y = pH_Corr, color = Date))
+  geom_point(mapping = aes(x = SpCond_Corr, y = Chloride_Corr))
 ```
 
-![](pHTempDate.png)
+![](spCondChlor.png)
+
+We can see a general positive trend in the relationship between conductivity and chloride levels, with generally higher levels of conductivity associated with generally higher chloride levels. This is interesting, but we can use `ggplot2` to dig further into the relationship. For instance, we can highlight each point on the scatter plot by its value on a third variable. In the example data, we can use the date variable for this purpose by referencing it in the `color` argument:
+
+```{r, eval=FALSE}
+ggplot(data = df) +
+  geom_point(mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date))
+```
+
+![](spCondChlorDate.png)
 
 Adding color to each point shows how individual days within the example data have particular patterns.
 
-### Faceted Scatterplots
+## Faceted Plots
 
 While the patterning stands out in the previous plot, we can go further by "faceting" it. This will produce a 2 x 4 matrix of scatter plots, one for each day in the data. To do this, we add the `facet_wrap()` function to our `ggplot()`, and indicate in `facet_wrap()` that we want to base the faceting on the `Date` variable. 
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
-  geom_point(mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
-  facet_wrap(~ Date)
+  geom_point(mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date)) +
+  facet_wrap(~ Date) +
+  theme(legend.position="none")
 ```
 
-![](pHTempByDate.png)
+![](spCondChlorByDate.png)
 
-We can now see the variation between days as well as within them more clearly. Note that the inclusion of the tilde (`~`) in the `facet_wrap()` function is important!
+We can now see the variation between days as well as within them more clearly. Note that the inclusion of the tilde (`~`) in the `facet_wrap()` function is important! We also suppress the legend here since it is redundant with the date labels at the top of each section of the facet.
 
 Finally, we can build in a bit more complexity by overlaying the points with a smoothed line. We do this by adding the same `geom_smooth()` function from earlier in the article between the `geom_point()` and `facet_wrap()` functions:
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
-  geom_point(mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
-  geom_smooth(mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
-  facet_wrap(~ Date)
+  geom_point(mapping = aes(x = SpCond_Corr, y = Chloride_Corr), color = "#cccccc") +
+  geom_smooth(mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date)) +
+  facet_wrap(~ Date) +
+  theme(legend.position="none")
 ```
 
-![](pHTempByDate_smooth.png)
+![](spCondChlorByDate_smooth.png)
 
 As before, we did not specify a method for smoothing. Recall that `ggplot2` will attempt to pick the best smoother for the given data. In this case, `ggplot2`'s assessment is that the [LOESS](https://en.wikipedia.org/wiki/Local_regression) method is most appropriate. 
+
+We also use a light gray color for the points, *specified outside of the aesthetic mapping*, since the points are homogeneously colored within the facets and because we would not be able to see the LOESS regression lines otherwise.
 
 The code we used above builds clearly on the previous `ggplot()` calls we have written, but the `geom_point()` and `geom_smooth()` functions contain the exact same data. Since `ggplot2` is particularly flexible, we have an alternative approach to writing the call that reduces the redundant code. This involves moving the aesthetic mapping from being specified in the individual geoms to being specified in the initial `ggplot()` function:
 
 ```{r, eval=FALSE}
-ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
-  geom_point() +
+ggplot(data = df, mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date)) +
+  geom_point(color = "#cccccc") +
   geom_smooth() +
   facet_wrap(~ Date)
 ```
 
 This code will produce the same data, but with fewer characters needed. This makes debugging the code easier and, if shared, the code is easier to read and understand.
 
-### Comparing Two Groups
+## Comparing Two Groups
 
 A final common task we'll describe here is comparing two groups of data. In this case, we'll compare the distribution of pH values for the first three days and the second three days using a box plot. To do this, we'll need to create a temporary logical variable that is `TRUE` if the date is between 9/21 and 9/23 and `FALSE` if the date is between 9/18 and 9/20. We reference these dates in a `mutate()` function that uses `ifelse()` to set up a logical test. If the date is either 9/21, 9/22, 9/23, our new variable is assigned `TRUE` for that observation. Otherwise, that observation is assigned a `FALSE` value. We can then use this temporary variable as the `x` variable in our plot:
 

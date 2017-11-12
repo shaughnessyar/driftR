@@ -10,6 +10,9 @@ df <- dr_correctOne(df, sourceVar = SpCond, cleanVar = SpCond_Corr, calVal = 1.0
                     factorVar = corrFac)
 df <- dr_correctTwo(df, sourceVar = pH, cleanVar = pH_Corr, calValLow = 7.01, calStdLow = 7,
                     calValHigh = 11.8, calStdHigh =  10, factorVar = corrFac)
+df <- dr_correctTwo(df, sourceVar = Chloride, cleanVar = Chloride_Corr,
+                    calValLow = 11.6, calStdLow = 10, calValHigh = 1411,
+                    calStdHigh =  1000, factorVar = corrFac)
 df <- dr_drop(df, head=10, tail=5)
 
 
@@ -69,27 +72,29 @@ df %>%
 ggsave("vignettes/pH_corrSmooth.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 ggplot(data = df) +
-  geom_point(mapping = aes(x = Temp, y = pH_Corr))
+  geom_point(mapping = aes(x = SpCond_Corr, y = Chloride_Corr))
 
-ggsave("vignettes/pHTemp.png", width = 200, height = 150, units = "mm", dpi = 100)
+ggsave("vignettes/spCondChlor.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 ggplot(data = df) +
-  geom_point(mapping = aes(x = Temp, y = pH_Corr, color = Date))
+  geom_point(mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date))
 
-ggsave("vignettes/pHTempDate.png", width = 200, height = 150, units = "mm", dpi = 100)
+ggsave("vignettes/spCondChlorDate.png", width = 200, height = 150, units = "mm", dpi = 100)
 
-ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
+ggplot(data = df, mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date)) +
   geom_point() +
-  facet_wrap(~ Date)
+  facet_wrap(~ Date) +
+  theme(legend.position="none")
 
-ggsave("vignettes/pHTempByDate.png", width = 200, height = 150, units = "mm", dpi = 100)
+ggsave("vignettes/spCondChlorByDate.png", width = 200, height = 150, units = "mm", dpi = 100)
 
-ggplot(data = df, mapping = aes(x = Temp, y = pH_Corr, color = Date)) +
-  geom_point() +
+ggplot(data = df, mapping = aes(x = SpCond_Corr, y = Chloride_Corr, color = Date)) +
+  geom_point(color = "#cccccc") +
   geom_smooth() +
-  facet_wrap(~ Date)
+  facet_wrap(~ Date) +
+  theme(legend.position="none")
 
-ggsave("vignettes/pHTempByDate_smooth.png", width = 200, height = 150, units = "mm", dpi = 100)
+ggsave("vignettes/spCondChlorByDate_smooth.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df %>%
   mutate(secondHalf = ifelse(Date == "9/21/2015" | Date == "9/22/2015" | Date == "9/23/2015", TRUE, FALSE)) %>%
