@@ -13,6 +13,16 @@ vignette: >
 
 In-situ water-quality monitoring instruments take a continuous measurements of a various chemical and physical parameters. The longer these instruments are allowed to stay in the field, the further the readings of the various sensors drift from the true value of the parameter. The purpose of this package is to correct water-quality monitoring data sets for instrumental drift in a reliable, reproducible method.
 
+## Getting Started with `R`
+If you are new to `R`, welcome! You will need to [download `R`](https://cloud.r-project.org). We also recommend downloading [RStudio](https://www.rstudio.com/products/rstudio/download/#download). Once you have those installed, you will need to install the `devtools` package to install `driftR`:
+
+```{r gh-installation, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("shaughnessyar/driftR")
+```
+
+macOS users should also [download and install XQuartz](https://www.xquartz.org).
+
 ## Equations
 The equations that are implemented were originally published as part of [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) [dissertation research](http://openscholarship.wustl.edu/cgi/viewcontent.cgi?article=1584&amp=&context=etd&amp=&sei-redir=1&referer=https%253A%252F%252Fscholar.google.com%252Fscholar%253Fhl%253Den%2526as_sdt%253D0%25252C26%2526q%253Dhasenmueller%252Bwash%252Bu%2526btnG%253D#search=%22hasenmueller%20wash%20u%22) (see page 32).
 
@@ -59,74 +69,79 @@ $$ { a }_{ t } = { a }_{ i } + {f}_{t} \cdot \left( { a }_{ i }-{ a }_{ f } \rig
 $$ { b }_{ t } = { b }_{ i } - {f}_{t} \cdot \left( { b }_{ i }-{ b }_{ f } \right) $$
 $$ C=\left( \frac { m-a_{ t } }{ { b }_{ t }-{ a }_{ t }  }  \right) \cdot \left( { b }_{ i }-{ a }_{ i } \right) + { a }_{ i } $$
 
-## Using driftR
+## Using `driftR`
 There are five main functions in the `driftR` which each serve their own purpose in data cleaning process:
 
 1. `dr_readSonde()` - import data from the Sonde 
 2. `dr_factor()` - apply correction factors
-3. `dr_cleanOne()` - one point calibration 
-4. `dr_cleanTwo()` - two point calibration
+3. `dr_correctOne()` - one point calibration 
+4. `dr_correctTwo()` - two point calibration
 5. `dr_drop()` - drop observations to account for equilibration
 
-### Importing data
+### Importing data from a YSI Sonde
 First, to import a data set, the `dr_sondeClean()` function will be utilized. The argument `file` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" observation will be removed and the collected data will be stored as numeric variables. Using `defineVar = TRUE` will format the date as Month/Day/Year.
 
 ```{r, eval=FALSE}
-df <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = TRUE)
+waterTibble <- dr_readSonde(file = "sondeData.csv", defineVar = TRUE)
 ```
 
-### Creating correction factors
-The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the vairiable that will contain the correction factors.The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
+If you want to give the package a testdrive without any of your own data, you can load the sample data included in the package using the following syntax:
 
 ```{r, eval=FALSE}
-df <- dr_factor(df,
-                 corrFactor = corfac,
-                 dateVar= Date, 
-                 timeVar = Time, 
-                 format = "MDY")
+waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package = "driftR"), 
+                            defineVar = TRUE)
 ```
 
-### Cleaning the data
-After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_cleanOne()` will be used. The argument `.data` is the working data frame for the correction.  `sourceVar` is the variable name that you want to correct and `cleanVar` is the name of the variable that will contain the corrected data. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respectively. The `factorVar` argument is the result generated from the `dr_correct()` function. 
+*If your data are from another source, please refer to our [article on importing non-YSI Sonde data](OtherData.html).*
 
-If two standard measurements are taken, then the function `dr_clean2()` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` arguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
+### Creating Correction Factors
+The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the vairiable that will contain the correction factors. The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
 
 ```{r, eval=FALSE}
-df <- dr_cleanOne(df,
-                  sourceVar = SpCond, 
-                  cleanVar = SpCond_corr, 
-                  calVal = 1.07, 
-                  calStd = 1, 
-                  factorVar = corfac)
-
-df <- dr_cleanTwo(df, 
-                  sourceVar = pH, 
-                  cleanVar = pH_corr,
-                  calValLow = 7.01, 
-                  calStdLow = 7, 
-                  calValHigh = 11.8, 
-                  calStdHigh = 10, 
-                  factorVar = corfac)
+waterTibble <- dr_factor(waterTibble, corrFactor = corfac, dateVar= Date, 
+                         timeVar = Time, format = "MDY")
 ```
 
-### Dropping Data
-After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using `dr_clean1()` or `dr_clean2()` will result in the corrections being non-consistent. To do this, the `dr_drop()` function will be used. The argument `.data` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the beginning and the end of the data set respectively. It is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
+### Cleaning the Data
+After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_correctOne()` will be used. The argument `.data` is the working data frame for the correction.  `sourceVar` is the variable name that you want to correct and `cleanVar` is the name of the variable that will contain the corrected data. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respectively. The `factorVar` argument is the result generated from the `dr_factor()` function. 
 
 ```{r, eval=FALSE}
-df <- dr_drop(df, 
-              head = 6, 
-              tail = 6)
+waterTibble <- dr_cleanOne(waterTibble, sourceVar = SpCond, cleanVar = SpCond_corr, 
+                           calVal = 1.07, calStd = 1, factorVar = corfac)
+```
+
+If two standard measurements are taken, then the function `dr_correctTwo()` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` arguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
+
+```{r, eval=FALSE}
+waterTibble <- dr_cleanTwo(waterTibble, sourceVar = pH, cleanVar = pH_corr, calValLow = 7.01, 
+                           calStdLow = 7, calValHigh = 11.8, calStdHigh = 10, factorVar = corfac)
+```
+
+### Dropping Observations
+After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using `dr_correctOne()` or `dr_correctTwo()` will result in the corrections being non-consistent. To do this, the `dr_drop()` function will be used. The argument `.data` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the beginning and the end of the data set respectively. It is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
+
+```{r, eval=FALSE}
+waterTibble <- dr_drop(waterTibble, head = 6, tail = 6)
 ```
 
 ## Tidying Data
-### Reordering Variables
-
-Variable names will need to be re-ordered after using `driftR` to get like variables next to each other in your data frame. You can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to accomplish this:
+### Renaming Variables
+YSI products' output sometimes contains special characters in variable names. "Turbidity+" is a variable name created by the Sonde, which is imported into `R` as `Turbidity.`. Neither the original name or `R`'s attempt at clarifying it follow good variable naming practices. You can rename `Turbidity.` using the [`rename()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to accomplish this:
 
 ```{r, eval=FALSE}
-df <- select(df, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, pHmV_Corr, 
+waterTibble <- rename(Turbidity = `Turbidity.`)
+```
+
+Note how the backtick symbols are used to surround non-standard variable names.
+
+### Reordering Variables
+
+Variables will need to be re-ordered after using `driftR` to get like variables next to each other in your data frame. You can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to accomplish this:
+
+```{r, eval=FALSE}
+waterTibble <- select(waterTibble, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, pHmV_Corr, 
              Chloride, Chloride_Corr, AmmoniumN, AmmoniumN_Corr, NitrateN, NitrateN_Corr, 
-             Turbidity, Turbidity_Corr, DO, DO_Corr)
+             Turbidity, Turbidity_Corr, DO, DO_Corr, corfac)
 ```
 
 Like all other `dplyr` functions, `select()` can be included in a pipe as well.
@@ -136,13 +151,13 @@ Like all other `dplyr` functions, `select()` can be included in a pipe as well.
 Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can also use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to remove them. The function accepts the data frame name followed by a comma and a negative sign in front of the variable to be removed. For example, the `NitrateN` variable does not contain any non-zero observations. We could remove it like so:
 
 ```{r, eval=FALSE}
-df <- select(df, -NitrateN))
+waterTibble <- select(waterTibble, -NitrateN)
 ```
 
 If there were multiple variables to be removed, a list of the variables can be provided inside `-c(varlist)`:
 
 ```{r, eval=FALSE}
-df <- select(df, -c(variable1, variable2)))
+waterTibble <- select(waterTibble, -c(NitrateN, variable2))
 ```
 
 ## Exporting Data
@@ -151,3 +166,65 @@ Finally, data can be exported to `csv` (our recommended file format because it i
 ```{r, eval=FALSE}
 write_csv(df, path = "waterData.csv", na = "NA")
 ```
+
+## A Full Session
+
+Bellow is an example of what a full correction of a dataset should look like:
+
+```{r, eval=FALSE}
+# load needed packages
+library(driftR)
+library(dplyr)
+library(readr)
+
+# import data exported from a Sonde 
+# example file located in the package
+waterTibble <- dr_readSonde(file = file = system.file("extdata", "rawData.csv", package="driftR"), 
+                            define = TRUE)
+
+# calculate correction factors
+# results stored in new vector corrFac
+waterTibble <- dr_factor(waterTibble, corrFactor = corrFac, dateVar = Date, 
+                         timeVar = Time, format = "MDY")
+
+# apply one-point calibration to SpCond;
+# results stored in new vector SpConde_Corr
+waterTibble <- dr_correctOne(waterTibble, sourceVar = SpCond, cleanVar = SpCond_Corr, 
+                             calVal = 1.07, calStd = 1, factorVar = corrFac)
+
+# apply one-point calibration to Turbidity.;
+# results stored in new vector Turbidity_Corr
+waterTibble <- rename(waterTibble, Turbidity = `Turbidity.`)
+waterTibble <- dr_correctOne(waterTibble, sourceVar = Turbidity, cleanVar = Turbidity_Corr, 
+                    calVal = 1.3, calStd = 0, factorVar = corrFac)
+
+# apply one-point calibration to DO;
+# results stored in new vector DO_Corr
+waterTibble <- dr_correctOne(waterTibble, sourceVar = DO, cleanVar = DO_Corr, 
+                             calVal = 97.6, calStd = 99, factorVar = corrFac)
+
+# apply two-point calibration to pH;
+# results stored in new vector ph_Corr
+waterTibble <- dr_correctTwo(waterTibble, sourceVar = pH, cleanVar = pH_Corr, 
+                             calValLow = 7.01, calStdLow = 7, calValHigh = 11.8, 
+                             calStdHigh =  10, factorVar = corrFac)
+
+# apply two-point calibration to Chloride;
+# results stored in new vector Chloride_Corr
+waterTibble <- dr_correctTwo(waterTibble, sourceVar = Chloride, cleanVar = Chloride_Corr, 
+                             calValLow = 11.6, calStdLow = 10, calValHigh = 1411, 
+                             calStdHigh =  1000, factorVar = corrFac)
+
+# drop observations to account for instrument equilibration
+waterTibble <- dr_drop(waterTibble, head=6, tail=6)
+
+# reorder variables
+waterTibble <- select(waterTibble, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
+                      Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
+                      Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
+
+# export cleaned data
+write_csv(waterTibble, path = "waterData.csv", na = "NA")
+```
+
+Our vignette on [tidy evaluation in `driftR`](TidyEval.html) includes an example session using `magrittr` pipe operators (`%>%`).
