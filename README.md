@@ -3,7 +3,7 @@
 driftR <img src="man/figures/logo.png" align="right" />
 =======================================================
 
-[![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR)
+[![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR) [![DOI](https://zenodo.org/badge/91733812.svg)](https://zenodo.org/badge/latestdoi/91733812)
 
 There are many sources of water-quality data including instruments (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of which are susceptible to errors/inaccuracies due to drift. `driftR` provides a grammar for cleaning and correcting these data in a "tidy", reproducible manner.
 
@@ -75,7 +75,7 @@ All of the core functions return tibbles (or data frames) and make use of the ti
 library(driftR)
 
 # import data exported from a Sonde 
-df <- dr_readSonde(file = "sondeData.csv", define = TRUE)
+waterTibble <- dr_readSonde(file = "sondeData.csv", define = TRUE)
 
 # caclulate correction factors, apply corrections, and drop observations
 waterTibble <- waterTibble %>%

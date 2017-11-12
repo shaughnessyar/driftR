@@ -51,7 +51,7 @@ The one-point calibration equation (implemented in `dr_correctOne()`) is as foll
 $\textrm{Let:}$
 
 * $C = \textrm{drift corrected parameter}$
-* $m = \textrm{uncorrected \textit{in-situ} measurement parameter}$
+* $m = \textrm{uncorrected in-situ measurement parameter}$
 * ${f}_{t} = \textrm{correction factor}$
 * ${s}_{i} = \textrm{calibration standard}$
 * ${s}_{f} = \textrm{calibration standard after drift}$
@@ -64,7 +64,7 @@ The two-point calibration equation (implemented in `dr_correctTwo()`) is as foll
 $\textrm{Let:}$
 
 * $C = \textrm{drift corrected parameter}$
-* $m = \textrm{uncorrected \textit{in-situ} measurement parameter}$
+* $m = \textrm{uncorrected in-situ measurement parameter}$
 * ${f}_{t} = \textrm{correction factor}$
 * ${a}_{t} = \textrm{lower concentration calibration}$
 * ${b}_{t} = \textrm{higher concentration calibration}$
