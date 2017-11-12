@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Once data have been corrected using `driftR`, `R` provides a host of tools for exploring them. This article will quickly cover a few techniques for both doing exploratory data analysis using [`ggplot2`] and obtaining some basic descriptive statistics. This article assumes you've completed the cleaning of the example data included in this package (see the "Getting Started" vignette).
+Once data have been corrected using `driftR`, `R` provides a host of tools for exploring them. This article will quickly cover a few techniques for both doing exploratory data analysis using [`ggplot2`](http://ggplot2.tidyverse.org) and obtaining some basic descriptive statistics. This article assumes you've completed the cleaning of the example data included in this package (see the [Getting Started](driftR.html) vignette).
 
 ## Packages
 

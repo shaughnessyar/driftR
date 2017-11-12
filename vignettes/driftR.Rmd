@@ -23,6 +23,14 @@ devtools::install_github("shaughnessyar/driftR")
 
 macOS users should also [download and install XQuartz](https://www.xquartz.org).
 
+## Packages
+In addition to `driftR`, you'll want to install and load at least two packages:
+
+* [`dplyr`](http://dplyr.tidyverse.org) - a set of common verbs for cleaning and wrangling data
+* [`readr`](http://readr.tidyverse.org) - tools for reading and writing plain-text data files
+
+Both of these packages can be installed with the `install.packages()` function. Since both are part of the [`tidyverse`](http://tidyverse.org), you can also install both at once by using `install.packages("tidyverse")`.
+
 ## Equations
 The equations that are implemented were originally published as part of [Dr. Elizabeth Hasenmueller's](https://hasenmuellerlab.weebly.com) [dissertation research](http://openscholarship.wustl.edu/cgi/viewcontent.cgi?article=1584&amp=&context=etd&amp=&sei-redir=1&referer=https%253A%252F%252Fscholar.google.com%252Fscholar%253Fhl%253Den%2526as_sdt%253D0%25252C26%2526q%253Dhasenmueller%252Bwash%252Bu%2526btnG%253D#search=%22hasenmueller%20wash%20u%22) (see page 32).
 
@@ -157,11 +165,11 @@ waterTibble <- select(waterTibble, -NitrateN)
 If there were multiple variables to be removed, a list of the variables can be provided inside `-c(varlist)`:
 
 ```{r, eval=FALSE}
-waterTibble <- select(waterTibble, -c(NitrateN, variable2))
+waterTibble <- select(waterTibble, -c(NitrateN, pHmV))
 ```
 
 ## Exporting Data
-Finally, data can be exported to `csv` (our recommended file format because it is plain-text and non-proprietary) using the [`readr` package](http://readr.tidyverse.org) using the [`write_csv()`](http://readr.tidyverse.org/reference/write_delim.html) function:
+Finally, data can be exported to `csv` (our recommended file format because it is plain-text and non-proprietary) using the [`readr` package's](http://readr.tidyverse.org) [`write_csv()`](http://readr.tidyverse.org/reference/write_delim.html) function:
 
 ```{r, eval=FALSE}
 write_csv(df, path = "waterData.csv", na = "NA")
