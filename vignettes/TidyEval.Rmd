@@ -141,7 +141,7 @@ One thing you'll notice is that we do not make reference to the `driftData` obje
 
 ## A Full Session with `%>%`
 
-Bellow is an example of what a full correction of a dataset should look like if you are piping `driftR` functions together:
+Bellow is an example of what a full correction of a data set should look like if you are piping `driftR` functions together:
 
 ```{r, eval=FALSE}
 # load needed packages

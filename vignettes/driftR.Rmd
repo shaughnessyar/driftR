@@ -103,7 +103,7 @@ waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package
 *If your data are from another source, please refer to our [article on importing non-YSI Sonde data](OtherData.html).*
 
 ### Creating Correction Factors
-The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the vairiable that will contain the correction factors. The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
+The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the variable that will contain the correction factors. The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
 
 ```{r, eval=FALSE}
 waterTibble <- dr_factor(waterTibble, corrFactor = corfac, dateVar= Date, 
@@ -140,7 +140,7 @@ YSI products' output sometimes contains special characters in variable names. "T
 waterTibble <- rename(Turbidity = `Turbidity.`)
 ```
 
-Note how the backtick symbols are used to surround non-standard variable names.
+Note how the back tick symbols are used to surround non-standard variable names.
 
 ### Reordering Variables
 
@@ -177,7 +177,7 @@ write_csv(df, path = "waterData.csv", na = "NA")
 
 ## A Full Session
 
-Bellow is an example of what a full correction of a dataset should look like:
+Bellow is an example of what a full correction of a data set should look like:
 
 ```{r, eval=FALSE}
 # load needed packages
