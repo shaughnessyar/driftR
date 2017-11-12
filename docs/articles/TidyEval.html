@@ -84,7 +84,7 @@
       <h1>Tidy Evaluation in driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-11-10</h4>
+            <h4 class="date">2017-11-12</h4>
           </div>
 
     
@@ -110,7 +110,7 @@
 <a href="http://rlang.tidyverse.org"><code>rlang</code></a> - a set of programming tools for writing <code>dplyr</code>-like functions</li>
 </ul>
 <p>As I noted above, <code>driftR</code> is built on <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> and <a href="http://rlang.tidyverse.org"><code>rlang</code></a> in both literal and philosophical terms. Like <code>dplyr</code>, <code>driftR</code> is built around the idea of verbs for wrangling data. While <code>dplyr</code>’s verbs are meant to be general, <code>driftR</code>’s verbs are specifically tailored for correcting water-quality monitoring data.</p>
-<p>In order to implement this philosophical, verb-driven approach to data cleaning, <code>driftR</code> provides a set of wrappers around two <code>dplyr</code> functions - <code>mutate()</code> for adding new variables and <code>slice()</code> for removing rows. When you call a <code>drifR</code> function, you are actually calling one or more linked instances of <code>mutate()</code> or <code>slice()</code> that perform specific tasks with particular inputs in a standardized order.</p>
+<p>In order to implement this philosophical, verb-driven approach to data cleaning, <code>driftR</code> provides a set of wrappers around two <code>dplyr</code> functions - <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> for adding new variables and <code><a href="http://dplyr.tidyverse.org/reference/slice.html">slice()</a></code> for removing rows. When you call a <code>drifR</code> function, you are actually calling one or more linked instances of <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> or <code><a href="http://dplyr.tidyverse.org/reference/slice.html">slice()</a></code> that perform specific tasks with particular inputs in a standardized order.</p>
 <p>Like the <code>tidyverse</code>, then, <code>driftR</code> is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducible. While <code>driftR</code> does enforce a specific workflow on users, the trade-off is the package’s consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).</p>
 </div>
 <div id="some-sample-data" class="section level2">
@@ -214,6 +214,46 @@ driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
 <p>One thing you’ll notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code> or <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code>dr_function()</code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
 </div>
 </div>
+<div id="a-full-session-with" class="section level2">
+<h2 class="hasAnchor">
+<a href="#a-full-session-with" class="anchor"></a>A Full Session with <code>%&gt;%</code>
+</h2>
+<p>Bellow is an example of what a full correction of a dataset should look like if you are piping <code>driftR</code> functions together:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load needed packages</span>
+<span class="kw">library</span>(driftR)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(readr)
+
+<span class="co"># import data exported from a Sonde </span>
+<span class="co"># example file located in the package</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_readSonde">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rawData.csv"</span>, <span class="dt">package=</span><span class="st">"driftR"</span>), 
+                            <span class="dt">define =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># calculate correction factors and correct variables</span>
+waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date, 
+            <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr, 
+                <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> Turbidity, <span class="dt">cleanVar =</span> Turbidity_Corr, 
+               <span class="dt">calVal =</span> <span class="fl">1.3</span>, <span class="dt">calStd =</span> <span class="dv">0</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> DO, <span class="dt">cleanVar =</span> DO_Corr, <span class="dt">calVal =</span> <span class="fl">97.6</span>, 
+                <span class="dt">calStd =</span> <span class="dv">99</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctTwo">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr, 
+                <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
+                <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctTwo">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> Chloride, <span class="dt">cleanVar =</span> Chloride_Corr, 
+                <span class="dt">calValLow =</span> <span class="fl">11.6</span>, <span class="dt">calStdLow =</span> <span class="dv">10</span>, <span class="dt">calValHigh =</span> <span class="dv">1411</span>, 
+                <span class="dt">calStdHigh =</span>  <span class="dv">1000</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_drop">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">6</span>, <span class="dt">tail=</span><span class="dv">6</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
+         Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
+         Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
+
+<span class="co"># export cleaned data</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(waterTibble, <span class="dt">path =</span> <span class="st">"waterData.csv"</span>, <span class="dt">na =</span> <span class="st">"NA"</span>)</code></pre></div>
+</div>
 </div>
   </div>
 
@@ -226,6 +266,7 @@ driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
       <li><a href="#some-sample-data">Some Sample Data</a></li>
       <li><a href="#quoting">Quoting</a></li>
       <li><a href="#piping">Piping</a></li>
+      <li><a href="#a-full-session-with">A Full Session with <code>%&gt;%</code></a></li>
       </ul>
 </div>
       </div>

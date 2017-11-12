@@ -84,7 +84,7 @@
       <h1>Applying Drift Corrections with driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-11-10</h4>
+            <h4 class="date">2017-11-12</h4>
           </div>
 
     
@@ -94,6 +94,15 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>In-situ water-quality monitoring instruments take a continuous measurements of a various chemical and physical parameters. The longer these instruments are allowed to stay in the field, the further the readings of the various sensors drift from the true value of the parameter. The purpose of this package is to correct water-quality monitoring data sets for instrumental drift in a reliable, reproducible method.</p>
+</div>
+<div id="getting-started-with-r" class="section level2">
+<h2 class="hasAnchor">
+<a href="#getting-started-with-r" class="anchor"></a>Getting Started with <code>R</code>
+</h2>
+<p>If you are new to <code>R</code>, welcome! You will need to <a href="https://cloud.r-project.org">download <code>R</code></a>. We also recommend downloading <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio</a>. Once you have those installed, you will need to install the <code>devtools</code> package to install <code>driftR</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
+<p>macOS users should also <a href="https://www.xquartz.org">download and install XQuartz</a>.</p>
 </div>
 <div id="equations" class="section level2">
 <h2 class="hasAnchor">
@@ -146,66 +155,81 @@
 </div>
 <div id="using-driftr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#using-driftr" class="anchor"></a>Using driftR</h2>
+<a href="#using-driftr" class="anchor"></a>Using <code>driftR</code>
+</h2>
 <p>There are five main functions in the <code>driftR</code> which each serve their own purpose in data cleaning process:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code>dr_readSonde()</code> - import data from the Sonde</li>
 <li>
-<code>dr_correct()</code> - apply correction factors</li>
+<code>dr_factor()</code> - apply correction factors</li>
 <li>
-<code>dr_clean1()</code> - one point calibration</li>
+<code>dr_correctOne()</code> - one point calibration</li>
 <li>
-<code>dr_clean2()</code> - two point calibration</li>
+<code>dr_correctTwo()</code> - two point calibration</li>
 <li>
 <code>dr_drop()</code> - drop observations to account for equilibration</li>
 </ol>
-<div id="importing-data" class="section level3">
+<div id="importing-data-from-a-ysi-sonde" class="section level3">
 <h3 class="hasAnchor">
-<a href="#importing-data" class="anchor"></a>Importing data</h3>
-<p>First, to import a data set, the <code>dr_sondeClean(fileExtention, defineVar= FALSE)</code> function will be utilized. The argument <code>fileExtention</code> tells the function where the data is located. The argument <code>defineVar</code> is a logical statement where if <code>FALSE</code>, the data will be imported raw with no modifications and if <code>TRUE</code>, the “units” observation will be removed and the different variables will be defined as the correct data type (i.e. Date as a date variable, Time as a time variable, everything else as a numeric variable). Using <code>defineVar = TRUE</code> will format the date as Year-Month-Day.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">dr_readSonde</span>(<span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rawData.csv"</span>, <span class="dt">package =</span> <span class="st">"driftR"</span>), <span class="dt">defineVar =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<a href="#importing-data-from-a-ysi-sonde" class="anchor"></a>Importing data from a YSI Sonde</h3>
+<p>First, to import a data set, the <code>dr_sondeClean()</code> function will be utilized. The argument <code>file</code> tells the function where the data is located. The argument <code>defineVar</code> is a logical statement where if <code>FALSE</code>, the data will be imported raw with no modifications and if <code>TRUE</code>, the “units” observation will be removed and the collected data will be stored as numeric variables. Using <code>defineVar = TRUE</code> will format the date as Month/Day/Year.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_readSonde</span>(<span class="dt">file =</span> <span class="st">"sondeData.csv"</span>, <span class="dt">defineVar =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>If you want to give the package a testdrive without any of your own data, you can load the sample data included in the package using the following syntax:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_readSonde</span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rawData.csv"</span>, <span class="dt">package =</span> <span class="st">"driftR"</span>), 
+                            <span class="dt">defineVar =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><em>If your data are from another source, please refer to our <a href="OtherData.html">article on importing non-YSI Sonde data</a>.</em></p>
 </div>
 <div id="creating-correction-factors" class="section level3">
 <h3 class="hasAnchor">
-<a href="#creating-correction-factors" class="anchor"></a>Creating correction factors</h3>
-<p>The next step in the data cleaning process is creating correction factors using <code>dr_correct(dataFrame, dateVar, timeVar, format)</code>. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument <code>dataFrame</code> is the working data frame for the correction. The argument <code>dateVar</code> is the date variable for the data set and <code>timeVar</code> is the time variable. The argument <code>format</code> describes the way that the date data is stored in the data frame and can be either “YMD” or “DMY”. If the <code>dr_readSonde()</code> function is used to import the data, then <code>format = "MDY"</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corrFactors &lt;-<span class="st"> </span><span class="kw">dr_correct</span>(df, Date, Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)</code></pre></div>
+<a href="#creating-correction-factors" class="anchor"></a>Creating Correction Factors</h3>
+<p>The next step in the data cleaning process is creating correction factors using <code>dr_factor()</code>. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument <code>.data</code> is the working data frame for the correction. <code>corrFactor</code> is the name of the vairiable that will contain the correction factors. The argument <code>dateVar</code> is the date variable for the data set and <code>timeVar</code> is the time variable. The argument <code>format</code> describes the way that the date data is stored in the data frame and can be either “YMD” or “DMY”. If the <code>dr_readSonde()</code> function is used to import the data, then <code>format = "MDY"</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_factor</span>(waterTibble, <span class="dt">corrFactor =</span> corfac, <span class="dt">dateVar=</span> Date, 
+                         <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)</code></pre></div>
 </div>
 <div id="cleaning-the-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#cleaning-the-data" class="anchor"></a>Cleaning the data</h3>
-<p>After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function <code>dr_clean1(dataFrame,varName,calVal,calStd,correctVar)</code> will be used. The argument <code>dataFrame</code> is the working data frame for the correction and <code>varName</code> is the variable name that you want to correct. The arguments <code>calVal</code> and <code>calStd</code> are what the instrument was reading and what it should have been reading respectively. The <code>correctVar</code> argument is the result generated from the <code>dr_correct()</code> function.</p>
-<p>If two standard measurements are taken, then the function <code>dr_clean2(dataFrame,varName,calValLow,calStdLow,calValHigh,calStdHigh,correctVar)</code> is utilized. The <code>calValLow</code> and <code>calValHigh</code> arguments are what the instrument was reading for the low and high concentration measurements respectively and the <code>calStdLow</code> and <code>calStdHigh</code> arguments are what the instrument should have been reading for the low and high concentration measurements respectively.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df<span class="op">$</span>SpCond_Corr &lt;-<span class="st"> </span><span class="kw">dr_clean1</span>(df, SpCond, <span class="fl">1.07</span>, <span class="dv">1</span>, corrFactors)
-df<span class="op">$</span>pH_Corr &lt;-<span class="st"> </span><span class="kw">dr_clean2</span>(df, pH, <span class="fl">7.01</span>, <span class="dv">7</span>, <span class="fl">11.8</span>, <span class="dv">10</span>, corrFactors)</code></pre></div>
+<a href="#cleaning-the-data" class="anchor"></a>Cleaning the Data</h3>
+<p>After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function <code>dr_correctOne()</code> will be used. The argument <code>.data</code> is the working data frame for the correction. <code>sourceVar</code> is the variable name that you want to correct and <code>cleanVar</code> is the name of the variable that will contain the corrected data. The arguments <code>calVal</code> and <code>calStd</code> are what the instrument was reading and what it should have been reading respectively. The <code>factorVar</code> argument is the result generated from the <code>dr_factor()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_cleanOne</span>(waterTibble, <span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_corr, 
+                           <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corfac)</code></pre></div>
+<p>If two standard measurements are taken, then the function <code>dr_correctTwo()</code> is utilized. The <code>calValLow</code> and <code>calValHigh</code> arguments are what the instrument was reading for the low and high concentration measurements respectively and the <code>calStdLow</code> and <code>calStdHigh</code> arguments are what the instrument should have been reading for the low and high concentration measurements respectively.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_cleanTwo</span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_corr, <span class="dt">calValLow =</span> <span class="fl">7.01</span>, 
+                           <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, <span class="dt">calStdHigh =</span> <span class="dv">10</span>, <span class="dt">factorVar =</span> corfac)</code></pre></div>
 </div>
-<div id="dropping-data" class="section level3">
+<div id="dropping-observations" class="section level3">
 <h3 class="hasAnchor">
-<a href="#dropping-data" class="anchor"></a>Dropping Data</h3>
-<p>After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using <code>dr_clean1()</code> or <code>dr_clean2()</code> will result in the corrections being non-consistent. To do this, the <code>dr_drop(dataFrame,head=NULL,tail=NULL)</code> function will be used. The argument <code>dataFrame</code> is the working data frame for the correction. The arguments <code>head</code> and <code>tail</code> are the number of observations to be dropped from the beginning and the end of the data set respectively. It is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then <code>head = 6</code>and <code>tail = 6</code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">dr_drop</span>(df, <span class="dv">6</span>, <span class="dv">6</span>)</code></pre></div>
+<a href="#dropping-observations" class="anchor"></a>Dropping Observations</h3>
+<p>After the data has been cleaned, some of the data will need to be dropped in order to account for equilibration of the sensors as well as time out of the water during calibration. It is important to do this step last because dropping data before using <code>dr_correctOne()</code> or <code>dr_correctTwo()</code> will result in the corrections being non-consistent. To do this, the <code>dr_drop()</code> function will be used. The argument <code>.data</code> is the working data frame for the correction. The arguments <code>head</code> and <code>tail</code> are the number of observations to be dropped from the beginning and the end of the data set respectively. It is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then <code>head = 6</code>and <code>tail = 6</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_drop</span>(waterTibble, <span class="dt">head =</span> <span class="dv">6</span>, <span class="dt">tail =</span> <span class="dv">6</span>)</code></pre></div>
 </div>
 </div>
 <div id="tidying-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tidying-data" class="anchor"></a>Tidying Data</h2>
+<div id="renaming-variables" class="section level3">
+<h3 class="hasAnchor">
+<a href="#renaming-variables" class="anchor"></a>Renaming Variables</h3>
+<p>YSI products’ output sometimes contains special characters in variable names. “Turbidity+” is a variable name created by the Sonde, which is imported into <code>R</code> as <code>Turbidity.</code>. Neither the original name or <code>R</code>’s attempt at clarifying it follow good variable naming practices. You can rename <code>Turbidity.</code> using the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>rename()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to accomplish this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">rename</span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>)</code></pre></div>
+<p>Note how the backtick symbols are used to surround non-standard variable names.</p>
+</div>
 <div id="reordering-variables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#reordering-variables" class="anchor"></a>Reordering Variables</h3>
-<p>Variable names will need to be re-ordered after using <code>driftR</code> to get like variables next to each other in your data frame. You can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to accomplish this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">select</span>(df, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, pHmV_Corr, 
+<p>Variables will need to be re-ordered after using <code>driftR</code> to get like variables next to each other in your data frame. You can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to accomplish this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, pHmV_Corr, 
              Chloride, Chloride_Corr, AmmoniumN, AmmoniumN_Corr, NitrateN, NitrateN_Corr, 
-             Turbidity, Turbidity_Corr, DO, DO_Corr)</code></pre></div>
+             Turbidity, Turbidity_Corr, DO, DO_Corr, corfac)</code></pre></div>
 <p>Like all other <code>dplyr</code> functions, <code>select()</code> can be included in a pipe as well.</p>
 </div>
 <div id="removing-unneeded-variables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#removing-unneeded-variables" class="anchor"></a>Removing Unneeded Variables</h3>
 <p>Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can also use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and a negative sign in front of the variable to be removed. For example, the <code>NitrateN</code> variable does not contain any non-zero observations. We could remove it like so:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">select</span>(df, <span class="op">-</span>NitrateN)<span class="er">)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span>NitrateN)</code></pre></div>
 <p>If there were multiple variables to be removed, a list of the variables can be provided inside <code>-c(varlist)</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">select</span>(df, <span class="op">-</span><span class="kw">c</span>(variable1, variable2))<span class="er">)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(NitrateN, variable2))</code></pre></div>
 </div>
 </div>
 <div id="exporting-data" class="section level2">
@@ -213,6 +237,65 @@ df<span class="op">$</span>pH_Corr &lt;-<span class="st"> </span><span class="kw
 <a href="#exporting-data" class="anchor"></a>Exporting Data</h2>
 <p>Finally, data can be exported to <code>csv</code> (our recommended file format because it is plain-text and non-proprietary) using the <a href="http://readr.tidyverse.org"><code>readr</code> package</a> using the <a href="http://readr.tidyverse.org/reference/write_delim.html"><code>write_csv()</code></a> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_csv</span>(df, <span class="dt">path =</span> <span class="st">"waterData.csv"</span>, <span class="dt">na =</span> <span class="st">"NA"</span>)</code></pre></div>
+</div>
+<div id="a-full-session" class="section level2">
+<h2 class="hasAnchor">
+<a href="#a-full-session" class="anchor"></a>A Full Session</h2>
+<p>Bellow is an example of what a full correction of a dataset should look like:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load needed packages</span>
+<span class="kw">library</span>(driftR)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(readr)
+
+<span class="co"># import data exported from a Sonde </span>
+<span class="co"># example file located in the package</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_readSonde</span>(<span class="dt">file =</span> <span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rawData.csv"</span>, <span class="dt">package=</span><span class="st">"driftR"</span>), 
+                            <span class="dt">define =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># calculate correction factors</span>
+<span class="co"># results stored in new vector corrFac</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_factor</span>(waterTibble, <span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date, 
+                         <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)
+
+<span class="co"># apply one-point calibration to SpCond;</span>
+<span class="co"># results stored in new vector SpConde_Corr</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctOne</span>(waterTibble, <span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr, 
+                             <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac)
+
+<span class="co"># apply one-point calibration to Turbidity.;</span>
+<span class="co"># results stored in new vector Turbidity_Corr</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">rename</span>(waterTibble, <span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>)
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctOne</span>(waterTibble, <span class="dt">sourceVar =</span> Turbidity, <span class="dt">cleanVar =</span> Turbidity_Corr, 
+                    <span class="dt">calVal =</span> <span class="fl">1.3</span>, <span class="dt">calStd =</span> <span class="dv">0</span>, <span class="dt">factorVar =</span> corrFac)
+
+<span class="co"># apply one-point calibration to DO;</span>
+<span class="co"># results stored in new vector DO_Corr</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctOne</span>(waterTibble, <span class="dt">sourceVar =</span> DO, <span class="dt">cleanVar =</span> DO_Corr, 
+                             <span class="dt">calVal =</span> <span class="fl">97.6</span>, <span class="dt">calStd =</span> <span class="dv">99</span>, <span class="dt">factorVar =</span> corrFac)
+
+<span class="co"># apply two-point calibration to pH;</span>
+<span class="co"># results stored in new vector ph_Corr</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctTwo</span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr, 
+                             <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
+                             <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac)
+
+<span class="co"># apply two-point calibration to Chloride;</span>
+<span class="co"># results stored in new vector Chloride_Corr</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctTwo</span>(waterTibble, <span class="dt">sourceVar =</span> Chloride, <span class="dt">cleanVar =</span> Chloride_Corr, 
+                             <span class="dt">calValLow =</span> <span class="fl">11.6</span>, <span class="dt">calStdLow =</span> <span class="dv">10</span>, <span class="dt">calValHigh =</span> <span class="dv">1411</span>, 
+                             <span class="dt">calStdHigh =</span>  <span class="dv">1000</span>, <span class="dt">factorVar =</span> corrFac)
+
+<span class="co"># drop observations to account for instrument equilibration</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">dr_drop</span>(waterTibble, <span class="dt">head=</span><span class="dv">6</span>, <span class="dt">tail=</span><span class="dv">6</span>)
+
+<span class="co"># reorder variables</span>
+waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
+                      Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
+                      Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
+
+<span class="co"># export cleaned data</span>
+<span class="kw">write_csv</span>(waterTibble, <span class="dt">path =</span> <span class="st">"waterData.csv"</span>, <span class="dt">na =</span> <span class="st">"NA"</span>)</code></pre></div>
+<p>Our vignette on <a href="TidyEval.html">tidy evaluation in <code>driftR</code></a> includes an example session using <code>magrittr</code> pipe operators (<code>%&gt;%</code>).</p>
 </div>
 </div>
   </div>
@@ -223,10 +306,12 @@ df<span class="op">$</span>pH_Corr &lt;-<span class="st"> </span><span class="kw
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#overview">Overview</a></li>
+      <li><a href="#getting-started-with-r">Getting Started with <code>R</code></a></li>
       <li><a href="#equations">Equations</a></li>
-      <li><a href="#using-driftr">Using driftR</a></li>
+      <li><a href="#using-driftr">Using <code>driftR</code></a></li>
       <li><a href="#tidying-data">Tidying Data</a></li>
       <li><a href="#exporting-data">Exporting Data</a></li>
+      <li><a href="#a-full-session">A Full Session</a></li>
       </ul>
 </div>
       </div>
