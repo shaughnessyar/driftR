@@ -104,6 +104,18 @@
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
 <p>macOS users should also <a href="https://www.xquartz.org">download and install XQuartz</a>.</p>
 </div>
+<div id="packages" class="section level2">
+<h2 class="hasAnchor">
+<a href="#packages" class="anchor"></a>Packages</h2>
+<p>In addition to <code>driftR</code>, you’ll want to install and load at least two packages:</p>
+<ul>
+<li>
+<a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> - a set of common verbs for cleaning and wrangling data</li>
+<li>
+<a href="http://readr.tidyverse.org"><code>readr</code></a> - tools for reading and writing plain-text data files</li>
+</ul>
+<p>Both of these packages can be installed with the <code>install.packages()</code> function. Since both are part of the <a href="http://tidyverse.org"><code>tidyverse</code></a>, you can also install both at once by using <code>install.packages("tidyverse")</code>.</p>
+</div>
 <div id="equations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#equations" class="anchor"></a>Equations</h2>
@@ -183,7 +195,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="creating-correction-factors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#creating-correction-factors" class="anchor"></a>Creating Correction Factors</h3>
-<p>The next step in the data cleaning process is creating correction factors using <code>dr_factor()</code>. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument <code>.data</code> is the working data frame for the correction. <code>corrFactor</code> is the name of the vairiable that will contain the correction factors. The argument <code>dateVar</code> is the date variable for the data set and <code>timeVar</code> is the time variable. The argument <code>format</code> describes the way that the date data is stored in the data frame and can be either “YMD” or “DMY”. If the <code>dr_readSonde()</code> function is used to import the data, then <code>format = "MDY"</code></p>
+<p>The next step in the data cleaning process is creating correction factors using <code>dr_factor()</code>. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument <code>.data</code> is the working data frame for the correction. <code>corrFactor</code> is the name of the variable that will contain the correction factors. The argument <code>dateVar</code> is the date variable for the data set and <code>timeVar</code> is the time variable. The argument <code>format</code> describes the way that the date data is stored in the data frame and can be either “YMD” or “DMY”. If the <code>dr_readSonde()</code> function is used to import the data, then <code>format = "MDY"</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_factor</span>(waterTibble, <span class="dt">corrFactor =</span> corfac, <span class="dt">dateVar=</span> Date, 
                          <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)</code></pre></div>
 </div>
@@ -212,7 +224,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <a href="#renaming-variables" class="anchor"></a>Renaming Variables</h3>
 <p>YSI products’ output sometimes contains special characters in variable names. “Turbidity+” is a variable name created by the Sonde, which is imported into <code>R</code> as <code>Turbidity.</code>. Neither the original name or <code>R</code>’s attempt at clarifying it follow good variable naming practices. You can rename <code>Turbidity.</code> using the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>rename()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to accomplish this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">rename</span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>)</code></pre></div>
-<p>Note how the backtick symbols are used to surround non-standard variable names.</p>
+<p>Note how the back tick symbols are used to surround non-standard variable names.</p>
 </div>
 <div id="reordering-variables" class="section level3">
 <h3 class="hasAnchor">
@@ -229,19 +241,19 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can also use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and a negative sign in front of the variable to be removed. For example, the <code>NitrateN</code> variable does not contain any non-zero observations. We could remove it like so:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span>NitrateN)</code></pre></div>
 <p>If there were multiple variables to be removed, a list of the variables can be provided inside <code>-c(varlist)</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(NitrateN, variable2))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(NitrateN, pHmV))</code></pre></div>
 </div>
 </div>
 <div id="exporting-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exporting-data" class="anchor"></a>Exporting Data</h2>
-<p>Finally, data can be exported to <code>csv</code> (our recommended file format because it is plain-text and non-proprietary) using the <a href="http://readr.tidyverse.org"><code>readr</code> package</a> using the <a href="http://readr.tidyverse.org/reference/write_delim.html"><code>write_csv()</code></a> function:</p>
+<p>Finally, data can be exported to <code>csv</code> (our recommended file format because it is plain-text and non-proprietary) using the <a href="http://readr.tidyverse.org"><code>readr</code> package’s</a> <a href="http://readr.tidyverse.org/reference/write_delim.html"><code>write_csv()</code></a> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_csv</span>(df, <span class="dt">path =</span> <span class="st">"waterData.csv"</span>, <span class="dt">na =</span> <span class="st">"NA"</span>)</code></pre></div>
 </div>
 <div id="a-full-session" class="section level2">
 <h2 class="hasAnchor">
 <a href="#a-full-session" class="anchor"></a>A Full Session</h2>
-<p>Bellow is an example of what a full correction of a dataset should look like:</p>
+<p>Bellow is an example of what a full correction of a data set should look like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load needed packages</span>
 <span class="kw">library</span>(driftR)
 <span class="kw">library</span>(dplyr)
@@ -307,6 +319,7 @@ waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTi
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#overview">Overview</a></li>
       <li><a href="#getting-started-with-r">Getting Started with <code>R</code></a></li>
+      <li><a href="#packages">Packages</a></li>
       <li><a href="#equations">Equations</a></li>
       <li><a href="#using-driftr">Using <code>driftR</code></a></li>
       <li><a href="#tidying-data">Tidying Data</a></li>

@@ -211,14 +211,14 @@ driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
 <h3 class="hasAnchor">
 <a href="#data" class="anchor"></a><code>.data</code>
 </h3>
-<p>One thing you’ll notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code> or <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code>dr_function()</code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
+<p>One thing you’ll notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code> or <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
 </div>
 </div>
 <div id="a-full-session-with" class="section level2">
 <h2 class="hasAnchor">
 <a href="#a-full-session-with" class="anchor"></a>A Full Session with <code>%&gt;%</code>
 </h2>
-<p>Bellow is an example of what a full correction of a dataset should look like if you are piping <code>driftR</code> functions together:</p>
+<p>Bellow is an example of what a full correction of a data set should look like if you are piping <code>driftR</code> functions together:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load needed packages</span>
 <span class="kw">library</span>(driftR)
 <span class="kw">library</span>(dplyr)
