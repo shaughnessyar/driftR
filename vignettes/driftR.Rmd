@@ -187,7 +187,7 @@ library(readr)
 
 # import data exported from a Sonde 
 # example file located in the package
-waterTibble <- dr_readSonde(file = file = system.file("extdata", "rawData.csv", package="driftR"), 
+waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package="driftR"), 
                             define = TRUE)
 
 # calculate correction factors
