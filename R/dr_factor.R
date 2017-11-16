@@ -33,7 +33,7 @@
 #'    stringsAsFactors = FALSE
 #'  )
 #'
-#' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
+#' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY", keepDateTime = TRUE)
 #'
 #' @export
 dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"), keepDateTime = TRUE) {

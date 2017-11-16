@@ -103,11 +103,11 @@ waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package
 *If your data are from another source, please refer to our [article on importing non-YSI Sonde data](OtherData.html).*
 
 ### Creating Correction Factors
-The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the variable that will contain the correction factors. The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`
+The next step in the data cleaning process is creating correction factors using `dr_factor()`. The correction factors that are generated are used to determine how much of the total drift is experienced by each observation for the total data set. The argument `.data` is the working data frame for the correction. `corrFactor` is the name of the variable that will contain the correction factors. The argument `dateVar` is the date variable for the data set and `timeVar` is the time variable. The argument `format` describes the way that the date data is stored in the data frame and can be either "YMD" or "DMY". If the `dr_readSonde()` function is used to import the data, then `format = "MDY"`. The argument `keepDateTime` is a logical term that, if TRUE, will keep an intermediate dateTime variable and export it with the correction factors. 
 
 ```{r, eval=FALSE}
 waterTibble <- dr_factor(waterTibble, corrFactor = corfac, dateVar= Date, 
-                         timeVar = Time, format = "MDY")
+                         timeVar = Time, format = "MDY", keepDateTime = TRUE)
 ```
 
 ### Cleaning the Data
@@ -147,7 +147,7 @@ Note how the back tick symbols are used to surround non-standard variable names.
 Variables will need to be re-ordered after using `driftR` to get like variables next to each other in your data frame. You can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to accomplish this:
 
 ```{r, eval=FALSE}
-waterTibble <- select(waterTibble, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, pHmV_Corr, 
+waterTibble <- select(waterTibble, Date, Time, dateTime, SpCond, SpCond_Corr, pH, pH_Corr, pHmV,
              Chloride, Chloride_Corr, AmmoniumN, AmmoniumN_Corr, NitrateN, NitrateN_Corr, 
              Turbidity, Turbidity_Corr, DO, DO_Corr, corfac)
 ```
@@ -193,7 +193,7 @@ waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package
 # calculate correction factors
 # results stored in new vector corrFac
 waterTibble <- dr_factor(waterTibble, corrFactor = corrFac, dateVar = Date, 
-                         timeVar = Time, format = "MDY")
+                         timeVar = Time, format = "MDY", keepDateTime = TRUE)
 
 # apply one-point calibration to SpCond;
 # results stored in new vector SpConde_Corr
@@ -227,9 +227,9 @@ waterTibble <- dr_correctTwo(waterTibble, sourceVar = Chloride, cleanVar = Chlor
 waterTibble <- dr_drop(waterTibble, head=6, tail=6)
 
 # reorder variables
-waterTibble <- select(waterTibble, Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
-                      Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
-                      Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
+waterTibble <- select(waterTibble, Date, Time, dateTime, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
+                      Chloride, Chloride_Corr, AmmoniumN, NitrateN, Turbidity, Turbidity_Corr, 
+                      DO, DO_Corr, corrFac)
 
 # export cleaned data
 write_csv(waterTibble, path = "waterData.csv", na = "NA")

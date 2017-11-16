@@ -56,10 +56,10 @@ library(driftR)
 # import data exported from a Sonde 
 waterTibble <- dr_readSonde(file = "data.csv", define = TRUE)
 
-# calculate correction factor
-# results stored in new vector corrFac
+# calculate correction factor and keep dateTime var
+# results stored in new vector corrFac and dateTime
 waterTibble <- dr_factor(waterTibble, corrFactor = corrFac, dateVar = Date, 
-                         timeVar = Time, format = "MDY")
+                         timeVar = Time, format = "MDY", keepDateTime = FALSE)
 
 # apply one-point calibration to SpCond;
 # results stored in new vector SpConde_Corr
@@ -89,7 +89,8 @@ waterTibble <- dr_readSonde(file = "sondeData.csv", define = TRUE)
 
 # caclulate correction factors, apply corrections, and drop observations
 waterTibble <- waterTibble %>%
-  dr_factor(corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY") %>%
+  dr_factor(corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY", 
+            keepDateTime = TRUE) %>%
   dr_correctOne(sourceVar = SpCond, cleanVar = SpCond_Corr, calVal = 1.07, 
                 calStd = 1, factorVar = corrFac) %>%
   dr_correctTwo(sourceVar = pH, cleanVar = pH_Corr, calValLow = 7.01, calStdLow = 7, 
