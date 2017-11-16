@@ -123,6 +123,6 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
     dplyr::select(-dateTimePOSIX, -totTime)
 
   if (keepDateTime == FALSE){
-    .data <- dplyr::select(-dateTime)
+    .data <- dplyr::select(.data, -dateTime)
   }
 }
