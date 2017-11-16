@@ -4,7 +4,8 @@
 \alias{dr_factor}
 \title{Creating correction factors}
 \usage{
-dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
+dr_factor(.data, corrFactor, dateVar, timeVar,
+                 format = c("MDY", "YMD"), keepDateTime = TRUE)
 }
 \arguments{
 \item{.data}{A tbl}

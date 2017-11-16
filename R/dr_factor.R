@@ -6,7 +6,8 @@
 #'     that the instrument had been deployed. They are used in the equations for both the one-point and two-point
 #'     drift corrections.
 #'
-#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"), keepDateTime = TRUE)
+#' @usage dr_factor(.data, corrFactor, dateVar, timeVar,
+#'                  format = c("MDY", "YMD"), keepDateTime = TRUE)
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
@@ -51,7 +52,7 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   }
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
-  dateTime = totTime = NULL
+  dateTime = totTime = dateTimePOSIX = NULL
 
   # check for missing parameters
   if (missing(corrFactor)) {

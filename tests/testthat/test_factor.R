@@ -8,10 +8,10 @@ result <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR")
 # test inputs ------------------------------------------------
 
 test_that("quoted variables do not cause errors", {
-  expect_error(dr_factor(result, corrFactor = "factors", dateVar = Date, timeVar = Time, format = "MDY", keepDateTime = FALSE), NA)
-  expect_error(dr_factor(result, corrFactor = factors, dateVar = "Date", timeVar = Time, format = "MDY", keepDateTime = FALSE), NA)
-  expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = "Time", format = "MDY", keepDateTime = FALSE), NA)
-  expect_error(dr_factor(result, corrFactor = "factors", dateVar = "Date", timeVar = "Time", format = "MDY",keepDateTime = FALSE), NA)
+  expect_error(dr_factor(result, corrFactor = "factors", dateVar = Date, timeVar = Time, format = "MDY", keepDateTime = TRUE), NA)
+  expect_error(dr_factor(result, corrFactor = factors, dateVar = "Date", timeVar = Time, format = "MDY", keepDateTime = TRUE), NA)
+  expect_error(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = "Time", format = "MDY", keepDateTime = TRUE), NA)
+  expect_error(dr_factor(result, corrFactor = "factors", dateVar = "Date", timeVar = "Time", format = "MDY", keepDateTime = TRUE), NA)
 })
 
 ## the tests above did not catch that the function was failing without an error - it would create
