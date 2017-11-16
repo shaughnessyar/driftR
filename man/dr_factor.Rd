@@ -16,10 +16,12 @@ dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
 \item{timeVar}{Name of variable containing time data}
 
 \item{format}{Either "MDY" or "YMD" for \code{dateVar}}
+
+\item{keepDateTime}{A logical statement to keep an intermediate dateTime variable}
 }
 \value{
 An object of the same class as \code{.data} with the new correction factor variable added
-to the other data in \code{.data}.
+to the other data in \code{.data} as well as a datTime variable if keepDateTime = TRUE.
 }
 \description{
 A wrapper around \code{dplyr::mutate()} that creates a correction factor for each observation.
@@ -38,7 +40,7 @@ testData <- data.frame(
    stringsAsFactors = FALSE
  )
 
-dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
+dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY", keepDateTime = TRUE)
 
 }
 \seealso{
