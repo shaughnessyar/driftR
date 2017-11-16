@@ -13,9 +13,10 @@
 #' @param dateVar Name of variable containing date data
 #' @param timeVar Name of variable containing time data
 #' @param format Either "MDY" or "YMD" for \code{dateVar}
+#' @param keepDateTime A logical statement to keep an intermediate dateTime variable
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
-#' to the other data in \code{.data}.
+#' to the other data in \code{.data} as well as a datTime variable if keepDateTime = TRUE.
 #'
 #' @seealso \code{\link{dr_correctOne}} for correction factor creation,
 #'     \code{\link{dr_correctTwo}} for the two-point drift correction
@@ -35,7 +36,7 @@
 #' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY")
 #'
 #' @export
-dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD")) {
+dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"), keepDateTime = TRUE) {
 
   # save parameters to list
   paramList <- as.list(match.call())
@@ -115,9 +116,13 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   # concatenate date and time, apply date-time format, and calculate correction factor
   .data %>%
     dplyr::mutate(dateTime = stringr::str_c(!!date, !!time, sep = " ", collapse = NULL)) %>%
-    dplyr::mutate(dateTime = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
-    dplyr::mutate(dateTime = base::as.numeric(dateTime)) %>%
-    dplyr::mutate(totTime = utils::tail(dateTime, n=1) - utils::head(dateTime, n=1)) %>%
-    dplyr::mutate(!!corrFactor := (dateTime - utils::head(dateTime, n=1)) / totTime) %>%
-    dplyr::select(-dateTime, -totTime)
+    dplyr::mutate(dateTimePOSIX = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
+    dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
+    dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
+    dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) %>%
+    dplyr::select(-dateTimePOSIX, -totTime)
+
+  if (keepDateTime == FALSE){
+    .data <- dplyr::select(-dateTime)
+  }
 }
