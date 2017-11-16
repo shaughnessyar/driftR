@@ -40,7 +40,8 @@ testData <- data.frame(
    stringsAsFactors = FALSE
  )
 
-dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY", keepDateTime = TRUE)
+dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time,
+          format = "MDY", keepDateTime = TRUE)
 
 }
 \seealso{

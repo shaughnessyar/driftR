@@ -6,7 +6,7 @@
 #'     that the instrument had been deployed. They are used in the equations for both the one-point and two-point
 #'     drift corrections.
 #'
-#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"))
+#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"), keepDateTime = TRUE)
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
