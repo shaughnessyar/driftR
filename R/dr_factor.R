@@ -122,9 +122,10 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
     dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
     dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
     dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) %>%
-    dplyr::select(-dateTimePOSIX, -totTime)
+    dplyr::select(-dateTimePOSIX, -totTime) -> .data
 
   if (keepDateTime == FALSE){
     .data <- dplyr::select(.data, -dateTime)
   }
+  return(.data)
 }
