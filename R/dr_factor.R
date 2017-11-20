@@ -116,25 +116,20 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   }
 
   # concatenate date and time, apply date-time format, and calculate correction factor
-  if (keepDateTime == TRUE){
-    .data %>%
-      dplyr::mutate(dateTime = stringr::str_c(!!date, !!time, sep = " ", collapse = NULL)) %>%
-      dplyr::mutate(dateTimePOSIX = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
-      dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
-      dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
-      dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) %>%
-      dplyr::select(-dateTimePOSIX, -totTime) -> .data
-    return(.data)
-  }
-
-  else if (keepDateTime == FALSE){
   .data %>%
     dplyr::mutate(dateTime = stringr::str_c(!!date, !!time, sep = " ", collapse = NULL)) %>%
     dplyr::mutate(dateTimePOSIX = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
     dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
     dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
-    dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) %>%
-    dplyr::select(-dateTimePOSIX, -totTime, -dateTime) -> .data
-    return(.data)
+    dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) -> .data
+
+  # selectively remove variables
+  if (keepDateTime == TRUE){
+    .data <- dplyr::select(.data, -c(dateTimePOSIX, totTime))
+  } else if (keepDateTime == FALSE){
+    .data <- dplyr::select(.data, -c(dateTimePOSIX, totTime, dateTime))
   }
+
+  # return data
+  return(.data)
 }
