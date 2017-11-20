@@ -126,10 +126,12 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
   # selectively remove variables
   if (keepDateTime == TRUE){
     .data <- dplyr::select(.data, -c(dateTimePOSIX, totTime))
+    # return data
+    return(.data)
+
   } else if (keepDateTime == FALSE){
     .data <- dplyr::select(.data, -c(dateTimePOSIX, totTime, dateTime))
+    # return data
+    return(.data)
   }
-
-  # return data
-  return(.data)
 }
