@@ -87,7 +87,7 @@ There are five main functions in the `driftR` which each serve their own purpose
 5. `dr_drop()` - drop observations to account for equilibration
 
 ### Importing data from a YSI Sonde
-First, to import a data set, the `dr_sondeClean()` function will be utilized. The argument `file` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" observation will be removed and the collected data will be stored as numeric variables. Using `defineVar = TRUE` will format the date as Month/Day/Year.
+First, to import a data set, the `dr_readSonde()` function will be utilized. The argument `file` tells the function where the data is located. The argument `defineVar` is a logical statement where if `FALSE`, the data will be imported raw with no modifications and if `TRUE`, the "units" observation will be removed and the collected data will be stored as numeric variables. Using `defineVar = TRUE` will format the date as Month/Day/Year.
 
 ```{r, eval=FALSE}
 waterTibble <- dr_readSonde(file = "sondeData.csv", defineVar = TRUE)
