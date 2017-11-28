@@ -114,14 +114,14 @@ waterTibble <- dr_factor(waterTibble, corrFactor = corfac, dateVar= Date,
 After creating the correction factors, we can begin cleaning the data for drift. In order to correct the data, there needs to be some measurement taken that tells the user what the instrument should be reading and what the instrument is actually reading. This step can be done with either one or two standard measurements. If one standard measurement is taken, then the function `dr_correctOne()` will be used. The argument `.data` is the working data frame for the correction.  `sourceVar` is the variable name that you want to correct and `cleanVar` is the name of the variable that will contain the corrected data. The arguments `calVal` and `calStd` are what the instrument was reading and what it should have been reading respectively. The `factorVar` argument is the result generated from the `dr_factor()` function. 
 
 ```{r, eval=FALSE}
-waterTibble <- dr_cleanOne(waterTibble, sourceVar = SpCond, cleanVar = SpCond_corr, 
+waterTibble <- dr_correctOne(waterTibble, sourceVar = SpCond, cleanVar = SpCond_corr, 
                            calVal = 1.07, calStd = 1, factorVar = corfac)
 ```
 
 If two standard measurements are taken, then the function `dr_correctTwo()` is utilized. The `calValLow` and `calValHigh` arguments are what the instrument was reading for the low and high concentration measurements respectively and the `calStdLow` and `calStdHigh` arguments are what the instrument should have been reading for the low and high concentration measurements respectively. 
 
 ```{r, eval=FALSE}
-waterTibble <- dr_cleanTwo(waterTibble, sourceVar = pH, cleanVar = pH_corr, calValLow = 7.01, 
+waterTibble <- dr_correctTwo(waterTibble, sourceVar = pH, cleanVar = pH_corr, calValLow = 7.01, 
                            calStdLow = 7, calValHigh = 11.8, calStdHigh = 10, factorVar = corfac)
 ```
 
