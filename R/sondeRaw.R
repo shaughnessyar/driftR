@@ -1,4 +1,4 @@
-#' Raw Water-quality Monitoring Data
+#' Uncorrected water quality monitoring data
 #'
 #' A data set containing un-corrected measurements from a YSI Sonde 6600
 #'

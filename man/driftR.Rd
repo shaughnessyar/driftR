@@ -6,7 +6,7 @@
 \alias{driftR-package}
 \title{driftR: A Grammar for Drift Correcting Water-quality Data}
 \description{
-There are many sources of water-quality data including instruments
+There are many sources of water quality data including instruments
     (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
     which are susceptible to errors/inaccuracies due to drift. \code{driftR} provides
     a grammar for cleaning and correcting these data in a "tidy", reproducible
@@ -14,7 +14,7 @@ There are many sources of water-quality data including instruments
 }
 \details{
 The \code{driftR} package implements a series of equations used in
-    \href{https://hasenmuellerlab.weebly.com}{Dr. Elizabeth Hasenmueller's} hydrology
+    \href{https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php}{Dr. Elizabeth Hasenmueller's} hydrology
     and geochemistry research. These equations correct continuous water-quality
     monitoring data for incramental drift that occurs over time. There are two
     forms of corrections included in the package - a one-point calibration and

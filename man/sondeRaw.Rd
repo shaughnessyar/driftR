@@ -3,7 +3,7 @@
 \docType{data}
 \name{sondeRaw}
 \alias{sondeRaw}
-\title{Raw Water-quality Monitoring Data}
+\title{Uncorrected water quality monitoring data}
 \format{a dataframe with 1528 rows and 11 variables
 \describe{
    \item{Date}{Date of measurement}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dr_drop.R
 \name{dr_drop}
 \alias{dr_drop}
-\title{Dropping observations for equilibration period}
+\title{Dropping observations from beginning and end of the monitoring period}
 \usage{
 dr_drop(.data, head = NULL, tail = NULL)
 }

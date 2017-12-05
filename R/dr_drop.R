@@ -1,4 +1,4 @@
-#' Dropping observations for equilibration period
+#' Dropping observations from beginning and end of the monitoring period
 #'
 #' @description A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
 #'     and the \code{tail}.

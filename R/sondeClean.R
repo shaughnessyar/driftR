@@ -1,4 +1,4 @@
-#' Clean Water-quality Monitoring Data
+#' Corrected water quality monitoring data
 #'
 #' A data set containing corrected measurements from a YSI Sonde 6600
 #'

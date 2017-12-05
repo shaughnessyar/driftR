@@ -1,4 +1,4 @@
-#' Import raw data from YSI Sonde
+#' Import raw data from a YSI Multivariable V2 Sonde
 #'
 #' @description This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
 #'     If \code{defineVar} is set to \code{TRUE} (the default option), units of measurement will not be

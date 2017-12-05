@@ -1,4 +1,4 @@
-#' Calibration Values for Water-quality Monitoring Data Correction
+#' Calibration values for water quality monitoring data correction
 #'
 #' A data set containing correction values used in practice drift corrections
 #'

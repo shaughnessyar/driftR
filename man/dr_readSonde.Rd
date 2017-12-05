@@ -2,7 +2,7 @@
 % Please edit documentation in R/dr_readSonde.R
 \name{dr_readSonde}
 \alias{dr_readSonde}
-\title{Import raw data from YSI Sonde}
+\title{Import raw data from a YSI Multivariable V2 Sonde}
 \usage{
 dr_readSonde(file, defineVar = TRUE)
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \name{sondeCal}
 \alias{sondeCal}
-\title{Calibration Values for Water-quality Monitoring Data Correction}
+\title{Calibration values for water quality monitoring data correction}
 \format{a dataframe with 7 rows and 3 variables
 \describe{
    \item{Parameter}{The parameter that you will be correcting for}
