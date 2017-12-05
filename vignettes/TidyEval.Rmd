@@ -9,10 +9,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-`driftR` implements [tidy evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html), an opinionated approach to capturing and processing expressions using [`tidyverse`](https://www.tidyverse.org) packages [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org). These packages are automatically installed when you install `driftR` if they are not already packages you use. This article is meant to be a quick introduction to tidy eval for users who have not encountered it before.
+`driftR` implements [tidy evaluation](http://rlang.tidyverse.org/articles/tidy-evaluation.html), an opinionated approach to capturing and processing expressions using [`tidyverse`](https://www.tidyverse.org) packages [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org). These packages are automatically installed when you install `driftR` if they are not already packages you use. This article is meant to be a quick introduction to tidy evaluation for users who have not encountered it before.
 
 ## The `tidyverse`
-The [`tidyverse`](https://www.tidyverse.org) is a group of packages the provide a shared grammar and philosophy for conducting many of the most common tasks in data analysis: cleaning and wrangling data, and visualizing data by creating plots and figures. The `tidyverse` is made up of a number of packages, including:
+The [`tidyverse`](https://www.tidyverse.org) is a group of packages the provide a shared grammar and philosophy for conducting many of the most common tasks in data analysis: cleaning and wrangling data and visualizing data by creating plots and figures. The `tidyverse` is made up of a number of packages, including:
 
 * [`ggplot2`](http://ggplot2.tidyverse.org) - a set of tools for implementing the [Grammar of Graphics](http://vita.had.co.nz/papers/layered-grammar.pdf)
 * [`dplyr`](http://dplyr.tidyverse.org) - a set of common verbs for cleaning and wrangling data
@@ -20,14 +20,14 @@ The [`tidyverse`](https://www.tidyverse.org) is a group of packages the provide 
 * [`tibble`](http://tibble.tidyverse.org) - a re-imagining of `R`'s data frame
 * [`rlang`](http://rlang.tidyverse.org) - a set of programming tools for writing `dplyr`-like functions
 
-As I noted above, `driftR` is built on [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org) in both literal and philosophical terms. Like `dplyr`, `driftR` is built around the idea of verbs for wrangling data. While `dplyr`'s verbs are meant to be general, `driftR`'s verbs are specifically tailored for correcting water-quality monitoring data. 
+As noted above, `driftR` is built on [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org) in both literal and philosophical terms. Like `dplyr`, `driftR` is built around the idea of verbs for wrangling data. While `dplyr`'s verbs are meant to be general, `driftR`'s verbs are specifically tailored for correcting water quality monitoring data. 
 
 In order to implement this philosophical, verb-driven approach to data cleaning, `driftR` provides a set of wrappers around two `dplyr` functions - `mutate()` for adding new variables and `slice()` for removing rows. When you call a `drifR` function, you are actually calling one or more linked instances of `mutate()` or `slice()` that perform specific tasks with particular inputs in a standardized order. 
 
-Like the `tidyverse`, then, `driftR` is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water-quality monitoring output is consistent and highly reproducible. While `driftR` does enforce a specific workflow on users, the trade-off is the package's consistency and speed (relative to other, non-reproducible methods like cleaning these data in a spreadsheet application!).
+Like the `tidyverse`, `driftR` is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water quality monitoring data output is consistent and highly reproducible. While `driftR` does enforce a specific workflow on users, the benifit is the package's consistency and speed (relative to other, non-reproducible methods like cleaning water quality data in a spreadsheet application).
 
 ## Some Sample Data
-The following examples use these data:
+The following examples use the data listed below:
 
 ```{r, eval=FALSE}
 driftData <- data.frame(
@@ -60,7 +60,7 @@ tidyMean <- function(data, variable){
 }
 ```
 
-This has consequences for how users interact with the function, however. If users do not quote the variable parameter, they will receive an error that the an object with the name of the input variable cannot be found:
+This has consequences for how users interact with the function, however. If users do not quote the variable parameter, they will receive an error that the object with the name of the input variable cannot be found:
 
 ```{r, eval=FALSE}
 > tidyMean(driftData, Temp)
@@ -75,7 +75,7 @@ If end users *do* quote the input parameter, the function will evaluate successf
 [1] 14.60167
 ```
 
-This, of course, increases the cognitive burden on new users of `R` who are still learning how all of this works. There are other common examples of where this occurs in the `R` ecosystem. For example, the `install.packages()` function requires that package names be quoted while the `library()` function accepts either quoted *or* unquoted names.
+This, of course, increases the cognitive burden on new users of `R` who are still learning how it works. There are other common examples of where this occurs in the `R` ecosystem. For example, the `install.packages()` function requires that package names be quoted, while the `library()` function accepts either quoted *or* unquoted names.
 
 ### Tidy Evaluation in `driftR`
 `driftR` makes use of tidy evaluation to work around this issue. All `driftR` functions will accept variable names as parameters that are either quoted *or* unquoted.
@@ -107,7 +107,7 @@ library("driftR")
 This mirrors the behavior of [`tidyverse`](https://www.tidyverse.org) functions.
 
 ## Piping
-The pipe operator (`%>%`) is a product of the `tidyverse` package [`magrittr`](http://magrittr.tidyverse.org). It offers users the ability to make code more readable by changing together a series of related functions. Pipes are ideal for situations where there is only one input and output, and where there are not a significant number of steps being performed. [Wickham and Grolemund)[http://r4ds.had.co.nz] recommend keeping pipes to ten lines or fewer.
+The pipe operator (`%>%`) is a product of the `tidyverse` package [`magrittr`](http://magrittr.tidyverse.org). It offers users the ability to make code more readable by changing a series of related functions together. Pipes are ideal for situations where there is only one input and output, and where there are not a significant number of steps being performed. (Wickham and Grolemund)[http://r4ds.had.co.nz] recommend keeping pipes to ten lines or fewer.
 
 ### "Reading" Pipes
 
@@ -130,18 +130,18 @@ driftData <- driftData %>%
 
 One could read the pipe above in the following way:
 
-* We are going to assign (`<-`) to the object `driftData` the result of taking the existing `driftData` object and **then**
-* creating a factor variable named `corrFac` and **then**
+* Assigning (`<-`) to the object `driftData` the result of taking the existing `driftData` object, **then**
+* creating a factor variable named `corrFac`, **then**
 * making a one-point drift correction to `SpCond` that will be stored in a new variable named `SpCond_Corr`.
 
-Each time we say the word **then**, we use the pipe operator. We include the pipe operator at the end of each function we wish to chain together.
+Each time **then** is used, a pipe operater has been used. We include the pipe operator at the end of each function we wish to chain together.
 
 ### `.data`
-One thing you'll notice is that we do not make reference to the `driftData` object in either `dr_factor()` or `dr_correctOne()` when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in `driftR` section above, which includes explicit reference to `driftData` in the `dr_factor()`. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun [`.data`](http://rlang.tidyverse.org/reference/tidyeval-data.html). Each of the `driftR` functions incorporates `.data`, allowing the data frame object's name to be easily passed from one function to the next in a pipe.
+One thing you will notice is that we do not make reference to the `driftData` object in either `dr_factor()` or `dr_correctOne()` when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in `driftR` section above, which includes explicit reference to `driftData` in the `dr_factor()`. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun [`.data`](http://rlang.tidyverse.org/reference/tidyeval-data.html). Each of the `driftR` functions incorporates `.data`, allowing the data frame object's name to be easily passed from one function to the next in a pipe.
 
 ## A Full Session with `%>%`
 
-Bellow is an example of what a full correction of a data set should look like if you are piping `driftR` functions together:
+Below is an example of what a full correction of a data set should look like if you are piping `driftR` functions together:
 
 ```{r, eval=FALSE}
 # load needed packages
