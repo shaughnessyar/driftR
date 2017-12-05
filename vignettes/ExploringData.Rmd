@@ -9,11 +9,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Once data have been corrected using `driftR`, `R` provides a host of tools for exploring them. This article will quickly cover a few techniques for both doing exploratory data analysis using [`ggplot2`](http://ggplot2.tidyverse.org) and obtaining some basic descriptive statistics. This article assumes you've completed the cleaning of the example data included in this package (see the [Getting Started](driftR.html) vignette).
+Once data have been corrected using `driftR`, `R` provides a host of tools for exploring them. This article will quickly cover a few techniques for both doing exploratory data analysis using [`ggplot2`](http://ggplot2.tidyverse.org) and obtaining some basic descriptive statistics. This article assumes you have completed cleaning the example data included in this package (see the [Getting Started](driftR.html) vignette).
 
 ## Packages
 
-The packages that we'll use, beyond the `base` package, are all a core part of the [`tidyverse`](https://www.tidyverse.org):
+The packages that we will use, beyond the `base` package, are all a core part of the [`tidyverse`](https://www.tidyverse.org):
 
 * [`ggplot2`](http://ggplot2.tidyverse.org) - a set of tools for implementing the [Grammar of Graphics](http://vita.had.co.nz/papers/layered-grammar.pdf)
 * [`dplyr`](http://dplyr.tidyverse.org) - a set of common verbs for cleaning and wrangling data
@@ -56,7 +56,7 @@ The `base` package, which is part of the "base" `R` distribution that users typi
 
 ## Exploratory Data Analysis
 
-[Exploratory data analysis](https://en.wikipedia.org/wiki/Exploratory_data_analysis) (EDA) is a set of techniques promoted by [John Tukey](https://en.wikipedia.org/wiki/John_Tukey) for visually assessing data sets. `ggplot2` and the tidyverse make it easy to conduct EDA on your data. You'll need to have each of the packages above loaded in your `R` session:
+[Exploratory data analysis](https://en.wikipedia.org/wiki/Exploratory_data_analysis) (EDA) is a set of techniques promoted by [John Tukey](https://en.wikipedia.org/wiki/John_Tukey) for visually assessing data sets. `ggplot2` and the tidyverse make it easy to conduct EDA on your data. You will need to have each of the packages listed below loaded in your `R` session:
 
 ```{r, eval=FALSE}
 library(ggplot2)  # data visualization
@@ -69,20 +69,20 @@ library(stringr)  # tools for strings
 
 ## Histograms
 
-Histograms are a classic way to assess the shape of the distribution of a single variable. They also make for an easy introduction to `ggplot2`. Every `ggplot2` call has at least two components - an initial `ggplot()` function and a "geom" that defines the way the underlying data are transformed for plotting purposes:
+Histograms are a classic way to assess the shape of the distribution of a single variable. They also make for an easy introduction to `ggplot2`. Every `ggplot2` call has at least two components, including an initial `ggplot()` function and a "geom" that defines the way the underlying data are transformed for plotting purposes:
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
   geom_histogram(mapping = aes(x = pH), bins = 10)
 ```
 
-We assign the *data source* in `ggplot()`, and describe the *aesthetic mapping* (the connection of data to visual properties) in the `geom_histogram()` call. The code shown above will produce this plot of the distribution of pH values:
+We assign the *data source* in `ggplot()` and describe the *aesthetic mapping* (the connection of data to visual properties) in the `geom_histogram()` call. The code shown above will produce this plot of the distribution of pH values:
 
 ![](pH_hist.png)
 
-## Visualizing Drift Over Time
+## Visualizing Drift over Time
 
-The key feature of `driftR` is the correction of drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our `Date` and `Time` data created by `dr_readSonde()`. We need to concatenate these two variables together using `str_c()`, and then store them as properly identified date-time data (which `R` calls `POSIXct`) using `as.POSIXct()`. These changes are both made using the [`mutate()`](http://dplyr.tidyverse.org/reference/mutate.html) function from [`dplyr`](http://dplyr.tidyverse.org), which allows us to create new variables. Once we have a date-time variable, we can use it as the `x` variable on our plot and plot a measure like specific conductance (`SpCond`) against it using the `geom_line()` geom from `ggplot2`:
+The key feature of `driftR` is the correction of instrament drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our `Date` and `Time` data created by `dr_readSonde()`. We need to concatenate these two variables together using `str_c()`, and then store them as properly identified date-time data (which `R` calls `POSIXct`) using `as.POSIXct()`. These changes are both made using the [`mutate()`](http://dplyr.tidyverse.org/reference/mutate.html) function from [`dplyr`](http://dplyr.tidyverse.org), which allows us to create new variables. Once we have a date-time variable, we can use it as the `x` variable on our plot and plot a measure like specific conductance (`SpCond`) against it using the `geom_line()` geom from `ggplot2`:
 
 ```{r, eval=FALSE}
 df %>%
@@ -92,11 +92,11 @@ df %>%
     geom_line(mapping = aes(x = dateTime, y = SpCond))
 ```
 
-This code is an example of piping, a technique that is described in our article on [tidy evaluation](TidyEval.html). The pipe operator (`%>%`) is loaded with the `dplyr` package. One advantage of using piped code is that we did not need to reference the data source in the initial `ggplot()` call - this is "passed" through the pipe. It will produce the following plot:
+This code is an example of piping, a technique that is described in our article on [tidy evaluation](TidyEval.html). The pipe operator (`%>%`) is loaded with the `dplyr` package. One advantage of using piped code is that we did not need to reference the data source in the initial `ggplot()` call: this is "passed" through the pipe. It will produce the following plot:
 
 ![](SpCond_line.png)
 
-This code should be portable from session to session with little modification (you'll have to change the data frame name if you use something other than `df`).
+This code should be portable from session to session with little modification (you will have to change the data frame name if you use something other than `df`).
 
 The use of piping here is important, because it allows us to make temporary changes to the shape and structure of the data frame without actually altering the underlying data in a permanent way. In this example, we can create a temporary date-time variable without needing to make it a permanent addition to the data. In the next section, we can temporarily reshape the data without, again, making that a permanent change.
 
@@ -107,9 +107,9 @@ The use of piping here is important, because it allows us to make temporary chan
 The following code: 
 
 * takes the initial `df` data, then
-* creates our date-time measure as before, uses the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function to retain only the variables of interest, then
-* converts them to wide to long with a new variable `measure` containing an indicator of whether the data are corrected or not and a new variable `value` containing the actual measured (or corrected) value, then
-* re-orders the variables so that each date-time pair are in contiguous rows:
+* creates our date-time measure as before, using the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function to retain only the variables of interest, then
+* converts them from wide to long with a new variable `measure` containing an indicator of whether the data are corrected or not and a new variable `value` containing the actual measured (or corrected) value, then
+* re-orders the variables so that each date-time pair are in contiguous rows.
 
 ```{r, eval=FALSE}
 > df %>%
@@ -134,9 +134,9 @@ The following code:
 # ... with 3,014 more rows
 ```
 
-You'll notice that each date-time point now has two rows, one for `SpCond` and one for `SpCond_Corr`. This is the hallmark of "long" formatted data.
+You will notice that each date-time point now has two rows, one for `SpCond` and one for `SpCond_Corr`. This is the hallmark of "long" formatted data.
 
-We can extend this example by adding a `ggplot()` call to use the "long" data to plot the difference between the corrected and uncorrected values. We've omitted the `arrange()` function here because it does not have a practical impact on how our data are plotted.
+We can extend this example by adding a `ggplot()` call to use the long data to plot the difference between the corrected and uncorrected values. We have omitted the `arrange()` function here because it does not have a practical impact on how our data are plotted.
 
 ```{r, eval=FALSE}
 df %>%
@@ -154,7 +154,7 @@ The `group` argument in the aesthetic mapping ensures that our data are split by
 
 ## Smoothing Lines
 
-The data in the previous plot show the variance that happens between individual readings clearly - these are the jagged increases and decreases along the line. In certain circumstances it may make sense to smooth these lines to highlight a general trend rather than the individual readings. This can be done with a single modification to the previous pipe of functions. In place of the `geom_line()`, we can use `geom_smooth()` to apply smoothing. If we do not specify a specific method and formula, `ggplot2` will select what it believes to be the best approach for smoothing the data based on sample size and linearity. In this case, `ggplot2` defaults to using a generalized additive model with the equation `y ~ s(x, bs = "cs")`.
+The data in the previous plot show the variance that happens between individual readings clearly; there are jagged increases and decreases along the line. In certain circumstances it may make sense to smooth these lines to highlight a general trend rather than the individual readings. This can be done with a single modification to the previous pipe of functions. In place of the `geom_line()`, we can use `geom_smooth()` to apply smoothing. If we do not specify a specific method and formula, `ggplot2` will select what it believes to be the best approach for smoothing the data based on sample size and linearity. In this case, `ggplot2` defaults to using a generalized additive model with the equation `y ~ s(x, bs = "cs")`.
 
 ```{r, eval=FALSE}
 df %>%
@@ -170,17 +170,17 @@ This does not produce a radically different plot in the case of specific conduct
 
 ![](SpCond_corrSmooth.png)
 
-The use of `geom_smooth()` does, however, make a considerable difference in the case of pH. This is a line plot of the corrected and uncorrected pH variables (`ph_Corr` and `pH` respectively). They were made using the same approach as the last two plots, expect the references to specific conductance variables were swapped out for the pH variables.
+The use of `geom_smooth()` does, however, make a considerable difference in the case of pH. Below is a line plot of the corrected and uncorrected pH variables (`pH_Corr` and `pH`, respectively).The plot was made using the same approach as the specific conductance plot in the comparing corrected and uncorrected section, except the references to specific conductance variables were swapped out for the pH variables.Similarly, a plot can be made where the lines are smoothed.
 
 ![](pH_corrLine.png)
 
-The impact of diurnal variation is pronounced here, giving the plot a block-y look because of the clustering of values around particular pH levels at particular times of day. The smoothed version of the plot removes much of the variation associated with diurnal fluctuation, but retains the more general trends in pH levels between the different days in the example data:
+The blocky look of the plot above is a result of very small fluctuations in pH (i.e. +/- 0.01), which is at the threshold of the instrument accuracy. The smoothed version of the plot removes much of the variation associated with instrumental limitations, but retains the more general trends in pH levels between the different days in the example data:
 
 ![](pH_corrSmooth.png)
 
 ## Scatter Plots
 
-Scatter plots offer a convenient way to visualize the relationship between two variables. For instance, there is a strong relationship between specific conductance (`SpCond`) and chloride (`Chloride`) levels in the example data. We would expect most of the conductivity to be coming from Ca, CO3, Na, Cl, and a few other ions. Changes in the Chloride-SpCond curve could tell you about pulses of different dissolved constituents. 
+Scatter plots offer a convenient way to visualize the relationship between two variables. For instance, there is a strong relationship between specific conductance (`SpCond`) and chloride (`Chloride`) levels in the example data. For our example data, we normally would expect specific conductance levels to be controlled by dissolved ions like calcium, magnesium, and bicarbonate. However, chloride can be introduced to native waters through various mechanisms including road salt application for deicing purposes, so plotting these two constituents can tell you about pulses of ions over time.
 
 We can visualize this relationship using the `geom_point()` geom in `ggplot2`:
 
@@ -191,7 +191,7 @@ ggplot(data = df) +
 
 ![](spCondChlor.png)
 
-We can see a general positive trend in the relationship between conductivity and chloride levels, with generally higher levels of conductivity associated with generally higher chloride levels. This is interesting, but we can use `ggplot2` to dig further into the relationship. For instance, we can highlight each point on the scatter plot by its value on a third variable. In the example data, we can use the date variable for this purpose by referencing it in the `color` argument:
+We can see a general positive trend in the relationship between specific conductance and chloride levels, with generally higher levels of conductivity associated with generally higher chloride levels. This is interesting, but we can use `ggplot2` to further investigate the relationship. For instance, we can highlight each point on the scatter plot by using a third variable value. In the example data, we can use the date variable for this purpose by referencing it in the `color` argument:
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
@@ -200,7 +200,7 @@ ggplot(data = df) +
 
 ![](spCondChlorDate.png)
 
-Adding color to each point shows how individual days within the example data have particular patterns.
+Adding color to each point shows how individual days within the example data have particular patterns.The pattern shows diurnal oscillations, which could be a result of evaporation processes during the day.
 
 ## Faceted Plots
 
@@ -215,9 +215,9 @@ ggplot(data = df) +
 
 ![](spCondChlorByDate.png)
 
-We can now see the variation between days as well as within them more clearly. Note that the inclusion of the tilde (`~`) in the `facet_wrap()` function is important! We also suppress the legend here since it is redundant with the date labels at the top of each section of the facet.
+We can now see the variation between days as well as within them more clearly. Note that the inclusion of the tilde (`~`) in the `facet_wrap()` function is important. We also suppress the legend in this example since it is redundant with the date labels at the top of each section of the facet.
 
-Finally, we can build in a bit more complexity by overlaying the points with a smoothed line. We do this by adding the same `geom_smooth()` function from earlier in the article between the `geom_point()` and `facet_wrap()` functions:
+Finally, we can build in more complexity by overlaying the points with a smoothed line. We do this by adding the same `geom_smooth()` function from earlier in the article between the `geom_point()` and `facet_wrap()` functions:
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
@@ -231,7 +231,7 @@ ggplot(data = df) +
 
 As before, we did not specify a method for smoothing. Recall that `ggplot2` will attempt to pick the best smoother for the given data. In this case, `ggplot2`'s assessment is that the [LOESS](https://en.wikipedia.org/wiki/Local_regression) method is most appropriate. 
 
-We also use a light gray color for the points, *specified outside of the aesthetic mapping*, since the points are homogeneously colored within the facets and because we would not be able to see the LOESS regression lines otherwise.
+We also used a light gray color for the points, *specified outside of the aesthetic mapping*, since the points are homogeneously colored within the facets and because we would not be able to see the LOESS regression lines otherwise.
 
 The code we used above builds clearly on the previous `ggplot()` calls we have written, but the `geom_point()` and `geom_smooth()` functions contain the exact same data. Since `ggplot2` is particularly flexible, we have an alternative approach to writing the call that reduces the redundant code. This involves moving the aesthetic mapping from being specified in the individual geoms to being specified in the initial `ggplot()` function:
 
@@ -246,7 +246,7 @@ This code will produce the same data, but with fewer characters needed. This mak
 
 ## Comparing Two Groups
 
-A final common task we'll describe here is comparing two groups of data. In this case, we'll compare the distribution of pH values for the first three days and the second three days using a box plot. To do this, we'll need to create a temporary logical variable that is `TRUE` if the date is between 9/21 and 9/23 and `FALSE` if the date is between 9/18 and 9/20. We reference these dates in a `mutate()` function that uses `ifelse()` to set up a logical test. If the date is either 9/21, 9/22, 9/23, our new variable is assigned `TRUE` for that observation. Otherwise, that observation is assigned a `FALSE` value. We can then use this temporary variable as the `x` variable in our plot:
+A common task we will describe here is comparing two groups of data. In this case, we will compare the distribution of pH values for the first three days and the second three days using a box plot. To do this, we will need to create a temporary logical variable that is `TRUE` if the date is between 9/21 and 9/23 and `FALSE` if the date is between 9/18 and 9/20. We reference these dates in a `mutate()` function that uses `ifelse()` to set up a logical test. If the date is either 9/21, 9/22, 9/23, our new variable is assigned `TRUE` for that observation. Otherwise, that observation is assigned a `FALSE` value. We can then use this temporary variable as the `x` variable in our plot:
 
 ```{r, eval=FALSE}
 df %>%
@@ -261,7 +261,7 @@ We can see in this plot that values for `pH` were generally higher in the second
 
 ## Plotting for Dissemination
 
-One final task with `ggplot2` is to add some additional information to each plot. We can easily add a title, subtitle, adjust the text of the `x` and `y` labels, and add a caption using the `labs()` function. We can also change the `x` axis to include a tick and value for each day instead of every other day. For example, we can edit the smoothed specific conductance that looked like this after it was first produced above:
+One final task with `ggplot2` is to add some additional information to each plot. We can easily add a title, subtitle, adjust the text of the `x` and `y` labels, and add a caption using the `labs()` function. We can also change the `x` axis to include a tick and value for each day instead of every other day. For example, we can edit the smoothed specific conductance that was first produced above:
 
 ![](SpCond_corrSmooth.png)
 
