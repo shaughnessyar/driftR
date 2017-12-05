@@ -1,5 +1,5 @@
 ---
-title: "Using Data From Other Sources"
+title: "Using Data from other Sources"
 author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-While `driftR` is designed to work seamlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy `driftR` format. Below is a snapshot of the example data after they have been imported using the `dr_readSonde()` function. This is the expected format that `driftR` requires. 
+While `driftR` is designed to work seamlessly with output from YSI Multiparameter V2 Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy `driftR` format. Below are example data after they have been imported using the `dr_readSonde()` function. This is the expected format that `driftR` requires, so data from other sources must be modified to this configuration. 
 
 ```{r, eval=FALSE}
 # A tibble: 1,527 x 11
@@ -28,7 +28,7 @@ While `driftR` is designed to work seamlessly with output from YSI Sonde instrum
 # ... with 1,517 more rows
 ```
 
-The sections below detail pre-processing steps that you may have to take to ready your data for use with `driftR`. 
+The sections below detail pre-processing steps that you may have to take to prepare your data for use with `driftR`. 
 
 ## Importing Data
 
@@ -37,13 +37,13 @@ Data come in a variety of formats, and importing them into `R` can occasionally 
 * If your data are included in a flat file like a `csv`, `tsv`, `txt`, or another delimited file format, we recommend using the [`readr` package](http://readr.tidyverse.org). 
 * If your data are included in a Microsoft Excel file, we recommend using the [`readxl` package](http://readxl.tidyverse.org). 
 * If your data are included in a SPSS, SAS, or Stata file, we recommend using the [`haven` package](http://haven.tidyverse.org).  
-* If your data are are in a Microsoft Access database, we recommend using the [`RODBC` package](https://cran.r-project.org/web/packages/RODBC/index.html). This will require a Windows computer, 32-bit `R`, and either Microsoft Access or the appropriate drivers installed.
-* If your data are in another database format, we recommend [this article](http://db.rstudio.com/) on using Databases with `R`
+* If your data are in a Microsoft Access database, we recommend using the [`RODBC` package](https://cran.r-project.org/web/packages/RODBC/index.html). This will require a Windows computer, 32-bit `R`, and either Microsoft Access or the appropriate drivers installed.
+* If your data are in another database format, we recommend [this article](http://db.rstudio.com/) on using Databases with `R`.
 
-All of the example code below assumes you have a data frame named `waterData`.
+All of the example code below assumes that you have a data frame named `waterData`.
 
 ## Metadata
-No metadata should be stored in observations. If metadata is present, remove it using the following technique. This example assumes that metadata is stored in row 1:
+No metadata should be stored in the observations. If metadata are present, remove them using the following technique. (This example assumes that metadata is stored in row 1):
 
 ```{r, eval=FALSE}
 waterData <- waterData[-1,]
@@ -57,7 +57,7 @@ waterData <- waterData[-c(1, 2),]
 
 ## Tibbles
 
-Given the large size of data sets typical for these instruments, we encourage (but do not enforce) data to be stored as [tibbles](http://tibble.tidyverse.org). Tibbles are the [`tidyverse`](https://www.tidyverse.org) implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tibble, use the function [`as_tibble()`](http://tibble.tidyverse.org/reference/as_tibble.html):
+Given the typically large data sets for these intruments, we encourage (but do not enforce) data to be stored as [tibbles](http://tibble.tidyverse.org). Tibbles are the [`tidyverse`](https://www.tidyverse.org) implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tibble, use the function [`as_tibble()`](http://tibble.tidyverse.org/reference/as_tibble.html):
 
 ```{r, eval=FALSE}
 library(tibble)
@@ -100,7 +100,7 @@ cleanDate <- as.Date(dates, format = "%Y/%m/%d")
 cleanDate <- as.character(cleanDate)
 ```
 
-Post-processing, if you have additional needs to work with your date data, we strongly suggest using the [`lubridate` package](http://lubridate.tidyverse.org).
+If you have additional need to work with your date data after processing, we strongly suggest using the [`lubridate` package](http://lubridate.tidyverse.org).
 
 ### Time
 
@@ -115,9 +115,9 @@ cleanTime <- format(strptime(times, "%I:%M %p"), format="%H:%M:%S")
 
 `driftR` makes no direct use of the `Temp` data included in output. The [`weathermetrics` package](https://cran.r-project.org/web/packages/weathermetrics/index.html) includes functions for conversions between Celsius and Fahrenheit.
 
-### Other Measures
+### Other Variables
 
-Beyond date and time data, all measures should be stored as either double, integer, or numeric values:
+Beyond date and time data, all variables should be stored as either double, integer, or numeric values:
 
 ```{r, eval=FALSE}
 waterTibble$measure <- as.numeric(waterTibble$measure)
@@ -136,12 +136,12 @@ waterTibble <- waterTibble %>%
   mutate(NitrateN = as.integer(NitrateN))
 ```
 
-## Removing Unneeded Variables
+## Removing Unnecessary Variables
 
-Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to remove them. The function accepts the data frame name followed by a comma and a list of the variables to be removed inside `-c(varlist)`:
+Finally, if there are unnecessary variables left in your data set at the end of the pre-processing stage, you can use the [`select()`](http://dplyr.tidyverse.org/reference/select.html) function from [`dplyr`](http://dplyr.tidyverse.org) to remove them. The function accepts the data frame name followed by a comma and a list of the variables to be removed inside `-c(varlist)`:
 
 ```{r, eval=FALSE}
-waterTibble <- select(waterTibble, -c(a.very.long.pH.variable.name, a.very.long.cholride.variable.name)))
+waterTibble <- select(waterTibble, -c(a.very.long.pH.variable.name, a.very.long.chloride.variable.name))
 ```
 
 Like all other `dplyr` functions, `select()` can be included in a pipe as well.
