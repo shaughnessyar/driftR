@@ -23,7 +23,7 @@ ggplot(data = df) +
   ) +
   scale_colour_discrete(labels=c("Uncorrected Chloride", "Corrected Chloride"))
 
-ggsave("man/figures/pH_noDrop.png", width = 200, height = 150, units = "mm", dpi = 100)
+ggsave("man/figures/chloride_noDrop.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 df <- dr_drop(df, head=6, tail=6)
 
@@ -40,7 +40,7 @@ ggplot(data = df) +
   ) +
   scale_colour_discrete(labels=c("Uncorrected Chloride", "Corrected Chloride"))
 
-ggsave("man/figures/pH_Drop.png", width = 200, height = 150, units = "mm", dpi = 100)
+ggsave("man/figures/chloride_Drop.png", width = 200, height = 150, units = "mm", dpi = 100)
 
 
 

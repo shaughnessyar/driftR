@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -74,7 +74,7 @@
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
-      <a href="../articles/OtherData.html">Using Data From Other Sources</a>
+      <a href="../articles/OtherData.html">Using Data from other Sources</a>
     </li>
     <li>
       <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
@@ -108,7 +108,7 @@
     </div>
 
     
-    <p>There are many sources of water-quality data including instruments
+    <p>There are many sources of water quality data including instruments
     (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
     which are susceptible to errors/inaccuracies due to drift. <code>driftR</code> provides
     a grammar for cleaning and correcting these data in a "tidy", reproducible
@@ -119,7 +119,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>driftR</code> package implements a series of equations used in
-    <a href='https://hasenmuellerlab.weebly.com'>Dr. Elizabeth Hasenmueller's</a> hydrology
+    <a href='https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php'>Dr. Elizabeth Hasenmueller's</a> hydrology
     and geochemistry research. These equations correct continuous water-quality
     monitoring data for incramental drift that occurs over time. There are two
     forms of corrections included in the package - a one-point calibration and
@@ -127,16 +127,16 @@
     for different types of measurements. The package is currently written for the
     easiest use with YSI Sonde products.</p>
 <p>There are four key verbs that are introduced in <code>driftR</code>:</p><ul>
-<li><p><em>read</em>: The <code>dr_readSonde</code> function imports and properly
+<li><p><em>read</em>: The <code><a href='dr_readSonde.html'>dr_readSonde</a></code> function imports and properly
         formats output from YSI Sonde istruments</p></li>
-<li><p><em>factor</em>: The <code>dr_factor</code> function calculates factors
+<li><p><em>factor</em>: The <code><a href='dr_factor.html'>dr_factor</a></code> function calculates factors
         based on the time of the observation and the total amount of time that the
         instrument had been deployed. They are used in the equations for both the
         one-point and two-point drift corrections.</p></li>
-<li><p><em>correct</em>: The <code>dr_correctOne</code> and <code>dr_correctTwo</code>
+<li><p><em>correct</em>: The <code><a href='dr_correctOne.html'>dr_correctOne</a></code> and <code><a href='dr_correctTwo.html'>dr_correctTwo</a></code>
         functions take both the factors and standard values as parameters for calculating
         drift corrected versions of specific measurements.</p></li>
-<li><p><em>drop</em>: The <code>dr_drop</code> function allows for removing erroneous
+<li><p><em>drop</em>: The <code><a href='dr_drop.html'>dr_drop</a></code> function allows for removing erroneous
         observations from both the head and the tail of the data.</p></li>
 </ul>
     

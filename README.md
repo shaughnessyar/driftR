@@ -22,13 +22,9 @@ Background
 
 The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php) hydrology and geochemistry research. These equations correct continuous water quality monitoring data for incremental drift that occurs over time after calibration. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point calibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI multiparameter Sonde V2 series products.
 
-The figure below illustrates the difference in `pH` values between the uncorrected data and the same data with the drift corrections implemented by `driftR` applied. Note that the uncorrected data drifts to higher values over time. `driftR` uses calibration data to correct this drift.
+The figure below illustrates the difference in chloride values between the uncorrected data and the same data with the drift corrections implemented by `driftR` applied. Note that the uncorrected data drifts to higher values over time. `driftR` uses calibration data to correct this drift.
 
-![](man/figures/pH_noDrop.png)
-
-The plot above also illustrates the importance of removing both initial and trailing observations in a given series of data. In this case, the initial observations are inaccurate due to equilibration of the instrument once it is placed back in the water after calibration. The last few observations are inaccurate due to the removal of the instrument from the water for data downloading and calibration. The figure below illustrates the effect of removing these observations on the data:
-
-![](man/figures/pH_Drop.png)
+![](man/figures/chloride_Drop.png)
 
 Usage
 -----

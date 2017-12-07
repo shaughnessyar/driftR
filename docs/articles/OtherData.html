@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Using Data From Other Sources • driftR</title>
+<title>Using Data from other Sources • driftR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -51,7 +51,7 @@
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
-      <a href="../articles/OtherData.html">Using Data From Other Sources</a>
+      <a href="../articles/OtherData.html">Using Data from other Sources</a>
     </li>
     <li>
       <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
@@ -81,16 +81,16 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Using Data From Other Sources</h1>
+      <h1>Using Data from other Sources</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-11-12</h4>
+            <h4 class="date">2017-12-07</h4>
           </div>
 
     
     
 <div class="contents">
-<p>While <code>driftR</code> is designed to work seamlessly with output from YSI Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy <code>driftR</code> format. Below is a snapshot of the example data after they have been imported using the <code>dr_readSonde()</code> function. This is the expected format that <code>driftR</code> requires.</p>
+<p>While <code>driftR</code> is designed to work seamlessly with output from YSI Multiparameter V2 Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy <code>driftR</code> format. Below are example data after they have been imported using the <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code> function. This is the expected format that <code>driftR</code> requires, so data from other sources must be modified to this configuration.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A tibble: 1,527 x 11</span>
         Date     Time  Temp SpCond    pH  pHmV Chloride AmmoniumN NitrateN  Turbidity    DO
        <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>int<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span>
@@ -105,7 +105,7 @@
  <span class="dv">9</span> <span class="dv">9</span><span class="op">/</span><span class="dv">18</span><span class="op">/</span><span class="dv">2015</span> <span class="dv">12</span><span class="op">:</span><span class="dv">50</span><span class="op">:</span><span class="dv">52</span> <span class="fl">14.65</span>  <span class="fl">0.749</span>  <span class="fl">7.12</span> <span class="op">-</span><span class="fl">33.3</span>    <span class="fl">50.49</span>      <span class="fl">4.89</span>        <span class="dv">0</span>       <span class="op">-</span><span class="fl">0.2</span> <span class="fl">93.58</span>
 <span class="dv">10</span> <span class="dv">9</span><span class="op">/</span><span class="dv">18</span><span class="op">/</span><span class="dv">2015</span> <span class="dv">12</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">51</span> <span class="fl">14.69</span>  <span class="fl">0.749</span>  <span class="fl">7.12</span> <span class="op">-</span><span class="fl">33.1</span>    <span class="fl">50.04</span>      <span class="fl">4.60</span>        <span class="dv">0</span>       <span class="op">-</span><span class="fl">0.2</span> <span class="fl">93.80</span>
 <span class="co"># ... with 1,517 more rows</span></code></pre></div>
-<p>The sections below detail pre-processing steps that you may have to take to ready your data for use with <code>driftR</code>.</p>
+<p>The sections below detail pre-processing steps that you may have to take to prepare your data for use with <code>driftR</code>.</p>
 <div id="importing-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#importing-data" class="anchor"></a>Importing Data</h2>
@@ -115,16 +115,15 @@
 <li>If your data are included in a Microsoft Excel file, we recommend using the <a href="http://readxl.tidyverse.org"><code>readxl</code> package</a>.</li>
 <li>If your data are included in a SPSS, SAS, or Stata file, we recommend using the <a href="http://haven.tidyverse.org"><code>haven</code> package</a>.<br>
 </li>
-<li>If your data are are in a Microsoft Access database, we recommend using the <a href="https://cran.r-project.org/web/packages/RODBC/index.html"><code>RODBC</code> package</a>. This will require a Windows computer, 32-bit <code>R</code>, and either Microsoft Access or the appropriate drivers installed.</li>
-<li>If your data are in another database format, we recommend <a href="http://db.rstudio.com/">this article</a> on using Databases with <code>R</code>
-</li>
+<li>If your data are in a Microsoft Access database, we recommend using the <a href="https://cran.r-project.org/web/packages/RODBC/index.html"><code>RODBC</code> package</a>. This will require a Windows computer, 32-bit <code>R</code>, and either Microsoft Access or the appropriate drivers installed.</li>
+<li>If your data are in another database format, we recommend <a href="http://db.rstudio.com/">this article</a> on using Databases with <code>R</code>.</li>
 </ul>
-<p>All of the example code below assumes you have a data frame named <code>waterData</code>.</p>
+<p>All of the example code below assumes that you have a data frame named <code>waterData</code>.</p>
 </div>
 <div id="metadata" class="section level2">
 <h2 class="hasAnchor">
 <a href="#metadata" class="anchor"></a>Metadata</h2>
-<p>No metadata should be stored in observations. If metadata is present, remove it using the following technique. This example assumes that metadata is stored in row 1:</p>
+<p>No metadata should be stored in the observations. If metadata are present, remove them using the following technique. (This example assumes that metadata is stored in row 1):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterData &lt;-<span class="st"> </span>waterData[<span class="op">-</span><span class="dv">1</span>,]</code></pre></div>
 <p>If there are multiple lines of metadata, they can be removed like so:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterData &lt;-<span class="st"> </span>waterData[<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),]</code></pre></div>
@@ -132,7 +131,7 @@
 <div id="tibbles" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tibbles" class="anchor"></a>Tibbles</h2>
-<p>Given the large size of data sets typical for these instruments, we encourage (but do not enforce) data to be stored as <a href="http://tibble.tidyverse.org">tibbles</a>. Tibbles are the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tibble, use the function <a href="http://tibble.tidyverse.org/reference/as_tibble.html"><code><a href="http://www.rdocumentation.org/packages/tibble/topics/as_tibble">as_tibble()</a></code></a>:</p>
+<p>Given the typically large data sets for these intruments, we encourage (but do not enforce) data to be stored as <a href="http://tibble.tidyverse.org">tibbles</a>. Tibbles are the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> implementation of data frames. They print in a more organized manner and they behave in a more stable fashion. To convert your data to a tibble, use the function <a href="http://tibble.tidyverse.org/reference/as_tibble.html"><code><a href="http://www.rdocumentation.org/packages/tibble/topics/as_tibble">as_tibble()</a></code></a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tibble)
 
 waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/as_tibble">as_tibble</a></span>(waterData)</code></pre></div>
@@ -161,7 +160,7 @@ cleanDate &lt;-<span class="st"> </span><span class="kw">strftime</span>(cleanDa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"2016/12/30"</span>, <span class="st">"2016/12/31"</span>, <span class="st">"2017/01/01"</span>, <span class="st">"2017/01/02"</span>, <span class="st">"2017/01/03"</span>)
 cleanDate &lt;-<span class="st"> </span><span class="kw">as.Date</span>(dates, <span class="dt">format =</span> <span class="st">"%Y/%m/%d"</span>)
 cleanDate &lt;-<span class="st"> </span><span class="kw">as.character</span>(cleanDate)</code></pre></div>
-<p>Post-processing, if you have additional needs to work with your date data, we strongly suggest using the <a href="http://lubridate.tidyverse.org"><code>lubridate</code> package</a>.</p>
+<p>If you have additional need to work with your date data after processing, we strongly suggest using the <a href="http://lubridate.tidyverse.org"><code>lubridate</code> package</a>.</p>
 </div>
 <div id="time" class="section level3">
 <h3 class="hasAnchor">
@@ -175,10 +174,10 @@ cleanTime &lt;-<span class="st"> </span><span class="kw">format</span>(<span cla
 <a href="#temperature" class="anchor"></a>Temperature</h3>
 <p><code>driftR</code> makes no direct use of the <code>Temp</code> data included in output. The <a href="https://cran.r-project.org/web/packages/weathermetrics/index.html"><code>weathermetrics</code> package</a> includes functions for conversions between Celsius and Fahrenheit.</p>
 </div>
-<div id="other-measures" class="section level3">
+<div id="other-variables" class="section level3">
 <h3 class="hasAnchor">
-<a href="#other-measures" class="anchor"></a>Other Measures</h3>
-<p>Beyond date and time data, all measures should be stored as either double, integer, or numeric values:</p>
+<a href="#other-variables" class="anchor"></a>Other Variables</h3>
+<p>Beyond date and time data, all variables should be stored as either double, integer, or numeric values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(waterTibble<span class="op">$</span>measure)
 waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.integer</span>(waterTibble<span class="op">$</span>measure)
 waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span class="kw">as.double</span>(waterTibble<span class="op">$</span>measure)</code></pre></div>
@@ -193,11 +192,11 @@ waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span 
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NitrateN =</span> <span class="kw">as.integer</span>(NitrateN))</code></pre></div>
 </div>
 </div>
-<div id="removing-unneeded-variables" class="section level2">
+<div id="removing-unnecessary-variables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#removing-unneeded-variables" class="anchor"></a>Removing Unneeded Variables</h2>
-<p>Finally, if there are unneeded variables left in your data set at the end of the pre-processing stage, you can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and a list of the variables to be removed inside <code>-c(varlist)</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(a.very.long.pH.variable.name, a.very.long.cholride.variable.name))<span class="er">)</span></code></pre></div>
+<a href="#removing-unnecessary-variables" class="anchor"></a>Removing Unnecessary Variables</h2>
+<p>Finally, if there are unnecessary variables left in your data set at the end of the pre-processing stage, you can use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and a list of the variables to be removed inside <code>-c(varlist)</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(a.very.long.pH.variable.name, a.very.long.chloride.variable.name))</code></pre></div>
 <p>Like all other <code>dplyr</code> functions, <code>select()</code> can be included in a pipe as well.</p>
 </div>
 </div>
@@ -213,7 +212,7 @@ waterTibble<span class="op">$</span>measure &lt;-<span class="st"> </span><span 
       <li><a href="#tibbles">Tibbles</a></li>
       <li><a href="#variable-names">Variable Names</a></li>
       <li><a href="#specific-variables">Specific Variables</a></li>
-      <li><a href="#removing-unneeded-variables">Removing Unneeded Variables</a></li>
+      <li><a href="#removing-unnecessary-variables">Removing Unnecessary Variables</a></li>
       </ul>
 </div>
       </div>

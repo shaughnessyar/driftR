@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -74,7 +74,7 @@
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
-      <a href="../articles/OtherData.html">Using Data From Other Sources</a>
+      <a href="../articles/OtherData.html">Using Data from other Sources</a>
     </li>
     <li>
       <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
@@ -111,7 +111,8 @@
     <p>A wrapper around <code><a href='http://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code> that creates a correction factor for each observation.</p>
     
 
-    <pre class="usage"><span class='fu'>dr_factor</span>(<span class='no'>.data</span>, <span class='no'>corrFactor</span>, <span class='no'>dateVar</span>, <span class='no'>timeVar</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"MDY"</span>, <span class='st'>"YMD"</span>))</pre>
+    <pre class="usage"><span class='fu'>dr_factor</span>(<span class='no'>.data</span>, <span class='no'>corrFactor</span>, <span class='no'>dateVar</span>, <span class='no'>timeVar</span>,
+                 <span class='kw'>format</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"MDY"</span>, <span class='st'>"YMD"</span>), <span class='kw'>keepDateTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -136,12 +137,16 @@
       <th>format</th>
       <td><p>Either "MDY" or "YMD" for <code>dateVar</code></p></td>
     </tr>
+    <tr>
+      <th>keepDateTime</th>
+      <td><p>A logical statement to keep an intermediate dateTime variable</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of the same class as <code>.data</code> with the new correction factor variable added
-to the other data in <code>.data</code>.</p>
+to the other data in <code>.data</code> as well as a datTime variable if keepDateTime = TRUE.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -151,8 +156,8 @@ to the other data in <code>.data</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code>dr_correctOne</code> for correction factor creation,
-    <code>dr_correctTwo</code> for the two-point drift correction</p>
+    <p><code><a href='dr_correctOne.html'>dr_correctOne</a></code> for correction factor creation,
+    <code><a href='dr_correctTwo.html'>dr_correctTwo</a></code> for the two-point drift correction</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -164,13 +169,14 @@ to the other data in <code>.data</code>.</p>
    <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
  )
 
-<span class='fu'>dr_factor</span>(<span class='no'>testData</span>, <span class='kw'>corrFactor</span> <span class='kw'>=</span> <span class='no'>corrFac</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"MDY"</span>)</div><div class='output co'>#&gt;        Date     Time  Temp SpCond   corrFac
-#&gt; 1 9/18/2015 12:10:49 14.76  0.754 0.0000000
-#&gt; 2 9/18/2015 12:15:50 14.64  0.750 0.2003995
-#&gt; 3 9/18/2015 12:20:51 14.57  0.750 0.4007989
-#&gt; 4 9/18/2015 12:25:51 14.51  0.749 0.6005326
-#&gt; 5 9/18/2015 12:30:51 14.50  0.749 0.8002663
-#&gt; 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</div><div class='input'>
+<span class='fu'>dr_factor</span>(<span class='no'>testData</span>, <span class='kw'>corrFactor</span> <span class='kw'>=</span> <span class='no'>corrFac</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>,
+          <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"MDY"</span>, <span class='kw'>keepDateTime</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;        Date     Time  Temp SpCond           dateTime   corrFac
+#&gt; 1 9/18/2015 12:10:49 14.76  0.754 9/18/2015 12:10:49 0.0000000
+#&gt; 2 9/18/2015 12:15:50 14.64  0.750 9/18/2015 12:15:50 0.2003995
+#&gt; 3 9/18/2015 12:20:51 14.57  0.750 9/18/2015 12:20:51 0.4007989
+#&gt; 4 9/18/2015 12:25:51 14.51  0.749 9/18/2015 12:25:51 0.6005326
+#&gt; 5 9/18/2015 12:30:51 14.50  0.749 9/18/2015 12:30:51 0.8002663
+#&gt; 6 9/18/2015 12:35:51 14.63  0.749 9/18/2015 12:35:51 1.0000000</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
