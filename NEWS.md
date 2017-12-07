@@ -8,3 +8,8 @@
 
 * Complete documentation vignettes and package website.
 
+# driftR 0.2.2
+
+* Correct documentation vignettes and package website for technical details
+* Change plot on README to chloride
+* Add `keepDateTime` argument to `dr_factor()`
