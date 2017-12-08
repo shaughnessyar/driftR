@@ -4,6 +4,8 @@
 #'     If \code{defineVar} is set to \code{TRUE} (the default option), units of measurement will not be
 #'     included in the first observation.
 #'
+#' @usage dr_readSonde(file, defineVar = TRUE)
+#'
 #' @param file The name of the file which the data are to be read from. Each row of the table appears
 #'     as one line of the file. If it does not contain an absolute path, the file name is relative to
 #'     the current working directory.

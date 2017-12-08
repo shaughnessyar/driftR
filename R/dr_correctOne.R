@@ -7,6 +7,8 @@
 #'     \code{\link{dr_factor}} and returns data that accounts for drift over time. This is done via a one-point
 #'     calibration standard, which it typical for specific conductivity, dissolved oxygen, and turbidity.
 #'
+#' @usage dr_correctOne(.data, sourceVar, cleanVar, calVal, calStd, factorVar)
+#'
 #' @param .data A tbl
 #' @param sourceVar Name of variable to correct
 #' @param cleanVar New variable name for corrected data
