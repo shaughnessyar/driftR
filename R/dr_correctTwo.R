@@ -7,7 +7,8 @@
 #'    generated from \code{\link{dr_factor}} and returns data that accounts for drift over time.
 #'    This is done via a two-point calibration standard, which it typical for pH and chloride.
 #'
-#' @usage dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, factorVar)
+#' @usage dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow,
+#'                       calValHigh, calStdHigh, factorVar)
 #'
 #' @param .data A tbl
 #' @param sourceVar Name of variable to correct

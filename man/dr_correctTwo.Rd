@@ -4,7 +4,8 @@
 \alias{dr_correctTwo}
 \title{Two-point drift correction}
 \usage{
-dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow, calValHigh, calStdHigh, factorVar)
+dr_correctTwo(.data, sourceVar, cleanVar, calValLow, calStdLow,
+                      calValHigh, calStdHigh, factorVar)
 }
 \arguments{
 \item{.data}{A tbl}
