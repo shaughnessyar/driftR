@@ -120,7 +120,8 @@ driftData <- driftData %>%
   dr_factor(corrFactor = corrFac, 
             dateVar = Date, 
             timeVar = Time, 
-            format = "MDY") %>%
+            format = "MDY"
+            keepDateTime = TRUE) %>%
   dr_correctOne(sourceVar = SpCond, 
                 cleanVar = SpCond_Corr, 
                 calVal = 1.07, 
@@ -157,7 +158,7 @@ waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package
 # calculate correction factors and correct variables
 waterTibble <- waterTibble %>%
   dr_factor(corrFactor = corrFac, dateVar = Date, 
-            timeVar = Time, format = "MDY") %>%
+            timeVar = Time, format = "MDY", keepDateTime = TRUE) %>%
   dr_correctOne(sourceVar = SpCond, cleanVar = SpCond_Corr, 
                 calVal = 1.07, calStd = 1, factorVar = corrFac) %>%
   rename(Turbidity = `Turbidity.`) %>%

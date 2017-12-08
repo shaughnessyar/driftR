@@ -204,7 +204,7 @@ Adding color to each point shows how individual days within the example data hav
 
 ## Faceted Plots
 
-While the patterning stands out in the previous plot, we can go further by "faceting" it. This will produce a 2 x 4 matrix of scatter plots, one for each day in the data. To do this, we add the `facet_wrap()` function to our `ggplot()`, and indicate in `facet_wrap()` that we want to base the faceting on the `Date` variable. 
+While the patterning stands out in the previous plot, we can go further by "faceting" it. This will produce a 2 x 3 matrix of scatter plots, one for each day in the data. To do this, we add the `facet_wrap()` function to our `ggplot()`, and indicate in `facet_wrap()` that we want to base the faceting on the `Date` variable. 
 
 ```{r, eval=FALSE}
 ggplot(data = df) +
