@@ -1,35 +1,26 @@
 {
-    "description": "<p>Complete documentation vignettes and package website.</p>",
-    "license": "other-open",
-    "title": "shaughnessyar/driftR: driftR 0.2.1",
-    "version": "v0.2.1",
-    "upload_type": "software",
-    "publication_date": "2017-11-12",
     "creators": [
         {
-            "affiliation": "Saint Louis University",
-            "name": "Andrew Shaughnessy"
+            "affiliation": "Department of Earth and Atmospheric Science,Saint Louis University",
+            "name": "Shaughnessy, Andrew"
         },
         {
-            "affiliation": "Saint Louis University",
-            "name": "Christopher Prener"
+            "affiliation": "Department of Sociology and Anthropology, Saint Louis University",
+            "name": "Prener, Christopher",
+            "orcid": "0000-0002-4310-9888"
         },
         {
-            "affiliation": "Saint Louis University",
-            "name": "Elizabeth Hasenmueller"
+            "affiliation": "Department of Earth and Atmospheric Science, Saint Louis University",
+            "name": "Hasenmueller, Elizabeth"
         }
     ],
     "access_right": "open",
-    "related_identifiers": [
-        {
-            "scheme": "url",
-            "identifier": "https://github.com/shaughnessyar/driftR/tree/v0.2.1",
-            "relation": "isSupplementTo"
-        },
-        {
-            "scheme": "doi",
-            "identifier": "10.5281/zenodo.1045515",
-            "relation": "isPartOf"
-        }
+    "upload_type": "software",
+    "license": "GPL-3.0",
+    "keywords": [
+      "geochemistry",
+      "hydrology",
+      "water-quality"
     ]
+
 }
