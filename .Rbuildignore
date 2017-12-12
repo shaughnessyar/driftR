@@ -3,9 +3,11 @@
 ^README\.Rmd$
 ^README-.*\.png$
 ^CONDUCT\.md$
+^cran-comments\.md$
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
 ^docs$
 ^_pkgdown\.yml$
 ^\.zenodo\.json$
+
