@@ -10,11 +10,10 @@ There are many sources of water quality monitoring data including instruments (e
 Installation
 ------------
 
-You can install `driftR` from CRAN:
+The easiest way to get `driftR` is to install it from CRAN:
 
 ``` r
 install.packages("driftR")
-library(driftR)
 ```
 
 You can also install the development version of `driftR` from Github with `devtools`:
