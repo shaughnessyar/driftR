@@ -37,7 +37,7 @@ Data come in a variety of formats, and importing them into `R` can occasionally 
 * If your data are included in a flat file like a `csv`, `tsv`, `txt`, or another delimited file format, we recommend using the [`readr` package](http://readr.tidyverse.org). 
 * If your data are included in a Microsoft Excel file, we recommend using the [`readxl` package](http://readxl.tidyverse.org). 
 * If your data are included in a SPSS, SAS, or Stata file, we recommend using the [`haven` package](http://haven.tidyverse.org).  
-* If your data are in a Microsoft Access database, we recommend using the [`RODBC` package](https://cran.r-project.org/web/packages/RODBC/index.html). This will require a Windows computer, 32-bit `R`, and either Microsoft Access or the appropriate drivers installed.
+* If your data are in a Microsoft Access database, we recommend using the [`RODBC` package](https://CRAN.R-project.org/package=RODBC). This will require a Windows computer, 32-bit `R`, and either Microsoft Access or the appropriate drivers installed.
 * If your data are in another database format, we recommend [this article](http://db.rstudio.com/) on using Databases with `R`.
 
 All of the example code below assumes that you have a data frame named `waterData`.
@@ -113,7 +113,7 @@ cleanTime <- format(strptime(times, "%I:%M %p"), format="%H:%M:%S")
 
 ### Temperature
 
-`driftR` makes no direct use of the `Temp` data included in output. The [`weathermetrics` package](https://cran.r-project.org/web/packages/weathermetrics/index.html) includes functions for conversions between Celsius and Fahrenheit.
+`driftR` makes no direct use of the `Temp` data included in output. The [`weathermetrics` package](https://CRAN.R-project.org/package=weathermetrics) includes functions for conversions between Celsius and Fahrenheit.
 
 ### Other Variables
 
