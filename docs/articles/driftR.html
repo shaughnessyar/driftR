@@ -93,7 +93,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>In situ water-quality monitoring instruments take continuous measurements of various chemical and physical parameters. The longer these instruments stay in the field, the further sensor readings drift from their true values. The purpose of this package is to correct water-quality monitoring data sets for instrumental drift in a reliable, reproducible method.</p>
+<p>In situ water-quality monitoring instruments take continuous measurements of various chemical and physical parameters. The longer these instruments stay in the field, the further sensor readings drift from their true values. The purpose of this package is to correct water quality monitoring data sets for instrumental drift in a reliable, reproducible method.</p>
 </div>
 <div id="getting-started-with-r" class="section level2">
 <h2 class="hasAnchor">
@@ -102,7 +102,7 @@
 <p>If you are new to <code>R</code>, welcome! You will need to <a href="https://cloud.r-project.org">download <code>R</code></a>. We also recommend downloading <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio</a>. Once you have those installed, you can install <code>driftR</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"driftR"</span>)
 <span class="kw">library</span>(driftR)</code></pre></div>
-<p>If you want, install the <code>devtools</code> package to install the developement version of <code>driftR</code>:</p>
+<p>If you want, install the <code>devtools</code> package to install the development version of <code>driftR</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
 <p>macOS users should also <a href="https://www.xquartz.org">download and install XQuartz</a>.</p>
@@ -215,7 +215,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="dropping-observations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dropping-observations" class="anchor"></a>Dropping Observations</h3>
-<p>After the data has been corrected, some of the data will likely need to be removed (i.e. dropped) in order to account for the equilibration of the sensors as well as time out of the water during preperation for calibration. It is important to do this step last because dropping data before using <code><a href="../reference/dr_correctOne.html">dr_correctOne()</a></code> or <code><a href="../reference/dr_correctTwo.html">dr_correctTwo()</a></code> will result in the corrections being inconsistent. To do this, the <code><a href="../reference/dr_drop.html">dr_drop()</a></code> function is used. The argument <code>.data</code> is the working data frame for the correction. The arguments <code>head</code> and <code>tail</code> are the number of observations to be dropped from the beginning and end of the data set respectively. Based on YSI Multiparameter V2 Sonde preformance, it is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then <code>head = 6</code>and <code>tail = 6</code>).</p>
+<p>After the data has been corrected, some of the data will likely need to be removed (i.e. dropped) in order to account for the equilibration of the sensors as well as time out of the water during preparation for calibration. It is important to do this step last because dropping data before using <code><a href="../reference/dr_correctOne.html">dr_correctOne()</a></code> or <code><a href="../reference/dr_correctTwo.html">dr_correctTwo()</a></code> will result in the corrections being inconsistent. To do this, the <code><a href="../reference/dr_drop.html">dr_drop()</a></code> function is used. The argument <code>.data</code> is the working data frame for the correction. The arguments <code>head</code> and <code>tail</code> are the number of observations to be dropped from the beginning and end of the data set respectively. Based on YSI Multiparameter V2 Sonde performance, it is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then <code>head = 6</code>and <code>tail = 6</code>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dr_drop.html">dr_drop</a></span>(waterTibble, <span class="dt">head =</span> <span class="dv">6</span>, <span class="dt">tail =</span> <span class="dv">6</span>)</code></pre></div>
 </div>
 </div>

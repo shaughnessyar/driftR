@@ -120,15 +120,15 @@
 
     <p>The <code>driftR</code> package implements a series of equations used in
     <a href='https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php'>Dr. Elizabeth Hasenmueller's</a> hydrology
-    and geochemistry research. These equations correct continuous water-quality
-    monitoring data for incramental drift that occurs over time. There are two
+    and geochemistry research. These equations correct continuous water quality
+    monitoring data for incremental drift that occurs over time. There are two
     forms of corrections included in the package - a one-point calibration and
-    a two-point calibration. One-point and two-point callibration values are suited
+    a two-point calibration. One-point and two-point calibration values are suited
     for different types of measurements. The package is currently written for the
     easiest use with YSI Sonde products.</p>
 <p>There are four key verbs that are introduced in <code>driftR</code>:</p><ul>
 <li><p><em>read</em>: The <code><a href='dr_readSonde.html'>dr_readSonde</a></code> function imports and properly
-        formats output from YSI Sonde istruments</p></li>
+        formats output from YSI Sonde instrument</p></li>
 <li><p><em>factor</em>: The <code><a href='dr_factor.html'>dr_factor</a></code> function calculates factors
         based on the time of the observation and the total amount of time that the
         instrument had been deployed. They are used in the equations for both the
