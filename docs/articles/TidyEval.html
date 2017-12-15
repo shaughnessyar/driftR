@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -84,7 +84,7 @@
       <h1>Tidy Evaluation in driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-12-08</h4>
+            <h4 class="date">2017-12-15</h4>
           </div>
 
     
@@ -133,18 +133,18 @@
 <h3 class="hasAnchor">
 <a href="#a-quick-example" class="anchor"></a>A Quick Example</h3>
 <p>Many of the base <code>R</code> functions use the <code>$</code> symbol to differentiate between data frames and variables within them. The <code>mean()</code> function from the <code>stats</code> package provides an example of this behavior:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">mean</span>(driftData$Temp)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(driftData<span class="op">$</span>Temp)
 [<span class="dv">1</span>] <span class="fl">14.60167</span></code></pre></div>
 <p>Packages that are built on top of <code>tidyverse</code> functions often separate the data frame parameter from the variable parameter in their structure. For instance, we could write a “wrapper” around the <code>mean()</code> function that accepts the data frame and variable parameters separately:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidyMean &lt;-<span class="st"> </span>function(data, variable){
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidyMean &lt;-<span class="st"> </span><span class="cf">function</span>(data, variable){
   <span class="kw">mean</span>(data[[variable]])
 }</code></pre></div>
 <p>This has consequences for how users interact with the function, however. If users do not quote the variable parameter, they will receive an error that the object with the name of the input variable cannot be found:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tidyMean</span>(driftData, Temp)
-  Error in (function(x, i, exact) if (<span class="kw">is.matrix</span>(i)) <span class="kw">as.matrix</span>(x)[[i]] else <span class="kw">.subset2</span>(x,  :<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidyMean</span>(driftData, Temp)
+  Error <span class="cf">in</span> (<span class="cf">function</span>(x, i, exact) <span class="cf">if</span> (<span class="kw">is.matrix</span>(i)) <span class="kw">as.matrix</span>(x)[[i]] <span class="cf">else</span> <span class="kw">.subset2</span>(x,  <span class="op">:</span><span class="st"> </span>
 <span class="st">   </span>object <span class="st">'Temp'</span> not found </code></pre></div>
 <p>If end users <em>do</em> quote the input parameter, the function will evaluate successfully:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tidyMean</span>(driftData, <span class="st">"Temp"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidyMean</span>(driftData, <span class="st">"Temp"</span>)
 [<span class="dv">1</span>] <span class="fl">14.60167</span></code></pre></div>
 <p>This, of course, increases the cognitive burden on new users of <code>R</code> who are still learning how it works. There are other common examples of where this occurs in the <code>R</code> ecosystem. For example, the <code>install.packages()</code> function requires that package names be quoted, while the <code>library()</code> function accepts either quoted <em>or</em> unquoted names.</p>
 </div>
@@ -155,7 +155,7 @@
 <p><code>driftR</code> makes use of tidy evaluation to work around this issue. All <code>driftR</code> functions will accept variable names as parameters that are either quoted <em>or</em> unquoted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
 
-&gt;<span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> corrFac, 
+<span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> corrFac, 
             <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)
 <span class="co">#        Date     Time  Temp SpCond   corrFac</span>
 <span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
@@ -165,7 +165,7 @@
 <span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
 <span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span>
 
-&gt;<span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>, 
+<span class="op">&gt;</span><span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>, 
             <span class="dt">dateVar =</span> <span class="st">"Date"</span>, <span class="dt">timeVar =</span> <span class="st">"Time"</span>, <span class="dt">format =</span> <span class="st">"MDY"</span>)
 <span class="co">#        Date     Time  Temp SpCond   corrFac</span>
 <span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
@@ -187,12 +187,12 @@
 <p>Pipes are designed to be “read” like lines of literal text. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
 
-driftData &lt;-<span class="st"> </span>driftData %&gt;%
+driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
             <span class="dt">dateVar =</span> Date, 
             <span class="dt">timeVar =</span> Time, 
             <span class="dt">format =</span> <span class="st">"MDY"</span>
-            <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) %&gt;%
+            <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
                 <span class="dt">cleanVar =</span> SpCond_Corr, 
                 <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
@@ -231,23 +231,23 @@ waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="../reference
                             <span class="dt">define =</span> <span class="ot">TRUE</span>)
 
 <span class="co"># calculate correction factors and correct variables</span>
-waterTibble &lt;-<span class="st"> </span>waterTibble %&gt;%
+waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date, 
-            <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>, <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) %&gt;%
+            <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>, <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr, 
-                <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>) %&gt;%
+                <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> Turbidity, <span class="dt">cleanVar =</span> Turbidity_Corr, 
-               <span class="dt">calVal =</span> <span class="fl">1.3</span>, <span class="dt">calStd =</span> <span class="dv">0</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%<span class="st"> </span>
+               <span class="dt">calVal =</span> <span class="fl">1.3</span>, <span class="dt">calStd =</span> <span class="dv">0</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> DO, <span class="dt">cleanVar =</span> DO_Corr, <span class="dt">calVal =</span> <span class="fl">97.6</span>, 
-                <span class="dt">calStd =</span> <span class="dv">99</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
+                <span class="dt">calStd =</span> <span class="dv">99</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr, 
                 <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
-                <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
+                <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> Chloride, <span class="dt">cleanVar =</span> Chloride_Corr, 
                 <span class="dt">calValLow =</span> <span class="fl">11.6</span>, <span class="dt">calStdLow =</span> <span class="dv">10</span>, <span class="dt">calValHigh =</span> <span class="dv">1411</span>, 
-                <span class="dt">calStdHigh =</span>  <span class="dv">1000</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_drop.html">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">6</span>, <span class="dt">tail=</span><span class="dv">6</span>) %&gt;%
+                <span class="dt">calStdHigh =</span>  <span class="dv">1000</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/dr_drop.html">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">6</span>, <span class="dt">tail=</span><span class="dv">6</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
          Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
          Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
