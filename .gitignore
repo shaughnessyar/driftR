@@ -38,6 +38,7 @@ ehthumbs.db
 Thumbs.db
 # R files #
 ###########
+.Rapp.history
 .Rhistory
 .RData
 .Rproj.user
