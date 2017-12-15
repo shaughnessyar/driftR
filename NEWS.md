@@ -13,3 +13,7 @@
 * Correct documentation vignettes and package website for technical details
 * Change plot on README to chloride
 * Add `keepDateTime` argument to `dr_factor()`
+
+# driftR 1.0.0
+
+* CRAN release version
