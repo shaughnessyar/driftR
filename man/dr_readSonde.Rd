@@ -18,7 +18,7 @@ observation. If they are included, all vectors will be read in as character.}
 A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
 }
 \description{
-This function imports the raw data from a YSI Sonde and fomats the data set as a tibble.
+This function imports the raw data from a YSI Sonde and formats the data set as a tibble.
     If \code{defineVar} is set to \code{TRUE} (the default option), units of measurement will not be
     included in the first observation.
 }
