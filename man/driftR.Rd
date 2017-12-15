@@ -14,8 +14,8 @@ There are many sources of water quality data including instruments
 }
 \details{
 The \code{driftR} package implements a series of equations used in
-    \href{https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php}{Dr. Elizabeth Hasenmueller's} hydrology
-    and geochemistry research. These equations correct continuous water quality
+    \href{https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php}{Dr. Elizabeth Hasenmueller's}
+    hydrology and geochemistry research. These equations correct continuous water quality
     monitoring data for incremental drift that occurs over time. There are two
     forms of corrections included in the package - a one-point calibration and
     a two-point calibration. One-point and two-point calibration values are suited
@@ -53,11 +53,11 @@ Useful links:
 }
 }
 \author{
-\strong{Maintainer:} Andrew Shaughnessy
+\strong{Maintainer:} Andrew Shaughnessy \href{andrew.shaughnessy@slu.edu}{andrew.shaughnessy@slu.edu}
 
     Authors:
     \itemize{
       \item{Christopher Prener, Ph.D. \href{chris.prener@slu.edu}{chris.prener@slu.edu}}
-      \item{Elizabeth Hasenmueller, Ph.D.}
+      \item{Elizabeth Hasenmueller, Ph.D. \href{elizabeth.hasenmueller@slu.edu}{elizabeth.hasenmueller@slu.edu}}
     }
 }
