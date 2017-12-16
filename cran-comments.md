@@ -11,6 +11,12 @@ This is our initial CRAN submission.
 ## R CMD check results
 There were no ERRORs, WARNINGs, or NOTEs with local checks or on Travis CI/Appveyor.
 
+On devtools::release()'s R CMD check we get one NOTE:
+
+* checking CRAN incoming feasibility ... NOTE
+
+  This notes that the package is a new submission. 
+
 On winbuilder, we get one NOTE:
 
 * checking CRAN incoming feasibility ... NOTE
