@@ -14,7 +14,7 @@ vignette: >
 In situ water-quality monitoring instruments take continuous measurements of various chemical and physical parameters. The longer these instruments stay in the field, the further sensor readings drift from their true values. The purpose of this package is to correct water quality monitoring data sets for instrumental drift in a reliable, reproducible method.
 
 ## Getting Started with `R`
-If you are new to `R`, welcome! You will need to [download `R`](https://cloud.r-project.org). We also recommend downloading [RStudio](https://www.rstudio.com/products/rstudio/download/#download). Once you have those installed, you can install `driftR`:
+If you are new to `R`, welcome! You will need to [download `R`](https://www.r-project.org). We also recommend downloading [RStudio](https://www.rstudio.com/products/rstudio/download/#download). Once you have those installed, you can install `driftR`:
 
 ```{r, eval = FALSE}
 install.packages("driftR")
