@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -84,7 +84,7 @@
       <h1>Applying Drift Corrections with driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-12-15</h4>
+            <h4 class="date">2017-12-17</h4>
           </div>
 
     
@@ -99,12 +99,12 @@
 <h2 class="hasAnchor">
 <a href="#getting-started-with-r" class="anchor"></a>Getting Started with <code>R</code>
 </h2>
-<p>If you are new to <code>R</code>, welcome! You will need to <a href="https://cloud.r-project.org">download <code>R</code></a>. We also recommend downloading <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio</a>. Once you have those installed, you can install <code>driftR</code>:</p>
+<p>If you are new to <code>R</code>, welcome! You will need to <a href="https://www.r-project.org">download <code>R</code></a>. We also recommend downloading <a href="https://www.rstudio.com/products/rstudio/download/#download">RStudio</a>. Once you have those installed, you can install <code>driftR</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"driftR"</span>)
 <span class="kw">library</span>(driftR)</code></pre></div>
 <p>If you want, install the <code>devtools</code> package to install the development version of <code>driftR</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
+devtools::<span class="kw">install_github</span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
 <p>macOS users should also <a href="https://www.xquartz.org">download and install XQuartz</a>.</p>
 </div>
 <div id="packages" class="section level2">
@@ -242,9 +242,9 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <h3 class="hasAnchor">
 <a href="#removing-unnecessary-variables" class="anchor"></a>Removing Unnecessary Variables</h3>
 <p>If there are unnecessary variables left in your data set at the end of the post-processing stage, you can also use the <a href="http://dplyr.tidyverse.org/reference/select.html"><code><a href="http://dplyr.tidyverse.org/reference/select.html">select()</a></code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> to remove them. The function accepts the data frame name followed by a comma and negative sign in front of the variable to be removed. For example, the <code>NitrateN</code> variable does not contain any non-zero observations in our example, so it can be removed.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span>NitrateN)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, -NitrateN)</code></pre></div>
 <p>If there are multiple variables to be removed, a list of the variables can be provided inside <code>-c(varlist)</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, <span class="op">-</span><span class="kw">c</span>(NitrateN, pHmV))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">waterTibble &lt;-<span class="st"> </span><span class="kw">select</span>(waterTibble, -<span class="kw">c</span>(NitrateN, pHmV))</code></pre></div>
 </div>
 </div>
 <div id="exporting-data" class="section level2">

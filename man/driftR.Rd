@@ -4,7 +4,7 @@
 \name{driftR}
 \alias{driftR}
 \alias{driftR-package}
-\title{driftR: A Grammar for Drift Correcting Water-quality Data}
+\title{driftR: Drift Correcting Water Quality Data}
 \description{
 There are many sources of water quality data including instruments
     (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of

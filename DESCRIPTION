@@ -1,6 +1,6 @@
 Package: driftR
 Type: Package
-Title: Drift Correcting Water-Quality Data
+Title: Drift Correcting Water Quality Data
 Version: 1.0.0
 Authors@R: c(
     person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
@@ -8,7 +8,7 @@ Authors@R: c(
     person("Elizabeth", "Hasenmueller", , "elizabeth.hasenmueller@slu.edu", c("aut"))
     )
 Description: A tidy implementation of equations that correct for instrumental drift in 
-    continuous water-quality monitoring data.  There are many sources of water-quality data 
+    continuous water quality monitoring data.  There are many sources of water quality data 
     including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of 
     which are susceptible to errors/inaccuracies due to drift. This package allows the 
     user to correct their data using one or two standard reference values in a uniform, 
