@@ -1,5 +1,5 @@
 ## Release summary
-This is the re-submission of our initial CRAN submission. At the reviewer's request, `+ file LICENSE` was removed from the `DESCRIPTION` and the `LICENSE` file was added to `.Rbuildignore`.
+This is the second re-submission of our initial CRAN submission. At the reviewer's request, the title in the `DESCRIPTION` file was shortened and a citation for the equations used was added in the `Description` field. The prior resubmission made the following change: at the reviewer's request, `+ file LICENSE` was removed from the `DESCRIPTION` and the `LICENSE` file was added to `.Rbuildignore`.
 
 ## Test environments
 * local macOS install, R 3.4.3
