@@ -10,4 +10,4 @@
 ^docs$
 ^_pkgdown\.yml$
 ^\.zenodo\.json$
-
+^LICENSE$

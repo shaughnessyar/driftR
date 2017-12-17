@@ -1,8 +1,8 @@
 ## Release summary
-This is our initial CRAN submission.
+This is the re-submission of our initial CRAN submission. At the reviewer's request, `+ file LICENSE` was removed from the `DESCRIPTION` and the `LICENSE` file was added to `.Rbuildignore`.
 
 ## Test environments
-* local macOS install, R 3.4.2
+* local macOS install, R 3.4.3
 * ubuntu 14.04 (on Travis CI), R-release, R-oldrel, R-devel
 * macOS (on Travis CI), R-release, R-oldrel
 * windows (on Appveyor), R-release, R-oldrel
