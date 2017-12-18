@@ -11,10 +11,17 @@ vignette: >
 
 ## Overview
 
-In situ water-quality monitoring instruments take continuous measurements of various chemical and physical parameters. The longer these instruments stay in the field, the further sensor readings drift from their true values. The purpose of this package is to correct water-quality monitoring data sets for instrumental drift in a reliable, reproducible method.
+In situ water-quality monitoring instruments take continuous measurements of various chemical and physical parameters. The longer these instruments stay in the field, the further sensor readings drift from their true values. The purpose of this package is to correct water quality monitoring data sets for instrumental drift in a reliable, reproducible method.
 
 ## Getting Started with `R`
-If you are new to `R`, welcome! You will need to [download `R`](https://cloud.r-project.org). We also recommend downloading [RStudio](https://www.rstudio.com/products/rstudio/download/#download). Once you have those installed, you will need to install the `devtools` package to install `driftR`:
+If you are new to `R`, welcome! You will need to [download `R`](https://www.r-project.org). We also recommend downloading [RStudio](https://www.rstudio.com/products/rstudio/download/#download). Once you have those installed, you can install `driftR`:
+
+```{r, eval = FALSE}
+install.packages("driftR")
+library(driftR)
+```
+
+If you want, install the `devtools` package to install the development version of `driftR`:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
@@ -126,7 +133,7 @@ waterTibble <- dr_correctTwo(waterTibble, sourceVar = pH, cleanVar = pH_corr, ca
 ```
 
 ### Dropping Observations
-After the data has been corrected, some of the data will likely need to be removed (i.e. dropped) in order to account for the equilibration of the sensors as well as time out of the water during preperation for calibration. It is important to do this step last because dropping data before using `dr_correctOne()` or `dr_correctTwo()` will result in the corrections being inconsistent. To do this, the `dr_drop()` function is used. The argument `.data` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the beginning and end of the data set respectively. Based on YSI Multiparameter V2 Sonde preformance, it is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
+After the data has been corrected, some of the data will likely need to be removed (i.e. dropped) in order to account for the equilibration of the sensors as well as time out of the water during preparation for calibration. It is important to do this step last because dropping data before using `dr_correctOne()` or `dr_correctTwo()` will result in the corrections being inconsistent. To do this, the `dr_drop()` function is used. The argument `.data` is the working data frame for the correction. The arguments `head` and `tail` are the number of observations to be dropped from the beginning and end of the data set respectively. Based on YSI Multiparameter V2 Sonde performance, it is recommended that at least 30 minutes are dropped from both the beginning and end of the data set (i.e. if an observation is taken every 5 minutes, then `head = 6`and `tail = 6`).
 
 ```{r, eval=FALSE}
 waterTibble <- dr_drop(waterTibble, head = 6, tail = 6)

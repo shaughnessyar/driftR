@@ -17,7 +17,7 @@
 #' @param keepDateTime A logical statement to keep an intermediate dateTime variable
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
-#' to the other data in \code{.data} as well as a datTime variable if keepDateTime = TRUE.
+#' to the other data in \code{.data} as well as a dateTime variable if keepDateTime = TRUE.
 #'
 #' @seealso \code{\link{dr_correctOne}} for correction factor creation,
 #'     \code{\link{dr_correctTwo}} for the two-point drift correction

@@ -3,14 +3,20 @@
 driftR <img src="man/figures/logo.png" align="right" />
 =======================================================
 
-[![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/driftR)](https://cran.r-project.org/package=driftR) [![DOI](https://zenodo.org/badge/91733812.svg)](https://zenodo.org/badge/latestdoi/91733812)
+[![Travis-CI Build Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://travis-ci.org/shaughnessyar/driftR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR) [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/driftR)](https://CRAN.R-project.org/package=driftR) [![DOI](https://zenodo.org/badge/91733812.svg)](https://zenodo.org/badge/latestdoi/91733812)
 
 There are many sources of water quality monitoring data including instruments (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of which are susceptible to errors/inaccuracies due to drift. `driftR` provides a grammar for cleaning and correcting these data in a "tidy", reproducible manner.
 
 Installation
 ------------
 
-`driftR` is not available from CRAN yet. In the meantime, you can install the development version of `driftR` from Github with `devtools`:
+The easiest way to get `driftR` is to install it from CRAN:
+
+``` r
+install.packages("driftR")
+```
+
+You can also install the development version of `driftR` from Github with `devtools`:
 
 ``` r
 # install.packages("devtools")

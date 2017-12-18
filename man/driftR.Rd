@@ -4,7 +4,7 @@
 \name{driftR}
 \alias{driftR}
 \alias{driftR-package}
-\title{driftR: A Grammar for Drift Correcting Water-quality Data}
+\title{driftR: Drift Correcting Water Quality Data}
 \description{
 There are many sources of water quality data including instruments
     (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
@@ -14,18 +14,18 @@ There are many sources of water quality data including instruments
 }
 \details{
 The \code{driftR} package implements a series of equations used in
-    \href{https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php}{Dr. Elizabeth Hasenmueller's} hydrology
-    and geochemistry research. These equations correct continuous water-quality
-    monitoring data for incramental drift that occurs over time. There are two
+    \href{https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php}{Dr. Elizabeth Hasenmueller's}
+    hydrology and geochemistry research. These equations correct continuous water quality
+    monitoring data for incremental drift that occurs over time. There are two
     forms of corrections included in the package - a one-point calibration and
-    a two-point calibration. One-point and two-point callibration values are suited
+    a two-point calibration. One-point and two-point calibration values are suited
     for different types of measurements. The package is currently written for the
     easiest use with YSI Sonde products.
 
     There are four key verbs that are introduced in \code{driftR}:
     \itemize{
       \item{\emph{read}: The \code{\link{dr_readSonde}} function imports and properly
-        formats output from YSI Sonde istruments}
+        formats output from YSI Sonde instrument}
       \item{\emph{factor}: The \code{\link{dr_factor}} function calculates factors
         based on the time of the observation and the total amount of time that the
         instrument had been deployed. They are used in the equations for both the
@@ -53,11 +53,11 @@ Useful links:
 }
 }
 \author{
-\strong{Maintainer:} Andrew Shaughnessy
+\strong{Maintainer:} Andrew Shaughnessy \href{andrew.shaughnessy@slu.edu}{andrew.shaughnessy@slu.edu}
 
     Authors:
     \itemize{
       \item{Christopher Prener, Ph.D. \href{chris.prener@slu.edu}{chris.prener@slu.edu}}
-      \item{Elizabeth Hasenmueller, Ph.D.}
+      \item{Elizabeth Hasenmueller, Ph.D. \href{elizabeth.hasenmueller@slu.edu}{elizabeth.hasenmueller@slu.edu}}
     }
 }

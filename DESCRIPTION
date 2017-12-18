@@ -1,19 +1,20 @@
 Package: driftR
 Type: Package
-Title: A Grammar for Drift Correcting Water-quality Data
-Version: 0.2.2
+Title: Drift Correcting Water Quality Data
+Version: 1.0.0
 Authors@R: c(
     person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
     person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),
     person("Elizabeth", "Hasenmueller", , "elizabeth.hasenmueller@slu.edu", c("aut"))
     )
-Description: A tidy implamentation of equations that correct for instramental drift in 
-    continuous water-quality monotoring data.  There are many sources of water-quality data 
+Description: A tidy implementation of equations that correct for instrumental drift in 
+    continuous water quality monitoring data.  There are many sources of water quality data 
     including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of 
     which are susceptible to errors/inaccuracies due to drift. This package allows the 
     user to correct their data using one or two standard reference values in a uniform, 
-    reproducible way.
-License: GPL-3 + file LICENSE
+    reproducible way. The equations implemented are from Hasenmueller (2011)
+    <doi:10.7936/K7N014KS>.
+License: GPL-3
 URL: https://github.com/shaughnessyar/driftR
 BugReports: https://github.com/shaughnessyar/driftR/issues
 Encoding: UTF-8

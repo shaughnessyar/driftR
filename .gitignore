@@ -45,3 +45,4 @@ Thumbs.db
 *.dcf
 *.ttc
 inst/doc
+/revdep/.cache.rds

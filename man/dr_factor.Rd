@@ -22,7 +22,7 @@ dr_factor(.data, corrFactor, dateVar, timeVar,
 }
 \value{
 An object of the same class as \code{.data} with the new correction factor variable added
-to the other data in \code{.data} as well as a datTime variable if keepDateTime = TRUE.
+to the other data in \code{.data} as well as a dateTime variable if keepDateTime = TRUE.
 }
 \description{
 A wrapper around \code{dplyr::mutate()} that creates a correction factor for each observation.
