@@ -14,6 +14,8 @@
 #'
 #' @return A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
 #'
+#' @importFrom readxl read_excel
+#'
 #' @examples
 #' \dontrun{
 #' dr_readEXO("data.xlsx")

@@ -21,6 +21,8 @@
 #' dr_readHOBO("data.csv", defineVar = TRUE, fileFormat = "CSV")
 #'}
 #'
+#' @importFrom readr read_csv
+#' @importFrom readr read_tsv
 #' @export
 dr_readHOBO <- function (file, defineVar = TRUE, fileFormat = c("TXT", "CSV")) {
   if (!file.exists(file)) {
