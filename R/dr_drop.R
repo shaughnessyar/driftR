@@ -19,11 +19,7 @@
 #'     of \code{.data} (or \code{NULL})
 #' @param tail An integer >= 1 specifying the number of rows to be removed from the bottom
 #'     of \code{.data} (or \code{NULL})
-#' @param from A vector of two inputs; Date and Time. This is the start of the period to drop.
-#' @param to A vector of two inputs; Date and Time. This is the end of the period to drop.
-#' @param expression A vector of two inputs; symbol (e.g., >, <, =<, >=, ==) and threshold value. This specifies which values to drop for a specific parameter
-#' @param var Name of variable containing data to drop.
-#' @param dropAll A logical statement to drop all the data for the specified date range or just a specified \code{var}.
+#' @param ... other optional parameters(i.e., from, to, expression, var, dropAll)
 #'
 #' @return An object of the same class as \code{.data} with specified observations removed.
 #'
@@ -45,7 +41,7 @@
 #'  dr_drop(testData, expression = c(">", 14.5), var = SpCond)
 #'
 #' @export
-dr_drop <- function(.data, head = NULL, tail = NULL, from = c("Date", "Time"), to =  c("Date", "Time"), expression = c("symb", "val"), var = NA, dropAll = FALSE){
+dr_drop <- function(.data, head = NULL, tail = NULL, ...){
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   n = NULL
@@ -65,12 +61,10 @@ dr_drop <- function(.data, head = NULL, tail = NULL, from = c("Date", "Time"), t
         return(stop(glue::glue('Head value {head} not acceptable - value should be NULL or integer >= 1')))
       }
     }
-
     if (!is.null(tail)) {
       if (!(typeof(tail) %in% c('integer', 'double'))) {
         return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
       }
-
       if ((tail %% 1 != 0) | (tail <= 0)) {
         return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
       }
@@ -92,15 +86,15 @@ dr_drop <- function(.data, head = NULL, tail = NULL, from = c("Date", "Time"), t
       dplyr::slice(.data, headPos:tailPos)
     }
   }
-  else if (grepl("Date", from[1]) == FALSE){
-    dateVar <-colnames(.data[,which(grepl(from[1], .data))])
-    timeVar <-colnames(.data[,which(grepl(from[2], .data))])
+  else if ("from" %in% names(paramList) && "to" %in% names(paramList)){
+    dateVar <-colnames(.data[,which(grepl(gsub("()", "", paramList$from[2]), .data))])
+    timeVar <-colnames(.data[,which(grepl(gsub("()", "", paramList$from[3]), .data))])
     dateVar <- rlang::quo(!! rlang::sym(dateVar))
     timeVar <- rlang::quo(!! rlang::sym(timeVar))
-    startDate <- from[1]
-    startTime <-from[2]
-    endDate <- to[1]
-    endTime <- to[2]
+    startDate <- gsub("()", "", paramList$from[2])
+    startTime <- gsub("()", "", paramList$from[3])
+    endDate <- gsub("()", "", paramList$to[2])
+    endTime <- gsub("()", "", paramList$to[3])
     a <- "newDate"
     b <- "newTime"
     newDate <- rlang::quo_name(rlang::enquo(a))
@@ -110,7 +104,15 @@ dr_drop <- function(.data, head = NULL, tail = NULL, from = c("Date", "Time"), t
     end <- which(grepl(endDate, .data$newDate)==TRUE & grepl(endTime, .data$newTime)==TRUE)
     .data$newDate <- NULL
     .data$newTime <- NULL
-    if ( dropAll == FALSE) {
+
+    if ("dropAll" %in% names(paramList) && paramList$dropAll == TRUE){
+
+      .data[start:end,] <- NA
+      return(.data)
+    }
+
+    else if ("dropAll" %nin% names(paramList)){
+      var <- paramList$var
       if (!is.character(paramList$var)) {
         dropVar <- rlang::enquo(var)
       } else if (is.character(paramList$var)) {
@@ -125,13 +127,8 @@ dr_drop <- function(.data, head = NULL, tail = NULL, from = c("Date", "Time"), t
       .data[c(start:end), dropVarQ] <- NA
       return(.data)
     }
-    else if (dropAll == TRUE){
-
-      .data[start:end,] <- NA
-      return(.data)
-    }
   }
-  else {
+  else if ("expression" %in% names(paramList)){
     if (!is.character(paramList$var)) {
       dropVar <- rlang::enquo(var)
     } else if (is.character(paramList$var)) {
@@ -146,40 +143,39 @@ dr_drop <- function(.data, head = NULL, tail = NULL, from = c("Date", "Time"), t
     e <- "tempVar"
     tempVar <- rlang::quo_name(rlang::enquo(e))
     .data <- .data %>% dplyr::mutate(tempVar := (!!dropVar))
-    if (expression[1] == ">"){
-      num <- as.numeric(expression[2])
+    num <- gsub("()", "", paramList$expression[3])
+    if (gsub("()", "", paramList$expression[2]) == ">"){
       index_list <- which(.data$tempVar > num)
       .data$tempVar <- NULL
       .data[c(index_list), dropVarQ] <- NA
       return(.data)
     }
-    else if (expression[1] == "<"){
-      num <- as.numeric(expression[2])
+    else if (gsub("()", "", paramList$expression[2]) == "<"){
       index_list <- which(.data$tempVar < num)
       .data$tempVar <- NULL
       .data[c(index_list), dropVarQ] <- NA
       return(.data)
     }
-    else if (expression[1] == ">="){
-      num <- as.numeric(expression[2])
+    else if (gsub("()", "", paramList$expression[2]) == ">="){
       index_list <- which(.data$tempVar >= num)
       .data$tempVar <- NULL
       .data[c(index_list), dropVarQ] <- NA
       return(.data)
     }
-    else if (expression[1] == "<="){
-      num <- as.numeric(expression[2])
+    else if (gsub("()", "", paramList$expression[2]) == "<="){
       index_list <- which(.data$tempVar <= num)
       .data$tempVar <- NULL
       .data[c(index_list), dropVarQ] <- NA
       return(.data)
     }
-    else if (expression[1] == "=="){
-      num <- as.numeric(expression[2])
+    else if (gsub("()", "", paramList$expression[2]) == "=="){
       index_list <- which(.data$tempVar == num)
       .data$tempVar <- NULL
       .data[c(index_list), dropVarQ] <- NA
       return(.data)
     }
+  }
+  else{
+    stop("At least 1 observation must be removed from the data frame")
   }
 }
