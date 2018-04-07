@@ -42,8 +42,8 @@
 #'
 #'  dr_drop(testData, head = 2)
 #'  dr_drop(testData, head = 2, tail = 1)
-#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"), to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
-#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"), to = c("9/18/2015", "12:15:50"), var = Temp)
+#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
+#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),to = c("9/18/2015", "12:15:50"), var = Temp)
 #'  dr_drop(testData, expression = "SpCond >= 0.75")
 #'
 #' @export

@@ -4,7 +4,7 @@
 \alias{dr_drop}
 \title{Dropping observations from beginning and end of the monitoring period, over a specified date range, or if a value meets a specified criteria}
 \usage{
-dr_drop((.data, head = NULL, tail = NULL, from = c("Date", "Time"), to =  c("Date", "Time"), expression = c("symb", "val"), var = NA, dropAll = FALSE)
+dr_drop(.data, head, tail, from , to , var, dropAll, expression)
 }
 \arguments{
 \item{.data}{A tbl}
@@ -15,15 +15,15 @@ of \code{.data} (or \code{NULL})}
 \item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom
 of \code{.data} (or \code{NULL})}
 
-\item{from}{A vector of two inputs; Date and Time. This is the start of the period to drop.}
+\item{from}{A vector of two strings: Date and Time for the start of the period to be dropped}
 
-\item{to}{A vector of two inputs; Date and Time. This is the end of the period to drop.}
+\item{to}{A vector of two strings: Date and Time for the end of the period to be dropped}
 
-\item{expression}{A vector of two inputs; symbol (e.g., >, <, =<, >=, ==) and threshold value. This specifies which values to drop for a specific parameter}
+\item{var}{Name of variable to be dropped.}
 
-\item{var}{Name of variable containing data to drop.}
+\item{dropAll}{A logical statement that will drop all observations in the specified period}
 
-\item{dropAll}{A logical statement to drop all the data for the specified date range or just a specified \code{var}.}
+\item{expression}{A string containing the variable name an expression to drop}
 }
 \value{
 An object of the same class as \code{.data} with specified observations removed.
@@ -40,7 +40,9 @@ When taking the instrument out of the water, there are often several observation
     Another issue arrises if the water level drops below the level of the sensors in the middle of a deployment.
     \code{dr_drop()} can remove this data from the dataset by either entire timeperiods or by individual parameters.
     Lastly, sometimes there is a malfunction in a sensor and it has erroneous measurements taken throughout the dataset. This
-    function can remove data points above or below a certain threshold for a specified parameter
+    function can remove data points above or below a certain threshold for a specified parameter.
+    Acceptable combinations of parameters are 1) .data, head, 2) .data, tail, 3) .data, head, tail,
+    4).data, from, to, var, 5) .data, from, to, dropAll, and 6).data, expression.
 }
 \examples{
 testData <- data.frame(
@@ -53,8 +55,8 @@ testData <- data.frame(
 
  dr_drop(testData, head = 2)
  dr_drop(testData, head = 2, tail = 1)
- dr_drop(testData, from = c("9/18/2015", "12:10:49"), to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
- dr_drop(testData, from = c("9/18/2015", "12:10:49"), to = c("9/18/2015", "12:15:50"), var = Temp)
- dr_drop(testData, expression = c(">", 14.5), var = SpCond)
+ dr_drop(testData, from = c("9/18/2015", "12:10:49"),to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
+ dr_drop(testData, from = c("9/18/2015", "12:10:49"),to = c("9/18/2015", "12:15:50"), var = Temp)
+ dr_drop(testData, expression = "SpCond >= 0.75")
 
 }

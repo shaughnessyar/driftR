@@ -1,8 +1,8 @@
 dropMethod2 <- function(.data, from = NULL, to = NULL, var = NULL, dropAll = NULL){
 
   paramList <- as.list(match.call())
-  dateVar <-colnames(.data[,which(grepl(paramList$from[[2]], .data))])
-  timeVar <-colnames(.data[,which(grepl(paramList$from[[3]], .data))])
+  dateVar <-colnames(.data[,which(grepl(paramList$from[[2]], .data))[1]])
+  timeVar <-colnames(.data[,which(grepl(paramList$from[[3]], .data))[1]])
   dateVar <- rlang::quo(!! rlang::sym(dateVar))
   timeVar <- rlang::quo(!! rlang::sym(timeVar))
   startDate <- paramList$from[[2]]
