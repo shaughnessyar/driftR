@@ -10,16 +10,22 @@
 #'     Another issue arrises if the water level drops below the level of the sensors in the middle of a deployment.
 #'     \code{dr_drop()} can remove this data from the dataset by either entire timeperiods or by individual parameters.
 #'     Lastly, sometimes there is a malfunction in a sensor and it has erroneous measurements taken throughout the dataset. This
-#'     function can remove data points above or below a certain threshold for a specified parameter
+#'     function can remove data points above or below a certain threshold for a specified parameter.
+#'     Acceptable combinations of parameters are 1) .data, head, 2) .data, tail, 3) .data, head, tail,
+#'     4).data, from, to, var, 5) .data, from, to, dropAll, and 6).data, expression.
 #'
-#' @usage dr_drop((.data, head = NULL, tail = NULL, from = c("Date", "Time"), to =  c("Date", "Time"), expression = c("symb", "val"), var = NA, dropAll = FALSE)
+#' @usage dr_drop(.data, head, tail, from , to , var, dropAll, expression)
 #'
 #' @param .data A tbl
 #' @param head An integer >= 1 specifying the number of rows to be removed from the top
 #'     of \code{.data} (or \code{NULL})
 #' @param tail An integer >= 1 specifying the number of rows to be removed from the bottom
 #'     of \code{.data} (or \code{NULL})
-#' @param ... other optional parameters(i.e., from, to, expression, var, dropAll)
+#' @param from A vector of two strings: Date and Time for the start of the period to be dropped
+#' @param to A vector of two strings: Date and Time for the end of the period to be dropped
+#' @param var Name of variable to be dropped.
+#' @param dropAll A logical statement that will drop all observations in the specified period
+#' @param expression A string containing the variable name an expression to drop
 #'
 #' @return An object of the same class as \code{.data} with specified observations removed.
 #'
@@ -38,144 +44,41 @@
 #'  dr_drop(testData, head = 2, tail = 1)
 #'  dr_drop(testData, from = c("9/18/2015", "12:10:49"), to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
 #'  dr_drop(testData, from = c("9/18/2015", "12:10:49"), to = c("9/18/2015", "12:15:50"), var = Temp)
-#'  dr_drop(testData, expression = c(">", 14.5), var = SpCond)
+#'  dr_drop(testData, expression = "SpCond >= 0.75")
 #'
 #' @export
-dr_drop <- function(.data, head = NULL, tail = NULL, ...){
-
-  # To prevent NOTE from R CMD check 'no visible binding for global variable'
+dr_drop <- function(.data, head, tail, from, to, var, dropAll, expression){
   n = NULL
 
-  # save parameters to list
+  option1 <- c("", ".data", "head")
+  option2 <- c("", ".data", "tail")
+  option3 <- c("", ".data", "head", "tail")
+  option4 <- c("", ".data", "from", "to", "dropAll")
+  option5 <- c("", ".data", "from", "to", "var")
+  option6 <- c("", ".data", "expression")
+  testList <- list(option1, option2, option3, option4, option5, option6)
   paramList <- as.list(match.call())
-
-  if (base::is.null(head) == FALSE | base::is.null(tail) == FALSE){
-
-    # Check for input errors
-    if (!is.null(head)) {
-      if (!(typeof(head) %in% c('integer', 'double'))) {
-        return(stop(glue::glue('Head value {head} not acceptable - value should be NULL or integer >= 1')))
-      }
-
-      if ((head %% 1 != 0) | (head <= 0)) {
-        return(stop(glue::glue('Head value {head} not acceptable - value should be NULL or integer >= 1')))
-      }
-    }
-    if (!is.null(tail)) {
-      if (!(typeof(tail) %in% c('integer', 'double'))) {
-        return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
-      }
-      if ((tail %% 1 != 0) | (tail <= 0)) {
-        return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
-      }
-    }
-    # calculate slice positions
-    headPos <- head+1
-
-    rows <- nrow(.data)
-    tailPos <- rows-tail
-
-    # evaluate head and tail
-    if (base::is.null(head)){
-      dplyr::slice(.data, 1:tailPos)
-    }
-    else if (base::is.null(tail)) {
-      dplyr::slice(.data, headPos:n())
-    }
-    else {
-      dplyr::slice(.data, headPos:tailPos)
-    }
+  .args <- as.list(match.call()[-1])
+  if(list(names(paramList)) %nin% testList){
+    stop("Incorrect argument combination. See dr_drop documentation.")
   }
-  else if ("from" %in% names(paramList) && "to" %in% names(paramList)){
-    dateVar <-colnames(.data[,which(grepl(gsub("()", "", paramList$from[2]), .data))])
-    timeVar <-colnames(.data[,which(grepl(gsub("()", "", paramList$from[3]), .data))])
-    dateVar <- rlang::quo(!! rlang::sym(dateVar))
-    timeVar <- rlang::quo(!! rlang::sym(timeVar))
-    startDate <- gsub("()", "", paramList$from[2])
-    startTime <- gsub("()", "", paramList$from[3])
-    endDate <- gsub("()", "", paramList$to[2])
-    endTime <- gsub("()", "", paramList$to[3])
-    a <- "newDate"
-    b <- "newTime"
-    newDate <- rlang::quo_name(rlang::enquo(a))
-    newTime <- rlang::quo_name(rlang::enquo(b))
-    .data <- .data %>% dplyr::mutate(newDate := (!!dateVar)) %>% dplyr::mutate(newTime := (!!timeVar))
-    start <- which(grepl(startDate, .data$newDate)==TRUE & grepl(startTime, .data$newTime)==TRUE)
-    end <- which(grepl(endDate, .data$newDate)==TRUE & grepl(endTime, .data$newTime)==TRUE)
-    .data$newDate <- NULL
-    .data$newTime <- NULL
-
-    if ("dropAll" %in% names(paramList) && paramList$dropAll == TRUE){
-
-      .data[start:end,] <- NA
-      return(.data)
-    }
-
-    else if ("dropAll" %nin% names(paramList)){
-      var <- paramList$var
-      if (!is.character(paramList$var)) {
-        dropVar <- rlang::enquo(var)
-      } else if (is.character(paramList$var)) {
-        dropVar <- rlang::quo(!! rlang::sym(var))
-      }
-      dropVarQ <- rlang::quo_name(rlang::enquo(var))
-
-      if(!!dropVarQ %nin% colnames(.data)) {
-        stop(glue::glue('Variable {var}, given for var, cannot be found in the given data frame',
-                        var = dropVarQ))
-      }
-      .data[c(start:end), dropVarQ] <- NA
-      return(.data)
-    }
+  if(which(testList %in% list(names(paramList)))==1){
+    .data <- do.call(dropMethod1, .args)
   }
-  else if ("expression" %in% names(paramList)){
-    if (!is.character(paramList$var)) {
-      dropVar <- rlang::enquo(var)
-    } else if (is.character(paramList$var)) {
-      dropVar <- rlang::quo(!! rlang::sym(var))
-    }
-    dropVarQ <- rlang::quo_name(rlang::enquo(var))
-
-    if(!!dropVarQ %nin% colnames(.data)) {
-      stop(glue::glue('Variable {var}, given for var, cannot be found in the given data frame',
-                      var = dropVarQ))
-    }
-    e <- "tempVar"
-    tempVar <- rlang::quo_name(rlang::enquo(e))
-    .data <- .data %>% dplyr::mutate(tempVar := (!!dropVar))
-    num <- gsub("()", "", paramList$expression[3])
-    if (gsub("()", "", paramList$expression[2]) == ">"){
-      index_list <- which(.data$tempVar > num)
-      .data$tempVar <- NULL
-      .data[c(index_list), dropVarQ] <- NA
-      return(.data)
-    }
-    else if (gsub("()", "", paramList$expression[2]) == "<"){
-      index_list <- which(.data$tempVar < num)
-      .data$tempVar <- NULL
-      .data[c(index_list), dropVarQ] <- NA
-      return(.data)
-    }
-    else if (gsub("()", "", paramList$expression[2]) == ">="){
-      index_list <- which(.data$tempVar >= num)
-      .data$tempVar <- NULL
-      .data[c(index_list), dropVarQ] <- NA
-      return(.data)
-    }
-    else if (gsub("()", "", paramList$expression[2]) == "<="){
-      index_list <- which(.data$tempVar <= num)
-      .data$tempVar <- NULL
-      .data[c(index_list), dropVarQ] <- NA
-      return(.data)
-    }
-    else if (gsub("()", "", paramList$expression[2]) == "=="){
-      index_list <- which(.data$tempVar == num)
-      .data$tempVar <- NULL
-      .data[c(index_list), dropVarQ] <- NA
-      return(.data)
-    }
+  if(which(testList %in% list(names(paramList)))==2){
+    .data <- do.call(dropMethod1, .args)
   }
-  else{
-    stop("At least 1 observation must be removed from the data frame")
+  if(which(testList %in% list(names(paramList)))==3){
+    .data <- do.call(dropMethod1, .args)
   }
+  if(which(testList %in% list(names(paramList)))==4){
+    .data <- do.call(dropMethod2, .args)
+  }
+  if(which(testList %in% list(names(paramList)))==5){
+    .data <- do.call(dropMethod2, .args)
+  }
+  if(which(testList %in% list(names(paramList)))==6){
+    .data <- do.call(dropMethod3, .args)
+  }
+  return(.data)
 }
