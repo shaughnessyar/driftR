@@ -127,7 +127,8 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
       dplyr::mutate(dateTimeParse =
                       lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                  tz = tz)) %>%
-      dplyr::filter(dateTimeParse >= fromVal & dateTimeParse <= toVal) -> .data
+      dplyr::filter(dateTimeParse >= fromVal & dateTimeParse <= toVal) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
 
   } else if (is.null(from) & !is.null(to)){
     # drop all observations up to the specified date/time
@@ -137,7 +138,8 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
       dplyr::mutate(dateTimeParse =
                       lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                  tz = tz)) %>%
-      dplyr::filter(dateTimeParse < toVal) -> .data
+      dplyr::filter(dateTimeParse < toVal) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
 
   } else if (!is.null(from) & is.null(to)){
     # drop all observations beginning with the specified date/time
@@ -147,7 +149,8 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
       dplyr::mutate(dateTimeParse =
                       lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                  tz = tz)) %>%
-      dplyr::filter(dateTimeParse > fromVal) -> .data
+      dplyr::filter(dateTimeParse > fromVal) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
 
   }
 
