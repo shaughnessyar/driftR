@@ -42,12 +42,15 @@
 #'
 #'  dr_drop(testData, head = 2)
 #'  dr_drop(testData, head = 2, tail = 1)
-#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
-#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),to = c("9/18/2015", "12:15:50"), var = Temp)
+#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),
+#'      to = c("9/18/2015", "12:15:50"), dropAll = TRUE)
+#'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),
+#'      to = c("9/18/2015", "12:15:50"), var = Temp)
 #'  dr_drop(testData, expression = "SpCond >= 0.75")
 #'
 #' @export
 dr_drop <- function(.data, head, tail, from, to, var, dropAll, expression){
+
   n = NULL
 
   option1 <- c("", ".data", "head")
@@ -56,29 +59,43 @@ dr_drop <- function(.data, head, tail, from, to, var, dropAll, expression){
   option4 <- c("", ".data", "from", "to", "dropAll")
   option5 <- c("", ".data", "from", "to", "var")
   option6 <- c("", ".data", "expression")
+
   testList <- list(option1, option2, option3, option4, option5, option6)
+
   paramList <- as.list(match.call())
+
   .args <- as.list(match.call()[-1])
+
   if(list(names(paramList)) %nin% testList){
+
     stop("Incorrect argument combination. See dr_drop documentation.")
-  }
-  if(which(testList %in% list(names(paramList)))==1){
+
+  } else if(which(testList %in% list(names(paramList)))==1){
+
     .data <- do.call(dropMethod1, .args)
-  }
-  if(which(testList %in% list(names(paramList)))==2){
+
+  } else if(which(testList %in% list(names(paramList)))==2){
+
     .data <- do.call(dropMethod1, .args)
-  }
-  if(which(testList %in% list(names(paramList)))==3){
+
+  } else if(which(testList %in% list(names(paramList)))==3){
+
     .data <- do.call(dropMethod1, .args)
-  }
-  if(which(testList %in% list(names(paramList)))==4){
+
+  } else if(which(testList %in% list(names(paramList)))==4){
+
     .data <- do.call(dropMethod2, .args)
-  }
-  if(which(testList %in% list(names(paramList)))==5){
+
+  } else if(which(testList %in% list(names(paramList)))==5){
+
     .data <- do.call(dropMethod2, .args)
-  }
-  if(which(testList %in% list(names(paramList)))==6){
+
+  } else if(which(testList %in% list(names(paramList)))==6){
+
     .data <- do.call(dropMethod3, .args)
+
   }
+
   return(.data)
+
 }

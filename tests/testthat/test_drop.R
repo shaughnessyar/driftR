@@ -23,17 +23,18 @@ test_that("input errors trigged - tail", {
   expect_error(dr_drop(test_data, tail = FALSE), "Tail value FALSE not acceptable - value should be NULL or integer >= 1")
 })
 
-test_that("input errors trigged - no parameters", {
-  expect_error(dr_drop(test_data), "At least 1 observation must be removed from the data frame")
-  expect_error(dr_drop(test_data, head = NULL, tail = NULL), "At least 1 observation must be removed from the data frame")
-})
+# test_that("input errors trigged - no parameters", {
+#  expect_error(dr_drop(test_data), "At least 1 observation must be removed from the data frame")
+#  expect_error(dr_drop(test_data, head = NULL, tail = NULL), "At least 1 observation must be removed from the data frame")
+# })
 
 # test results ------------------------------------------------
-## remove 5 observations from head, 5 from tail
 
+## load test data
 test_data <- read.csv(system.file("extdata", "sondeClean.csv", package = "driftR"), stringsAsFactors = FALSE)
 rows <- 1527
 
+## remove 5 observations from head, 5 from tail
 result1 <- dr_drop(test_data, head = 5, tail = 5)
 result1_n <- nrow(result1)
 result1_exp <- rows-10
