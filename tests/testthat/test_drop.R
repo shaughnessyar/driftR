@@ -35,7 +35,7 @@ test_data <- read.csv(system.file("extdata", "sondeClean.csv", package = "driftR
 rows <- 1527
 
 ## remove 5 observations from head, 5 from tail
-result1 <- dr_drop(test_data, head = 2, tail = 1)
+result1 <- dr_drop(test_data, head = 5, tail = 5)
 result1_n <- nrow(result1)
 result1_exp <- rows-10
 result1_headExp <- "12:35:51"

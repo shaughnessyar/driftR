@@ -32,6 +32,7 @@
 #' @importFrom dplyr n
 #'
 #' @examples
+#' \dontrun{
 #' testData <- data.frame(
 #'    Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
 #'    Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
@@ -47,6 +48,7 @@
 #'  dr_drop(testData, from = c("9/18/2015", "12:10:49"),
 #'      to = c("9/18/2015", "12:15:50"), var = Temp)
 #'  dr_drop(testData, expression = "SpCond >= 0.75")
+#' }
 #'
 #' @export
 dr_drop_exp <- function(.data, head, tail, from, to, var, dropAll, expression){
