@@ -1,6 +1,6 @@
 #'
 #' @export
-dr_drop_full <- function(.data, head = NULL, tail = NULL, date = NULL, time = NULL, from = NULL, to = NULL, exp = NULL, tz = NULL){
+dr_drop_full <- function(.data, head = NULL, tail = NULL, date = NULL, time = NULL, from = NULL, to = NULL, exp, tz = NULL){
 
   # save parameters to list
   paramList <- as.list(match.call())
@@ -18,6 +18,9 @@ dr_drop_full <- function(.data, head = NULL, tail = NULL, date = NULL, time = NU
     timeVar <- rlang::quo(!! rlang::sym(time))
   }
 
+  # quote expression
+  filter_exp_enq <- enquo(exp)
+
   if (!missing(head) & !missing(tail)){
 
     cleanData <- dr_drop_slice(.data, head = head, tail = tail)
@@ -32,7 +35,7 @@ dr_drop_full <- function(.data, head = NULL, tail = NULL, date = NULL, time = NU
 
   } else if (!missing(exp)){
 
-    cleanData <- dr_drop_exp(.data, exp = exp)
+    cleanData <- dr_drop_exp(.data, filter_exp = filter_exp_enq)
     message("Drop approach - completed using the expression.")
     return(cleanData)
 
@@ -154,5 +157,12 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
 
   }
 
+
+}
+
+dr_drop_exp <- function(.data, filter_exp){
+
+  .data %>%
+    filter(!(!!filter_exp)) -> .data
 
 }
