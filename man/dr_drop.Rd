@@ -53,9 +53,13 @@ testData <- data.frame(
  dr_drop(testData, head = 2)
  dr_drop(testData, tail = 1)
  dr_drop(testData, head = 2, tail = 1)
- dr_drop(testData, date = Date, time = Time, from = "9/18/2015 12:25:51")
- dr_drop(testData, date = Date, time = Time, to = "9/18/2015 12:25:51")
- dr_drop(testData, date = Date, time = Time, from = "9/18/2015 12:25:51", to = "9/19/2015 12:30:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/19/2015")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/18/2015 12:25:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, to = "9/19/2015")
+ dr_drop(testData, dateVar = Date, timeVar = Time, to = "9/18/2015 12:25:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/18/2015 12:25:51",
+     to = "9/19/2015 12:30:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/18/2015 12:00", to = "9/19/2015 13:00")
  dr_drop(testData, exp = Temp > 14.7)
 
 }
