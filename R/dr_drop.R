@@ -132,6 +132,7 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
 
 }
 
+# approach 1
 dr_drop_slice <- function(.data, head = NULL, tail = NULL){
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
@@ -183,6 +184,7 @@ dr_drop_slice <- function(.data, head = NULL, tail = NULL){
 
 }
 
+# approach 2
 dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL, tz = NULL){
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
@@ -256,6 +258,7 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
 
 }
 
+# approach 3
 dr_drop_exp <- function(.data, filter_exp){
 
   .data %>%
