@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' testData <- data.frame(
-#'    Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
+#'    Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/19/2015", "9/21/2015"),
 #'    Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
 #'    Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
 #'    SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
@@ -48,6 +48,10 @@
 #'  dr_drop(testData, head = 2)
 #'  dr_drop(testData, tail = 1)
 #'  dr_drop(testData, head = 2, tail = 1)
+#'  dr_drop(testData, date = Date, time = Time, from = "9/18/2015 12:25:51")
+#'  dr_drop(testData, date = Date, time = Time, to = "9/18/2015 12:25:51")
+#'  dr_drop(testData, date = Date, time = Time, from = "9/18/2015 12:25:51", to = "9/19/2015 12:30:51")
+#'  dr_drop(testData, exp = Temp > 14.7)
 #'
 #' @export
 dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = NULL, from = NULL, to = NULL, tz = NULL, exp){
@@ -124,7 +128,6 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
 
 }
 
-# subfunction for approach 1
 dr_drop_slice <- function(.data, head = NULL, tail = NULL){
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
@@ -176,7 +179,6 @@ dr_drop_slice <- function(.data, head = NULL, tail = NULL){
 
 }
 
-# subfunction for approach 2
 dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL, tz = NULL){
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
@@ -216,7 +218,7 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
       dplyr::mutate(dateTimeParse =
                       lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                  tz = tz)) %>%
-      dplyr::filter(dateTimeParse <= fromVal | dateTimeParse >= toVal) %>%
+      dplyr::filter(dateTimeParse < fromVal | dateTimeParse > toVal) %>%
       dplyr::select(-dateTime, -dateTimeParse) -> .data
 
   } else if (is.null(from) & !is.null(to)){
@@ -246,7 +248,6 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
 
 }
 
-# subfunction for approach 3
 dr_drop_exp <- function(.data, filter_exp){
 
   .data %>%
