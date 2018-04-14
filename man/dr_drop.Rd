@@ -2,9 +2,10 @@
 % Please edit documentation in R/dr_drop.R
 \name{dr_drop}
 \alias{dr_drop}
-\title{Dropping observations from beginning and end of the monitoring period}
+\title{Dropping observations from the monitoring period}
 \usage{
-dr_drop(.data, head = NULL, tail = NULL)
+dr_drop(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = NULL, from = NULL,
+    to = NULL, tz = NULL, exp)
 }
 \arguments{
 \item{.data}{A tbl}
@@ -14,23 +15,40 @@ of \code{.data} (or \code{NULL})}
 
 \item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom
 of \code{.data} (or \code{NULL})}
+
+\item{dateVar}{Name of variable containing date data}
+
+\item{timeVar}{Name of variable containing time data}
+
+\item{from}{Beginning date and (optionally) time to remove observations}
+
+\item{to}{End date and (optionally) time to remove observations}
+
+\item{tz}{String name of timezone, defaults to system's timezone}
+
+\item{exp}{Unquoted expression}
 }
 \value{
 An object of the same class as \code{.data} with specified observations removed.
 }
 \description{
-A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
-    and the \code{tail}.
+\code{dr_drop()} includes three approaches for removing observations from the
+    monitoring period. Observations may be removed by specifying the number to remove from
+    the head and/or the tail of the observation. They may also be removed by specifying
+    one or two timepoints in the data where problematic observations begin, end, or
+    fall between. Finally observations may be removed based on a problematic sensor value
+    or range of values using an expression.
 }
 \details{
 When taking the instrument out of the water, there are often several observations that pass
     before the run can be downloaded. Additionally, once the instrument is in the water, it often
     takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-    observations from the bottom and top of the dataset for each of those issues respectively.
+    observations from the bottom and top of the data set for each of those issues respectively. This
+    function also provides approaches for removing observations from the middle of the data set.
 }
 \examples{
 testData <- data.frame(
-   Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015"),
+   Date = c("9/18/2015", "9/18/2015", "9/18/2015", "9/18/2015", "9/19/2015", "9/21/2015"),
    Time = c("12:10:49", "12:15:50", "12:20:51", "12:25:51", "12:30:51", "12:35:51"),
    Temp = c(14.76, 14.64, 14.57, 14.51, 14.50, 14.63),
    SpCond = c(0.754, 0.750, 0.750, 0.749, 0.749, 0.749),
@@ -40,5 +58,13 @@ testData <- data.frame(
  dr_drop(testData, head = 2)
  dr_drop(testData, tail = 1)
  dr_drop(testData, head = 2, tail = 1)
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/19/2015")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/18/2015 12:25:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, to = "9/19/2015")
+ dr_drop(testData, dateVar = Date, timeVar = Time, to = "9/18/2015 12:25:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/18/2015 12:25:51",
+     to = "9/19/2015 12:30:51")
+ dr_drop(testData, dateVar = Date, timeVar = Time, from = "9/18/2015 12:00", to = "9/19/2015 13:00")
+ dr_drop(testData, exp = Temp > 14.7)
 
 }

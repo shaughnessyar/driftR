@@ -1,7 +1,7 @@
 Package: driftR
 Type: Package
 Title: Drift Correcting Water Quality Data
-Version: 1.0.0
+Version: 1.1.0.9000
 Authors@R: c(
     person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
     person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),
@@ -19,17 +19,21 @@ URL: https://github.com/shaughnessyar/driftR
 BugReports: https://github.com/shaughnessyar/driftR/issues
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr,
+Imports: 
+    dplyr,
     ggplot2,
-    readr,
-    stringr,
-    rlang,
-    tibble,
+    glue,
+    lubridate,
     magrittr,
-    glue
+    readxl,
+    readr,
+    rlang,
+    stringr,
+    tibble
 RoxygenNote: 6.0.1
-Suggests: testthat, 
+Suggests: 
+    covr,
     knitr,
     rmarkdown,
-    covr
+    testthat
 VignetteBuilder: knitr

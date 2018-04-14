@@ -10,14 +10,17 @@ reference:
   - title: "Import Data"
     desc: "Import data from various water-quality monitoring instruments."
     contents:
+    - dr_readEXO
+    - dr_readHOBO
     - dr_readSonde
   - title: "Correct Data"
     desc: "Correct the data for incramental drift."
     contents:
+    - dr_drop
+    - dr_replace
     - dr_factor
     - dr_correctOne
     - dr_correctTwo
-    - dr_drop
   - title: "Helper Functions"
     desc: "Additional functions included in package."
     contents:
