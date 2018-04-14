@@ -32,14 +32,19 @@ of \code{.data} (or \code{NULL})}
 An object of the same class as \code{.data} with specified observations removed.
 }
 \description{
-A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
-    and the \code{tail}.
+\code{dr_drop()} includes three approaches for removing observations from the
+    monitoring period. Observations may be removed by specifying the number to remove from
+    the head and/or the tail of the observation. They may also be removed by specifying
+    one or two timepoints in the data where problematic observations begin, end, or
+    fall between. Finally observations may be removed based on a problematic sensor value
+    or range of values using an expression.
 }
 \details{
 When taking the instrument out of the water, there are often several observations that pass
     before the run can be downloaded. Additionally, once the instrument is in the water, it often
     takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-    observations from the bottom and top of the dataset for each of those issues respectively.
+    observations from the bottom and top of the data set for each of those issues respectively. This
+    function also provides approaches for removing observations from the middle of the data set.
 }
 \examples{
 testData <- data.frame(

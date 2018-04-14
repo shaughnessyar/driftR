@@ -1,12 +1,17 @@
 #' Dropping observations from the monitoring period
 #'
-#' @description A wrapper around \code{dplyr::slice()} for removing observations from both the \code{head}
-#'     and the \code{tail}.
+#' @description \code{dr_drop()} includes three approaches for removing observations from the
+#'     monitoring period. Observations may be removed by specifying the number to remove from
+#'     the head and/or the tail of the observation. They may also be removed by specifying
+#'     one or two timepoints in the data where problematic observations begin, end, or
+#'     fall between. Finally observations may be removed based on a problematic sensor value
+#'     or range of values using an expression.
 #'
 #' @details When taking the instrument out of the water, there are often several observations that pass
 #'     before the run can be downloaded. Additionally, once the instrument is in the water, it often
 #'     takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-#'     observations from the bottom and top of the dataset for each of those issues respectively.
+#'     observations from the bottom and top of the data set for each of those issues respectively. This
+#'     function also provides approaches for removing observations from the middle of the data set.
 #'
 #' @usage dr_drop(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = NULL, from = NULL,
 #'     to = NULL, tz = NULL, exp)
@@ -81,33 +86,19 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
 
   # determine drop approach
   if (!is.null(head) & !is.null(tail) & length(paramList) == 4){
-
     approach <- 1
-
   } else if (!is.null(head) & is.null(tail) & length(paramList) == 3){
-
     approach <- 1
-
   } else if (is.null(head) & !is.null(tail) & length(paramList) == 3){
-
     approach <- 1
-
   } else if ((!is.null(head) | !is.null(tail)) & length(paramList) > 4){
-
     approach <- 1
-
   } else if (is.null(head) & is.null(tail) & missing(exp)){
-
     approach <- 2
-
   } else if (!missing(exp) & length(paramList) == 3){
-
     approach <- 3
-
   } else {
-
     stop("The combination of arguments supplied for dr_drop is ambiguous.")
-
   }
 
   if (approach == 1){
