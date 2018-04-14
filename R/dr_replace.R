@@ -47,14 +47,6 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
   paramList <- as.list(match.call())
 
   # quote input variables
-  if (!is.character(paramList$cleanVar)) {
-    clean <- rlang::enquo(cleanVar)
-  } else if (is.character(paramList$cleanVar)) {
-    clean <- rlang::quo(!! rlang::sym(cleanVar))
-  }
-
-  cleanVarQ <- rlang::quo_name(rlang::enquo(clean))
-
   if (!is.character(paramList$sourceVar)) {
     source <- rlang::enquo(sourceVar)
   } else if (is.character(paramList$sourceVar)) {
@@ -62,6 +54,34 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
   }
 
   sourceVarQ <- rlang::quo_name(rlang::enquo(source))
+
+  if (overwrite == FALSE & !is.null(paramList$cleanVar)){
+
+    if (!is.character(paramList$cleanVar)) {
+      clean <- rlang::enquo(cleanVar)
+    } else if (is.character(paramList$cleanVar)) {
+      clean <- rlang::quo(!! rlang::sym(cleanVar))
+    }
+
+    cleanVarQ <- rlang::quo_name(rlang::enquo(clean))
+
+  } else if (overwrite == FALSE & is.null(paramList$cleanVar)) {
+
+    cleanVar <- stringr::str_c(sourceVarQ, "_na", sep = "")
+    clean <- rlang::quo(!! rlang::sym(cleanVar))
+    cleanVarQ <- rlang::quo_name(rlang::enquo(clean))
+
+  } else if (overwrite == TRUE){
+
+    if (!is.character(paramList$sourceVar)) {
+      clean <- rlang::enquo(sourceVar)
+    } else if (is.character(paramList$sourceVar)) {
+      clean <- rlang::quo(!! rlang::sym(sourceVar))
+    }
+
+    cleanVarQ <- rlang::quo_name(rlang::enquo(clean))
+
+  }
 
   if (!is.character(paramList$dateVar)) {
     date <- rlang::enquo(dateVar)
@@ -79,15 +99,18 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
   exp_enq <- enquo(exp)
 
   # determine replacement approach
-  if (missing(exp) & length(paramList) > 6){
+  if (missing(exp) & length(paramList) >= 6){
     approach <- 1
   } else if (!missing(exp) & length(paramList) <= 6){
     approach <- 2
+  } else {
+    stop("The combination of arguments supplied for dr_replace is ambiguous.")
   }
 
   if (approach == 1){
 
-    cleanData <- dr_replace_time(.data, date = date, time = time, from = from, to = to, tz = tz)
+    cleanData <- dr_replace_time(.data, source = source, cleanVarQ = cleanVarQ, clean = clean,
+                                 date = date, time = time, from = from, to = to, tz = tz)
     message("Replacement approach - completed using the time arguments.")
     return(cleanData)
 
@@ -103,8 +126,70 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
 }
 
 # approach 1
-dr_replace_time <- function(.data, date = date, time = time, from = from, to = to, tz = tz){
+dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL, date = NULL, time = NULL, from = NULL, to = NULL, tz = NULL){
 
+  # To prevent NOTE from R CMD check 'no visible binding for global variable'
+  dateTime = dateTimeParse = NULL
+
+  # prepare time zone
+  if (is.null(tz)){
+
+    tz <- Sys.timezone()
+
+  }
+
+  # prepare from
+  if (!is.null(from)){
+
+    fromVal <- parseFrom(from)
+
+  }
+
+  # prepare to
+  if (!is.null(to)){
+
+    toVal <- parseTo(to)
+
+  }
+
+  # perform replace
+  if (!is.null(from) & !is.null(to)){
+    # drop all observations outside of given range
+
+    .data %>%
+      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+      dplyr::mutate(dateTimeParse =
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                                 tz = tz)) %>%
+      dplyr::mutate(!!cleanVarQ := (!!source)) %>%
+      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal | dateTimeParse > toVal, !!clean, NA)) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
+
+  }else if (is.null(from) & !is.null(to)){
+    # drop all observations up to the specified date/time
+
+    .data %>%
+      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+      dplyr::mutate(dateTimeParse =
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                                 tz = tz)) %>%
+      dplyr::mutate(!!cleanVarQ := (!!source)) %>%
+      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse >= toVal, !!clean, NA)) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
+
+  } else if (!is.null(from) & is.null(to)){
+    # drop all observations beginning with the specified date/time
+
+    .data %>%
+      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+      dplyr::mutate(dateTimeParse =
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                                 tz = tz)) %>%
+      dplyr::mutate(!!cleanVarQ := (!!source)) %>%
+      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal, !!clean, NA)) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
+
+  }
 
 }
 
@@ -112,7 +197,7 @@ dr_replace_time <- function(.data, date = date, time = time, from = from, to = t
 dr_replace_exp <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL, replace_exp){
 
   .data %>%
-    mutate(!!cleanVarQ := (!!source)) %>%
-    mutate(!!cleanVarQ := ifelse(!!replace_exp, NA, !!clean)) -> .data
+    dplyr::mutate(!!cleanVarQ := (!!source)) %>%
+    dplyr::mutate(!!cleanVarQ := ifelse(!!replace_exp, NA, !!clean)) -> .data
 
 }

@@ -191,22 +191,14 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
   # prepare from
   if (!is.null(from)){
 
-    fromVal <- as.character(
-      lubridate::parse_date_time(from, orders = c("ymd", "dmy", "mdy",
-                                                  "ymd HMS", "dmy HMS", "mdy HMS",
-                                                  "ymd HM", "dmy HM", "mdy HM"))
-    )
+    fromVal <- parseFrom(from)
 
   }
 
   # prepare to
   if (!is.null(to)){
 
-    toVal <- as.character(
-      lubridate::parse_date_time(to, orders = c("ymd", "dmy", "mdy",
-                                                "ymd HMS", "dmy HMS", "mdy HMS",
-                                                "ymd HM", "dmy HM", "mdy HM"))
-    )
+    toVal <- parseTo(to)
 
   }
 
