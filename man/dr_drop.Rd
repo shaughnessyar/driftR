@@ -4,7 +4,8 @@
 \alias{dr_drop}
 \title{Dropping observations from beginning and end of the monitoring period}
 \usage{
-dr_drop(.data, head = NULL, tail = NULL)
+dr_drop(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = NULL, from = NULL,
+    to = NULL, tz = NULL, exp)
 }
 \arguments{
 \item{.data}{A tbl}
@@ -14,6 +15,18 @@ of \code{.data} (or \code{NULL})}
 
 \item{tail}{An integer >= 1 specifying the number of rows to be removed from the bottom
 of \code{.data} (or \code{NULL})}
+
+\item{dateVar}{Name of variable containing date data}
+
+\item{timeVar}{Name of variable containing time data}
+
+\item{from}{Beginning date and (optionally) time to remove observations}
+
+\item{to}{End date and (optionally) time to remove observations}
+
+\item{tz}{String name of timezone, defaults to system's timezone}
+
+\item{exp}{Unquoted expression}
 }
 \value{
 An object of the same class as \code{.data} with specified observations removed.

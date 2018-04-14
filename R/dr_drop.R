@@ -8,17 +8,33 @@
 #'     takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
 #'     observations from the bottom and top of the dataset for each of those issues respectively.
 #'
-#' @usage dr_drop(.data, head = NULL, tail = NULL)
+#' @usage dr_drop(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = NULL, from = NULL,
+#'     to = NULL, tz = NULL, exp)
 #'
 #' @param .data A tbl
 #' @param head An integer >= 1 specifying the number of rows to be removed from the top
 #'     of \code{.data} (or \code{NULL})
 #' @param tail An integer >= 1 specifying the number of rows to be removed from the bottom
 #'     of \code{.data} (or \code{NULL})
+#' @param dateVar Name of variable containing date data
+#' @param timeVar Name of variable containing time data
+#' @param from Beginning date and (optionally) time to remove observations
+#' @param to End date and (optionally) time to remove observations
+#' @param tz String name of timezone, defaults to system's timezone
+#' @param exp Unquoted expression
 #'
 #' @return An object of the same class as \code{.data} with specified observations removed.
 #'
+#' @importFrom dplyr filter
+#' @importFrom dplyr mutate
 #' @importFrom dplyr n
+#' @importFrom dplyr select
+#' @importFrom dplyr slice
+#' @importFrom glue glue
+#' @importFrom lubridate parse_date_time
+#' @importFrom rlang enquo
+#' @importFrom rlang quo
+#' @importFrom stringr str_c
 #'
 #' @examples
 #' testData <- data.frame(
@@ -34,7 +50,82 @@
 #'  dr_drop(testData, head = 2, tail = 1)
 #'
 #' @export
-dr_drop <- function(.data, head = NULL, tail = NULL){
+dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = NULL, from = NULL, to = NULL, tz = NULL, exp){
+
+  # save parameters to list
+  paramList <- as.list(match.call())
+
+  # quote input variables
+  if (!is.character(paramList$dateVar)) {
+    date <- rlang::enquo(dateVar)
+  } else if (is.character(paramList$dateVar)) {
+    date <- rlang::quo(!! rlang::sym(dateVar))
+  }
+
+  if (!is.character(paramList$timeVar)) {
+    time <- rlang::enquo(timeVar)
+  } else if (is.character(paramList$timeVar)) {
+    time <- rlang::quo(!! rlang::sym(timeVar))
+  }
+
+  # quote expression
+  filter_exp_enq <- enquo(exp)
+
+  # determine drop approach
+  if (!is.null(head) & !is.null(tail) & length(paramList) == 4){
+
+    approach <- 1
+
+  } else if (!is.null(head) & is.null(tail) & length(paramList) == 3){
+
+    approach <- 1
+
+  } else if (is.null(head) & !is.null(tail) & length(paramList) == 3){
+
+    approach <- 1
+
+  } else if ((!is.null(head) | !is.null(tail)) & length(paramList) > 4){
+
+    approach <- 1
+
+  } else if (is.null(head) & is.null(tail) & missing(exp)){
+
+    approach <- 2
+
+  } else if (!missing(exp) & length(paramList) == 3){
+
+    approach <- 3
+
+  } else {
+
+    stop("The combination of arguments supplied for dr_drop is ambiguous.")
+
+  }
+
+  if (approach == 1){
+
+    cleanData <- dr_drop_slice(.data, head = head, tail = tail)
+    message("Drop approach - completed using the head and tail arguments.")
+    return(cleanData)
+
+  } else if (approach == 2){
+
+    cleanData <- dr_drop_time(.data, date = date, time = time, from = from, to = to, tz = tz)
+    message("Drop approach - completed using the time arguments.")
+    return(cleanData)
+
+  } else if (approach == 3){
+
+    cleanData <- dr_drop_exp(.data, filter_exp = filter_exp_enq)
+    message("Drop approach - completed using the expression.")
+    return(cleanData)
+
+  }
+
+}
+
+# subfunction for approach 1
+dr_drop_slice <- function(.data, head = NULL, tail = NULL){
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   n = NULL
@@ -82,4 +173,83 @@ dr_drop <- function(.data, head = NULL, tail = NULL){
   else {
     dplyr::slice(.data, headPos:tailPos)
   }
+
+}
+
+# subfunction for approach 2
+dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL, tz = NULL){
+
+  # To prevent NOTE from R CMD check 'no visible binding for global variable'
+  dateTime = dateTimeParse = NULL
+
+  # prepare time zone
+  if (is.null(tz)){
+
+    tz <- Sys.timezone()
+
+  }
+
+  # prepare from
+  if (!is.null(from)){
+
+    fromVal <- as.character(
+      lubridate::parse_date_time(from, orders = c("ymd", "dmy", "mdy", "ymd HMS", "dmy HMS", "mdy HMS"))
+    )
+
+  }
+
+  # prepare to
+  if (!is.null(to)){
+
+    toVal <- as.character(
+      lubridate::parse_date_time(to, orders = c("ymd", "dmy", "mdy", "ymd HMS", "dmy HMS", "mdy HMS"))
+    )
+
+  }
+
+  # perform drop
+  if (!is.null(from) & !is.null(to)){
+    # drop all observations outside of given range
+
+    .data %>%
+      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+      dplyr::mutate(dateTimeParse =
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                                 tz = tz)) %>%
+      dplyr::filter(dateTimeParse <= fromVal | dateTimeParse >= toVal) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
+
+  } else if (is.null(from) & !is.null(to)){
+    # drop all observations up to the specified date/time
+
+    .data %>%
+      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+      dplyr::mutate(dateTimeParse =
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                                 tz = tz)) %>%
+      dplyr::filter(dateTimeParse >= toVal) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
+
+  } else if (!is.null(from) & is.null(to)){
+    # drop all observations beginning with the specified date/time
+
+    .data %>%
+      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+      dplyr::mutate(dateTimeParse =
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                                 tz = tz)) %>%
+      dplyr::filter(dateTimeParse < fromVal) %>%
+      dplyr::select(-dateTime, -dateTimeParse) -> .data
+
+  }
+
+
+}
+
+# subfunction for approach 3
+dr_drop_exp <- function(.data, filter_exp){
+
+  .data %>%
+    filter(!(!!filter_exp)) -> .data
+
 }
