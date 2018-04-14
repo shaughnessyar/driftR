@@ -162,7 +162,7 @@ dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL
                       lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::mutate(!!cleanVarQ := (!!source)) %>%
-      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal | dateTimeParse > toVal, !!clean, NA)) %>%
+      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal | dateTimeParse >= toVal, !!clean, NA)) %>%
       dplyr::select(-dateTime, -dateTimeParse) -> .data
 
   }else if (is.null(from) & !is.null(to)){

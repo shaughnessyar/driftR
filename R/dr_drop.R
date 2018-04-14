@@ -211,7 +211,7 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
       dplyr::mutate(dateTimeParse =
                       lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                  tz = tz)) %>%
-      dplyr::filter(dateTimeParse < fromVal | dateTimeParse > toVal) %>%
+      dplyr::filter(dateTimeParse < fromVal | dateTimeParse >= toVal) %>%
       dplyr::select(-dateTime, -dateTimeParse) -> .data
 
   } else if (is.null(from) & !is.null(to)){
