@@ -113,7 +113,7 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
   if (approach == 1){
 
     cleanData <- dr_drop_slice(.data, head = head, tail = tail)
-    message("Drop approach - completed using the head and tail arguments.")
+    message("Drop approach - completed using the head and/or tail arguments.")
     return(cleanData)
 
   } else if (approach == 2){
