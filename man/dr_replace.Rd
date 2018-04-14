@@ -4,7 +4,7 @@
 \alias{dr_replace}
 \title{Replacing problematic observations from the monitoring period}
 \usage{
-dr_drop(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dateVar = NULL,
+dr_replace(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dateVar = NULL,
     timeVar = NULL, from = NULL, to = NULL, tz = NULL, exp)
 }
 \arguments{

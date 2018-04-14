@@ -12,7 +12,7 @@
 #'     can also be identified based on a problematic sensor value or range of values
 #'     using an expression.
 #'
-#' @usage dr_drop(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dateVar = NULL,
+#' @usage dr_replace(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dateVar = NULL,
 #'     timeVar = NULL, from = NULL, to = NULL, tz = NULL, exp)
 #'
 #' @param .data A tbl
@@ -103,7 +103,10 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
 }
 
 # approach 1
+dr_replace_time <- function(.data, date = date, time = time, from = from, to = to, tz = tz){
 
+
+}
 
 # approach 2
 dr_replace_exp <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL, replace_exp){
