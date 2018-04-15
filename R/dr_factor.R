@@ -105,7 +105,6 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, tz = NULL, keepDateTi
     dplyr::mutate(dateTimePOSIX =
                     lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
                                                tz = tz)) %>%
-    dplyr::mutate(dateTimePOSIX = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
     dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
     dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
     dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) -> .data
