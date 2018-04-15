@@ -23,9 +23,7 @@ Imports:
     dplyr,
     ggplot2,
     glue,
-    lubridate,
     magrittr,
-    readxl,
     readr,
     rlang,
     stringr,
@@ -34,6 +32,6 @@ RoxygenNote: 6.0.1
 Suggests: 
     covr,
     knitr,
-    rmarkdown,
-    testthat
+    testthat, 
+    rmarkdown
 VignetteBuilder: knitr
