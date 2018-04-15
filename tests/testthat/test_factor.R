@@ -47,6 +47,13 @@ test_that("input errors trigged - variables invalid", {
                "A variable named Date, given for corrFactor, already exists in the given data frame")
 })
 
+test_that("input errors trigged - format is deprecated", {
+  expect_warning(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, format = "MDY"),
+                 "Argument format is deprecated; dates and times are now automatically parsed as of v1.1.")
+  expect_warning(dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, format = "YMD"),
+                 "Argument format is deprecated; dates and times are now automatically parsed as of v1.1.")
+})
+
 # test results ------------------------------------------------
 
 result <- dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, keepDateTime = TRUE)

@@ -6,13 +6,16 @@
 #'     that the instrument had been deployed. They are used in the equations for both the one-point and two-point
 #'     drift corrections.
 #'
-#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, tz = NULL, keepDateTime = TRUE)
+#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, tz = NULL,
+#'     format = c("MDY", "YMD"), keepDateTime = TRUE)
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
 #' @param dateVar Name of variable containing date data
 #' @param timeVar Name of variable containing time data
 #' @param tz String name of timezone, defaults to system's timezone
+#' @param format Either "MDY" or "YMD" for \code{dateVar} -
+#'     \strong{\emph{deprecated as of \code{driftR} v1.1}}
 #' @param keepDateTime A logical statement to keep an intermediate dateTime variable
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
@@ -36,13 +39,18 @@
 #' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, keepDateTime = TRUE)
 #'
 #' @export
-dr_factor <- function(.data, corrFactor, dateVar, timeVar, tz = NULL, keepDateTime = TRUE) {
+dr_factor <- function(.data, corrFactor, dateVar, timeVar, tz = NULL, format = c("MDY", "YMD"), keepDateTime = TRUE) {
 
   # save parameters to list
   paramList <- as.list(match.call())
 
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   dateTime = totTime = dateTimePOSIX = NULL
+
+  # check for deprecated paramater
+  if (!missing(format)) {
+    warning("Argument format is deprecated; dates and times are now automatically parsed as of v1.1.", call. = FALSE)
+  }
 
   # check for missing parameters
   if (missing(corrFactor)) {
