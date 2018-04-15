@@ -132,7 +132,7 @@ Your clipboard will now contain a nicely formatted set of output that you can co
 We are interested in expanding the built-in capabilities of `driftR` to read in water quality data from other sources. We are currently working on a function for YSI Exo Multiparameter Sonde output. If you have some sample data (~500 observations are ideal) from another model or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an [Issue](https://github.com/shaughnessyar/driftR/issues). If you have some `R` skills and want to write the function yourself, feel free to [fork](https://help.github.com/articles/fork-a-repo/) `driftR`, make your edits, and then open a [pull request](https://help.github.com/articles/about-pull-requests/).
 
 ### Contributor Code of Conduct
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/shaughnessyar/driftR/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## About the Authors
 Andrew Shaughnessy led the development of this package. He is a senior at [Saint Louis University](https://www.slu.edu) majoring in Chemistry and Environmental Science.
