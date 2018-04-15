@@ -4,8 +4,8 @@
 \alias{dr_factor}
 \title{Creating correction factors}
 \usage{
-dr_factor(.data, corrFactor, dateVar, timeVar,
-                 format = c("MDY", "YMD"), keepDateTime = TRUE)
+dr_factor(.data, corrFactor, dateVar, timeVar, tz = NULL,
+    format = c("MDY", "YMD"), keepDateTime = TRUE)
 }
 \arguments{
 \item{.data}{A tbl}
@@ -16,7 +16,10 @@ dr_factor(.data, corrFactor, dateVar, timeVar,
 
 \item{timeVar}{Name of variable containing time data}
 
-\item{format}{Either "MDY" or "YMD" for \code{dateVar}}
+\item{tz}{String name of timezone, defaults to system's timezone}
+
+\item{format}{Either "MDY" or "YMD" for \code{dateVar} -
+\strong{\emph{deprecated as of \code{driftR} v1.1}}}
 
 \item{keepDateTime}{A logical statement to keep an intermediate dateTime variable}
 }
@@ -41,8 +44,7 @@ testData <- data.frame(
    stringsAsFactors = FALSE
  )
 
-dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time,
-          format = "MDY", keepDateTime = TRUE)
+dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, keepDateTime = TRUE)
 
 }
 \seealso{

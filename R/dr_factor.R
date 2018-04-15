@@ -6,14 +6,16 @@
 #'     that the instrument had been deployed. They are used in the equations for both the one-point and two-point
 #'     drift corrections.
 #'
-#' @usage dr_factor(.data, corrFactor, dateVar, timeVar,
-#'                  format = c("MDY", "YMD"), keepDateTime = TRUE)
+#' @usage dr_factor(.data, corrFactor, dateVar, timeVar, tz = NULL,
+#'     format = c("MDY", "YMD"), keepDateTime = TRUE)
 #'
 #' @param .data A tbl
 #' @param corrFactor New variable name for correction factor data
 #' @param dateVar Name of variable containing date data
 #' @param timeVar Name of variable containing time data
-#' @param format Either "MDY" or "YMD" for \code{dateVar}
+#' @param tz String name of timezone, defaults to system's timezone
+#' @param format Either "MDY" or "YMD" for \code{dateVar} -
+#'     \strong{\emph{deprecated as of \code{driftR} v1.1}}
 #' @param keepDateTime A logical statement to keep an intermediate dateTime variable
 #'
 #' @return An object of the same class as \code{.data} with the new correction factor variable added
@@ -34,25 +36,21 @@
 #'    stringsAsFactors = FALSE
 #'  )
 #'
-#' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time,
-#'           format = "MDY", keepDateTime = TRUE)
+#' dr_factor(testData, corrFactor = corrFac, dateVar = Date, timeVar = Time, keepDateTime = TRUE)
 #'
 #' @export
-dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YMD"), keepDateTime = TRUE) {
+dr_factor <- function(.data, corrFactor, dateVar, timeVar, tz = NULL, format = c("MDY", "YMD"), keepDateTime = TRUE) {
 
   # save parameters to list
   paramList <- as.list(match.call())
 
-  # check if fostmat is quoted
-  if (!is.character(paramList$format)) {
-    if (is.null(paramList$format)) {
-      stop('A format - either MDY or YMD - must be specified')
-    } else if (!is.null(paramList$format))
-      stop('It appears that the format parameter is not quoted')
-  }
-
   # To prevent NOTE from R CMD check 'no visible binding for global variable'
   dateTime = totTime = dateTimePOSIX = NULL
+
+  # check for deprecated paramater
+  if (!missing(format)) {
+    warning("Argument format is deprecated; dates and times are now automatically parsed as of v1.1.", call. = FALSE)
+  }
 
   # check for missing parameters
   if (missing(corrFactor)) {
@@ -102,23 +100,19 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, format = c("MDY", "YM
                     var = corrFactor))
   }
 
-  # check format
-  if(format %nin% c("MDY", "YMD")) {
-    stop(glue::glue('The date-time format {format} is invalid - format should be MDY or YMD'))
-  }
+  # prepare time zone
+  if (is.null(tz)){
 
-  # set format
-  if (format == "MDY"){
-    dayTimeFormat <- "%m/%d/%Y %H:%M:%S"
-  }
-  else if (format == "YMD"){
-    dayTimeFormat <- "%Y-%m-%d %H:%M:%S"
+    tz <- Sys.timezone()
+
   }
 
   # concatenate date and time, apply date-time format, and calculate correction factor
   .data %>%
-    dplyr::mutate(dateTime = stringr::str_c(!!date, !!time, sep = " ", collapse = NULL)) %>%
-    dplyr::mutate(dateTimePOSIX = base::as.POSIXct(dateTime, format = dayTimeFormat)) %>%
+    dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
+    dplyr::mutate(dateTimePOSIX =
+                    lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                                               tz = tz)) %>%
     dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
     dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
     dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) -> .data
