@@ -1,19 +1,31 @@
-# Getting help with this package
+# Getting help with `driftR`
 
 Thanks for using `driftR`. Before filing an issue, there are a few places
 to explore and pieces to put together to make the process as smooth as possible.
 
-Start by making a minimal **repr**oducible **ex**ample using the
-[reprex](http://reprex.tidyverse.org/) package. If you haven't heard of or used
-reprex before, you're in for a treat! Seriously, reprex will make all of your
-R-question-asking endeavors easier (which is a pretty insane ROI for the five to
-ten minutes it'll take you to learn what it's all about). For additional reprex
-pointers, check out the [Get help!](https://www.tidyverse.org/help/) section of
-the tidyverse site.
+Start by making a minimal reproducible example using the
+[reprex](http://reprex.tidyverse.org/) package:
+
+```r
+install.packages("reprex")
+library("reprex")
+```
+
+After loading the `reprex` package, copy some code to your clipboard that
+includes the `library()` functions, the process you used (ideally simplified),
+and the functions that are creating issues. Once the material is copied, you
+can use `reprex()` to format your example:
+
+```r
+reprex()
+```
+
+For additional reprex pointers, check out the [Get help!](https://www.tidyverse.org/help/)
+section of the tidyverse site.
 
 Armed with your reprex, the next step is to figure out where to ask:
 
-  * If it's a question about `sf` or mapping: start with [community.rstudio.com](https://community.rstudio.com/).
+  * If it's a question about `R`: start with [community.rstudio.com](https://community.rstudio.com/).
     There are more people there to answer questions.  
   * If it's a bug: you're in the right place, file an issue.  
   * If you're not sure: let the community help you figure it out! If your

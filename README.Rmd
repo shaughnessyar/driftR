@@ -113,23 +113,12 @@ You can also view the help files from within R:
 
 ## Want to Contribute?
 ### Have a Concern?
-If `driftR` does not seem to be working as advertised, please help us creating a reproducible example, or [`reprex`](https://github.com/tidyverse/reprex), that makes it easy to [get help](https://www.tidyverse.org/help/). 
+If `driftR` does not seem to be working as advertised, please help us creating a reproducible example, or [`reprex`](https://github.com/tidyverse/reprex), that makes it easy to [get help](https://www.tidyverse.org/help/). You can find additional details in our [support document](.github/SUPPORT.md).
 
-```{r, eval = FALSE}
-install.packages("reprex")
-library("reprex")
-```
+### Adding `dr_read` Functionality
+We are interested in expanding the built-in capabilities of `driftR` to read in water quality data from other sources. Version 1.1 will contain built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.
 
-After loading the `reprex` package, copy some code to your clipboard that includes the `library()` functions, the process you used (ideally simplified), and the functions that are creating issues. Once the material is copied, you can use `reprex()` to format your example:
-
-```{r, eval=FALSE}
-reprex()
-```
-
-Your clipboard will now contain a nicely formatted set of output that you can copy and paste into a GitHub  [Issue](https://github.com/shaughnessyar/driftR/issues) to describe your problem.
-
-### Adding `dr_read` Functions
-We are interested in expanding the built-in capabilities of `driftR` to read in water quality data from other sources. We are currently working on a function for YSI Exo Multiparameter Sonde output. If you have some sample data (~500 observations are ideal) from another model or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an [Issue](https://github.com/shaughnessyar/driftR/issues). If you have some `R` skills and want to write the function yourself, feel free to [fork](https://help.github.com/articles/fork-a-repo/) `driftR`, make your edits, and then open a [pull request](https://help.github.com/articles/about-pull-requests/).
+If you have some sample data (~500 observations are ideal) from another model or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an [Issue](https://github.com/shaughnessyar/driftR/issues). If you have some `R` skills and want to write the function yourself, feel free to check out our [contributing document](.github/CONTRIBUTING.md) and fork `driftR`.
 
 ### Contributor Code of Conduct
 Please note that this project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
