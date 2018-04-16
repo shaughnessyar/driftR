@@ -127,7 +127,7 @@ test_that("correct observations dropped", {
 
 # test results - approach 2 ------------------------------------------------
 
-result6 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015")
+result6 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015", tz = "US/Central")
 result6_n <- nrow(result6)
 result6_exp <- rows-142
 result6_date <- result6$Date[1]
@@ -144,7 +144,7 @@ test_that("correct observations dropped", {
   expect_equal(result6_timeExp, result6_time)
 })
 
-result7 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015 12:00")
+result7 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015 12:00", tz = "US/Central")
 result7_n <- nrow(result7)
 result7_exp <- rows-286
 result7_date <- result7$Date[1]
@@ -161,7 +161,7 @@ test_that("correct observations dropped", {
   expect_equal(result7_timeExp, result7_time)
 })
 
-result8 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015 12:00:52")
+result8 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015 12:00:52", tz = "US/Central")
 result8_n <- nrow(result8)
 result8_exp <- rows-286
 result8_date <- result8$Date[1]
@@ -178,7 +178,7 @@ test_that("correct observations dropped", {
   expect_equal(result8_timeExp, result8_time)
 })
 
-result9 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015")
+result9 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015", tz = "US/Central")
 result9_n <- nrow(result9)
 result9_exp <- rows-233
 result9_date <- result9$Date[1294]
@@ -195,7 +195,7 @@ test_that("correct observations dropped", {
   expect_equal(result9_timeExp, result9_time)
 })
 
-result10 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015 6:00")
+result10 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015 6:00", tz = "US/Central")
 result10_n <- nrow(result10)
 result10_exp <- rows-161
 result10_date <- result10$Date[1366]
@@ -212,7 +212,7 @@ test_that("correct observations dropped", {
   expect_equal(result10_timeExp, result10_time)
 })
 
-result11 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015 5:55:53")
+result11 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015 5:55:53", tz = "US/Central")
 result11_n <- nrow(result11)
 result11_exp <- rows-162
 result11_date <- result11$Date[1365]
@@ -229,7 +229,8 @@ test_that("correct observations dropped", {
   expect_equal(result11_timeExp, result11_time)
 })
 
-result12 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/19/2015", to = "09/23/2015")
+result12 <- dr_drop(test_data, dateVar = Date, timeVar = Time,
+                    from = "09/19/2015", to = "09/23/2015", tz = "US/Central")
 result12_n <- nrow(result12)
 result12_exp <- rows-1152
 result12_dateH <- result12$Date[1]
@@ -252,7 +253,8 @@ test_that("correct observations dropped", {
   expect_equal(result12_timeExpT, result12_timeT)
 })
 
-result13 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/19/2015 12:00", to = "09/23/2015 06:00")
+result13 <- dr_drop(test_data, dateVar = Date, timeVar = Time,
+                    from = "09/19/2015 12:00", to = "09/23/2015 06:00", tz = "US/Central")
 result13_n <- nrow(result13)
 result13_exp <- rows-1080
 result13_dateH <- result13$Date[1]
@@ -277,7 +279,7 @@ test_that("correct observations dropped", {
 
 # test results - date formats ------------------------------------------------
 
-result14 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9/19/2015")
+result14 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9/19/2015", tz = "US/Central")
 result14_n <- nrow(result14)
 result14_date <- result14$Date[1]
 result14_time <- result14$Time[1]
@@ -295,7 +297,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result14_time)
 })
 
-result15 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9/19/15")
+result15 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9/19/15", tz = "US/Central")
 result15_n <- nrow(result15)
 result15_date <- result15$Date[1]
 result15_time <- result15$Time[1]
@@ -309,7 +311,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result15_time)
 })
 
-result16 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9-19-15")
+result16 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9-19-15", tz = "US/Central")
 result16_n <- nrow(result16)
 result16_date <- result16$Date[1]
 result16_time <- result16$Time[1]
@@ -323,7 +325,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result16_time)
 })
 
-result17 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19-09-2015")
+result17 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19-09-2015", tz = "US/Central")
 result17_n <- nrow(result17)
 result17_date <- result17$Date[1]
 result17_time <- result17$Time[1]
@@ -337,7 +339,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result17_time)
 })
 
-result23 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19/09/2015")
+result23 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19/09/2015", tz = "US/Central")
 result23_n <- nrow(result23)
 result23_date <- result23$Date[1]
 result23_time <- result23$Time[1]
@@ -351,7 +353,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result23_time)
 })
 
-result18 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19-9-2015")
+result18 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19-9-2015", tz = "US/Central")
 result18_n <- nrow(result18)
 result18_date <- result18$Date[1]
 result18_time <- result18$Time[1]
@@ -365,14 +367,14 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result18_time)
 })
 
-result22 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19-09-15")
+result22 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "19-09-15", tz = "US/Central")
 result22_n <- nrow(result22)
 
 test_that("dropping observations", {
   expect_equal(0, result22_n)
 })
 
-result19 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015-09-19")
+result19 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015-09-19", tz = "US/Central")
 result19_n <- nrow(result19)
 result19_date <- result19$Date[1]
 result19_time <- result19$Time[1]
@@ -386,7 +388,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result19_time)
 })
 
-result24 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015/09/19")
+result24 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015/09/19", tz = "US/Central")
 result24_n <- nrow(result24)
 result24_date <- result24$Date[1]
 result24_time <- result24$Time[1]
@@ -400,7 +402,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result24_time)
 })
 
-result20 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015-9-19")
+result20 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015-9-19", tz = "US/Central")
 result20_n <- nrow(result20)
 result20_date <- result20$Date[1]
 result20_time <- result20$Time[1]
@@ -414,7 +416,7 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result20_time)
 })
 
-result21 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "20150919")
+result21 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "20150919", tz = "US/Central")
 result21_n <- nrow(result21)
 result21_date <- result21$Date[1]
 result21_time <- result21$Time[1]
