@@ -28,7 +28,7 @@ test_that("input errors trigged - tail", {
 #  expect_error(dr_drop(test_data, head = NULL, tail = NULL), "At least 1 observation must be removed from the data frame")
 # })
 
-# test results ------------------------------------------------
+# test results - approach 1 ------------------------------------------------
 
 ## load test data
 test_data <- read.csv(system.file("extdata", "sondeClean.csv", package = "driftR"), stringsAsFactors = FALSE)
@@ -88,4 +88,104 @@ test_that("dropping observations", {
 test_that("correct observations dropped", {
   expect_equal(result3_headExp, result3_headTime)
   expect_equal(result3_tailExp, result3_tailTime)
+})
+
+# test results - approach 3 ------------------------------------------------
+
+result4 <- dr_drop(test_data, exp = Temp >= 14.75)
+result4_n <- nrow(result4)
+result4_exp <- rows-3
+result4_max <- max(result4$Temp)
+result4_maxExp <- 14.74
+
+test_that("dropping observations", {
+  expect_equal(result4_exp, result4_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result4_maxExp, result4_max)
+})
+
+result5 <- dr_drop(test_data, exp = pH < 7.11)
+result5_n <- nrow(result5)
+result5_exp <- rows-388
+result5_min <- min(result5$pH)
+result5_minExp <- 7.11
+
+test_that("dropping observations", {
+  expect_equal(result5_exp, result5_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result5_minExp, result5_min)
+})
+
+# test results - approach 2 ------------------------------------------------
+
+result6 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015")
+result6_n <- nrow(result6)
+result6_exp <- rows-142
+result6_date <- result6$Date[1]
+result6_dateExp <- "9/19/2015"
+result6_time <- result6$Time[1]
+result6_timeExp <- "0:00:53"
+
+test_that("dropping observations", {
+  expect_equal(result6_exp, result6_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result6_dateExp, result6_date)
+  expect_equal(result6_timeExp, result6_time)
+})
+
+result7 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015 12:00")
+result7_n <- nrow(result7)
+result7_exp <- rows-286
+result7_date <- result7$Date[1]
+result7_dateExp <- "9/19/2015"
+result7_time <- result7$Time[1]
+result7_timeExp <- "12:00:52"
+
+test_that("dropping observations", {
+  expect_equal(result7_exp, result7_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result7_dateExp, result7_date)
+  expect_equal(result7_timeExp, result7_time)
+})
+
+result8 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015 12:00:52")
+result8_n <- nrow(result8)
+result8_exp <- rows-286
+result8_date <- result8$Date[1]
+result8_dateExp <- "9/19/2015"
+result8_time <- result8$Time[1]
+result8_timeExp <- "12:00:52"
+
+test_that("dropping observations", {
+  expect_equal(result8_exp, result8_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result8_dateExp, result8_date)
+  expect_equal(result8_timeExp, result8_time)
+})
+
+result9 <- dr_drop(test_data, dateVar = Date, timeVar = Time, from = "09/23/2015")
+result9_n <- nrow(result9)
+result9_exp <- rows-233
+result9_date <- result9$Date[1294]
+result9_dateExp <- "9/22/2015"
+result9_time <- result9$Time[1294]
+result9_timeExp <- "23:55:53"
+
+test_that("dropping observations", {
+  expect_equal(result9_exp, result9_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result9_dateExp, result9_date)
+  expect_equal(result9_timeExp, result9_time)
 })
