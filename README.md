@@ -51,7 +51,7 @@ waterTibble <- dr_readSonde(file = "data.csv", define = TRUE)
 # calculate correction factor and keep dateTime var
 # results stored in new vector corrFac and dateTime
 waterTibble <- dr_factor(waterTibble, corrFactor = corrFac, dateVar = Date, 
-                         timeVar = Time, format = "MDY", keepDateTime = FALSE)
+                         timeVar = Time, keepDateTime = FALSE)
 
 # apply one-point calibration to SpCond;
 # results stored in new vector SpConde_Corr
@@ -81,7 +81,7 @@ waterTibble <- dr_readSonde(file = "sondeData.csv", define = TRUE)
 
 # caclulate correction factors, apply corrections, and drop observations
 waterTibble <- waterTibble %>%
-  dr_factor(corrFactor = corrFac, dateVar = Date, timeVar = Time, format = "MDY", 
+  dr_factor(corrFactor = corrFac, dateVar = Date, timeVar = Time, 
             keepDateTime = TRUE) %>%
   dr_correctOne(sourceVar = SpCond, cleanVar = SpCond_Corr, calVal = 1.07, 
                 calStd = 1, factorVar = corrFac) %>%
