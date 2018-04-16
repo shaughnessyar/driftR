@@ -3,6 +3,7 @@
 ### major changes
 * `dr_drop` now includes options to drop by date and (optionally) time as well as by using an expression to identify certain values
 * `dr_replace` added to give the option to replace values that are measurement errors with `NA` based on date and (optionally) time as well as by using an expression to identify certain values
+* The `format` argument for `dr_factor` has been deprecated - date formatting is now detected automatically by the function
 
 # driftR v1.0.0
 

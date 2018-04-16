@@ -23,6 +23,14 @@ knitr::opts_chunk$set(
 
 There are many sources of water quality monitoring data including instruments (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of which are susceptible to errors/inaccuracies due to drift. `driftR` provides a grammar for cleaning and correcting these data in a "tidy", reproducible manner. 
 
+## What's New
+We're hard at work on version 1.1 of `driftR`, which will include:
+
+* a streamlined `dr_read` function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products. *Status: in progress*
+* expanded functionality for `dr_drop`, including the ability to drop by date range and by using expressions. *Status: complete and available on `master` branch*
+* ability to convert observations that are likely measurement errors to `NA` using either a date range or by using an expression using a new function called `dr_replace`. *Status: complete and available on `master` branch*
+* changes under the hood to `dr_factor` that expand it ability to handle a variety of date formats automatically. *Status: complete and available on `master` branch*
+
 ## Installation
 
 The easiest way to get `driftR` is to install it from CRAN:
