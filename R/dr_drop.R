@@ -68,6 +68,10 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
   # save parameters to list
   paramList <- as.list(match.call())
 
+  if (length(paramList) <= 2) {
+    return(stop('At least 1 observation must be removed from the data frame'))
+  }
+
   # quote input variables
   if (!is.character(paramList$dateVar)) {
     date <- rlang::enquo(dateVar)
@@ -148,10 +152,6 @@ dr_drop_slice <- function(.data, head = NULL, tail = NULL){
     if ((tail %% 1 != 0) | (tail <= 0)) {
       return(stop(glue::glue('Tail value {tail} not acceptable - value should be NULL or integer >= 1')))
     }
-  }
-
-  if (is.null(head) & is.null(tail)) {
-    return(stop('At least 1 observation must be removed from the data frame'))
   }
 
   # calculate slice positions
