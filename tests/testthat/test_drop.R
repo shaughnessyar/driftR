@@ -1,5 +1,10 @@
 context("test dr_drop function")
 
+# load test data ------------------------------------------------
+
+test_data <- read.csv(system.file("extdata", "sondeClean.csv", package = "driftR"), stringsAsFactors = FALSE)
+rows <- 1527
+
 # test errors ------------------------------------------------
 
 test_that("input errors trigged - no parameters", {
@@ -34,10 +39,6 @@ test_that("input errors triggered - date format", {
 })
 
 # test results - approach 1 ------------------------------------------------
-
-## load test data
-test_data <- read.csv(system.file("extdata", "sondeClean.csv", package = "driftR"), stringsAsFactors = FALSE)
-rows <- 1527
 
 ## remove 5 observations from head, 5 from tail
 result1 <- dr_drop(test_data, head = 5, tail = 5)
