@@ -122,9 +122,7 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
     approach <- 1
   } else if (!missing(exp) & length(paramList) == 4){
     approach <- 2
-  } else if (!missing(exp) & !missing(cleanVar) & length(paramList) == 5){
-    approach <- 2
-  } else if (!missing(exp) & !missing(overwrite) & length(paramList) == 5){
+  } else if (!missing(exp) & (!is.null(paramList$cleanVar) | !is.null(paramList$overwrite)) & length(paramList) == 5){
     approach <- 2
   }  else {
     stop("The combination of arguments supplied for dr_replace is ambiguous.")

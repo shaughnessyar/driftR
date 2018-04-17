@@ -7,10 +7,15 @@ rows <- 1527
 
 # test errors ------------------------------------------------
 
-# test_that("input errors triggered - ambiguous arguments", {
-#  expect_error(dr_replace(test_data, sourceVar = Temp, dateVar = Date, exp = Temp >= 14.7),
-#               "The combination of arguments supplied for dr_replace is ambiguous.")
-# })
+test_that("input errors triggered - ambiguous arguments", {
+  expect_error(dr_replace(test_data, sourceVar = Temp, dateVar = Date, exp = Temp >= 14.7),
+               "The combination of arguments supplied for dr_replace is ambiguous.")
+  expect_error(dr_replace(test_data, sourceVar = Temp, timeVar = Time, exp = Temp >= 14.7),
+               "The combination of arguments supplied for dr_replace is ambiguous.")
+  expect_error(dr_replace(test_data, sourceVar = Temp, dateVar = Date, timeVar = Time,
+                          from = "09/23/2015 6:00", exp = Temp >= 14.7),
+               "The combination of arguments supplied for dr_replace is ambiguous.")
+})
 
 # test results - approach branching ------------------------------------------------
 
@@ -21,6 +26,8 @@ test_that("approach messages", {
   expect_message(dr_replace(test_data, sourceVar = Temp, exp = Temp >= 14.7),
                  "Replacement approach - completed using the expression.")
 })
+
+
 
 # test results - approach 1 ------------------------------------------------
 
@@ -130,6 +137,22 @@ result10_exp <- 388
 
 test_that("replacing observations", {
   expect_equal(result10_exp, result10_na)
+})
+
+result15 <- dr_replace(test_data, sourceVar = pH, cleanVar = ph_new, exp = pH < 7.11)
+result15_na <- sum(is.na(result15$ph_new))
+result15_exp <- 388
+
+test_that("replacing observations", {
+  expect_equal(result15_exp, result15_na)
+})
+
+result16 <- dr_replace(test_data, sourceVar = pH, overwrite = TRUE, exp = pH < 7.11)
+result16_na <- sum(is.na(result16$pH))
+result16_exp <- 388
+
+test_that("replacing observations", {
+  expect_equal(result16_exp, result16_na)
 })
 
 # test results - quasiquotation ------------------------------------------------
