@@ -4,7 +4,7 @@
 init:
 
 init:
-  tzutil /s "Central Standard Time"
+  - tzutil /s "Central Standard Time"
 
   ps: |
         $ErrorActionPreference = "Stop"
