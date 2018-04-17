@@ -12,11 +12,16 @@ test_that("input errors trigged - no parameters", {
 })
 
 test_that("input errors trigged - head", {
-  expect_error(dr_drop(test_data, head = -5), "Head value -5 not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = 2.3), "Head value 2.3 not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = 0), "Head value 0 not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = "foo"), "Head value foo not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, head = TRUE), "Head value TRUE not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = -5),
+               "Head value -5 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = 2.3),
+               "Head value 2.3 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = 0),
+               "Head value 0 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = "foo"),
+               "Head value foo not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, head = TRUE),
+               "Head value TRUE not acceptable - value should be NULL or integer >= 1")
 })
 
 test_that("input errors trigged - unquoted string", {
@@ -25,17 +30,54 @@ test_that("input errors trigged - unquoted string", {
 })
 
 test_that("input errors trigged - tail", {
-  expect_error(dr_drop(test_data, tail = -8), "Tail value -8 not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = 7.5), "Tail value 7.5 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = -8),
+               "Tail value -8 not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = 7.5),
+               "Tail value 7.5 not acceptable - value should be NULL or integer >= 1")
   expect_error(dr_drop(test_data, tail = 0), "Tail value 0 not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = "foo"), "Tail value foo not acceptable - value should be NULL or integer >= 1")
-  expect_error(dr_drop(test_data, tail = FALSE), "Tail value FALSE not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = "foo"),
+               "Tail value foo not acceptable - value should be NULL or integer >= 1")
+  expect_error(dr_drop(test_data, tail = FALSE),
+               "Tail value FALSE not acceptable - value should be NULL or integer >= 1")
 })
 
 test_that("input errors triggered - date format", {
-  expect_warning(dr_drop(test_data, dateVar = Date, timeVar = Time, from = "2015919"), "All formats failed to parse. No formats found.")
-  expect_warning(dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015919"), "All formats failed to parse. No formats found.")
-  expect_warning(dr_drop(test_data, dateVar = Date, timeVar = Time, from = "2015919", to = "2015923"), "All formats failed to parse. No formats found.")
+  expect_warning(dr_drop(test_data, dateVar = Date, timeVar = Time, from = "2015919"),
+                 "All formats failed to parse. No formats found.")
+  expect_warning(dr_drop(test_data, dateVar = Date, timeVar = Time, to = "2015919"),
+                 "All formats failed to parse. No formats found.")
+  expect_warning(dr_drop(test_data, dateVar = Date, timeVar = Time, from = "2015919", to = "2015923"),
+                 "All formats failed to parse. No formats found.")
+})
+
+test_that("input errors triggered - ambiguous arguments", {
+  expect_error(dr_drop(test_data, head = 5, tail = 5, from = "9/19/2015"),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+  expect_error(dr_drop(test_data, head = 5, tail = 5, to = "9/19/2015"),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+  expect_error(dr_drop(test_data, head = 5, tail = 5, from = "9/19/2015", to = "9/22/15"),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+  expect_error(dr_drop(test_data, head = 5, from = "9/19/2015"),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+  expect_error(dr_drop(test_data, head = 5, dateVar = Date, timeVar = Time, from = "9/19/2015",
+                       to = "9/22/15"),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+  expect_error(dr_drop(test_data, dateVar = Date, timeVar = Time, from = "9/19/2015",
+                       to = "9/22/15", exp = Temp >= 14.7),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+  expect_error(dr_drop(test_data, head = 5, exp = Temp >= 14.7),
+               "The combination of arguments supplied for dr_drop is ambiguous.")
+})
+
+# test results - approach branching ------------------------------------------------
+
+test_that("approach messages", {
+  expect_message(dr_drop(test_data, head = 5, tail = 5),
+                 "Drop approach - completed using the head and/or tail arguments.")
+  expect_message(dr_drop(test_data, dateVar = Date, timeVar = Time, from = "9/19/2015", to = "9/22/15"),
+                 "Drop approach - completed using the date/time arguments.")
+  expect_message(dr_drop(test_data, exp = Temp >= 14.7),
+                 "Drop approach - completed using the expression.")
 })
 
 # test results - approach 1 ------------------------------------------------
@@ -431,3 +473,18 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result21_time)
 })
 
+# test results - quasiquotation ------------------------------------------------
+
+result25 <- dr_drop(test_data, dateVar = "Date", timeVar = "Time", to = "9/19/15")
+result25_n <- nrow(result25)
+result25_date <- result25$Date[1]
+result25_time <- result25$Time[1]
+
+test_that("dropping observations", {
+  expect_equal(resultDT_exp, result25_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(resultDT_dateExp, result25_date)
+  expect_equal(resultDT_timeExp, result25_time)
+})

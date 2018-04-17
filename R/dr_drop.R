@@ -95,8 +95,6 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
     approach <- 1
   } else if (is.null(head) & !is.null(tail) & length(paramList) == 3){
     approach <- 1
-  } else if ((!is.null(head) | !is.null(tail)) & length(paramList) > 4){
-    approach <- 1
   } else if (is.null(head) & is.null(tail) & missing(exp)){
     approach <- 2
   } else if (!missing(exp) & length(paramList) == 3){
@@ -114,7 +112,7 @@ dr_drop <- function(.data, head = NULL, tail = NULL, dateVar = NULL, timeVar = N
   } else if (approach == 2){
 
     cleanData <- dr_drop_time(.data, date = date, time = time, from = from, to = to, tz = tz)
-    message("Drop approach - completed using the time arguments.")
+    message("Drop approach - completed using the date/time arguments.")
     return(cleanData)
 
   } else if (approach == 3){
