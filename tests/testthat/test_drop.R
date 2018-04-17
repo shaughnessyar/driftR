@@ -138,36 +138,6 @@ test_that("correct observations dropped", {
   expect_equal(result3_tailExp, result3_tailTime)
 })
 
-# test results - approach 3 ------------------------------------------------
-
-result4 <- dr_drop(test_data, exp = Temp >= 14.75)
-result4_n <- nrow(result4)
-result4_exp <- rows-3
-result4_max <- max(result4$Temp)
-result4_maxExp <- 14.74
-
-test_that("dropping observations", {
-  expect_equal(result4_exp, result4_n)
-})
-
-test_that("correct observations dropped", {
-  expect_equal(result4_maxExp, result4_max)
-})
-
-result5 <- dr_drop(test_data, exp = pH < 7.11)
-result5_n <- nrow(result5)
-result5_exp <- rows-388
-result5_min <- min(result5$pH)
-result5_minExp <- 7.11
-
-test_that("dropping observations", {
-  expect_equal(result5_exp, result5_n)
-})
-
-test_that("correct observations dropped", {
-  expect_equal(result5_minExp, result5_min)
-})
-
 # test results - approach 2 ------------------------------------------------
 
 result6 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "09/19/2015")
@@ -318,6 +288,36 @@ test_that("correct observations dropped", {
   expect_equal(result13_timeExpH, result13_timeH)
   expect_equal(result13_dateExpT, result13_dateT)
   expect_equal(result13_timeExpT, result13_timeT)
+})
+
+# test results - approach 3 ------------------------------------------------
+
+result4 <- dr_drop(test_data, exp = Temp >= 14.75)
+result4_n <- nrow(result4)
+result4_exp <- rows-3
+result4_max <- max(result4$Temp)
+result4_maxExp <- 14.74
+
+test_that("dropping observations", {
+  expect_equal(result4_exp, result4_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result4_maxExp, result4_max)
+})
+
+result5 <- dr_drop(test_data, exp = pH < 7.11)
+result5_n <- nrow(result5)
+result5_exp <- rows-388
+result5_min <- min(result5$pH)
+result5_minExp <- 7.11
+
+test_that("dropping observations", {
+  expect_equal(result5_exp, result5_n)
+})
+
+test_that("correct observations dropped", {
+  expect_equal(result5_minExp, result5_min)
 })
 
 # test results - date formats ------------------------------------------------
