@@ -7,6 +7,11 @@ rows <- 1527
 
 # test errors ------------------------------------------------
 
+# test_that("input errors triggered - ambiguous arguments", {
+#  expect_error(dr_replace(test_data, sourceVar = Temp, dateVar = Date, exp = Temp >= 14.7),
+#               "The combination of arguments supplied for dr_replace is ambiguous.")
+# })
+
 # test results - approach branching ------------------------------------------------
 
 test_that("approach messages", {
@@ -91,7 +96,25 @@ test_that("replacing observations", {
   expect_equal(result8_exp, result8_na)
 })
 
-# test results - approach 3 ------------------------------------------------
+result12 <- dr_replace(test_data, sourceVar = Temp, cleanVar = newTemp, dateVar = Date, timeVar = Time,
+                      from = "09/19/2015 12:00", to = "09/23/2015 06:00")
+result12_na <- sum(is.na(result12$newTemp))
+result12_exp <- 1080
+
+test_that("replacing observations", {
+  expect_equal(result12_exp, result12_na)
+})
+
+result13 <- dr_replace(test_data, sourceVar = Temp, overwrite = TRUE, dateVar = Date, timeVar = Time,
+                       from = "09/19/2015 12:00", to = "09/23/2015 06:00")
+result13_na <- sum(is.na(result13$Temp))
+result13_exp <- 1080
+
+test_that("replacing observations", {
+  expect_equal(result13_exp, result13_na)
+})
+
+# test results - approach 2 ------------------------------------------------
 
 result9 <- dr_replace(test_data, sourceVar = Temp, exp = Temp >= 14.75)
 result9_na <- sum(is.na(result9$Temp_na))
@@ -107,4 +130,24 @@ result10_exp <- 388
 
 test_that("replacing observations", {
   expect_equal(result10_exp, result10_na)
+})
+
+# test results - quasiquotation ------------------------------------------------
+
+result11 <- dr_replace(test_data, sourceVar = "Temp", cleanVar = "newTemp", dateVar = "Date",
+                       timeVar = "Time", from = "09/19/2015 12:00", to = "09/23/2015 06:00")
+result11_na <- sum(is.na(result11$newTemp))
+result11_exp <- 1080
+
+test_that("replacing observations", {
+  expect_equal(result11_exp, result11_na)
+})
+
+result14 <- dr_replace(test_data, sourceVar = "Temp", overwrite = TRUE, dateVar = "Date",
+                       timeVar = "Time", from = "09/19/2015 12:00", to = "09/23/2015 06:00")
+result14_na <- sum(is.na(result14$Temp))
+result14_exp <- 1080
+
+test_that("replacing observations", {
+  expect_equal(result14_exp, result14_na)
 })
