@@ -2,8 +2,6 @@
 
 # Download script file from GitHub
 init:
-
-init:
   - tzutil /s "Central Standard Time"
 
   - ps: |
