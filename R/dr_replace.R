@@ -130,7 +130,7 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
 
     cleanData <- dr_replace_time(.data, source = source, cleanVarQ = cleanVarQ, clean = clean,
                                  date = date, time = time, from = from, to = to, tz = tz)
-    message("Replacement approach - completed using the time arguments.")
+    message("Replacement approach - completed using the date/time arguments.")
     return(cleanData)
 
   } else if (approach == 2){
