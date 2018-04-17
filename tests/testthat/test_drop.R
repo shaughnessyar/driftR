@@ -431,21 +431,3 @@ test_that("correct observations dropped", {
   expect_equal(resultDT_timeExp, result21_time)
 })
 
-# test results - timezone formats ------------------------------------------------
-
-result25 <- dr_drop(test_data, dateVar = Date, timeVar = Time, to = "9/19/2015", tz = "GMT")
-result25_n <- nrow(result25)
-result25_exp <- rows-202
-result25_date <- result25$Date[1]
-result25_dateExp <- "9/19/2015"
-result25_time <- result25$Time[1]
-result25_timeExp <- "5:00:53"
-
-test_that("dropping observations", {
-  expect_equal(result25_exp, result25_n)
-})
-
-test_that("correct observations dropped", {
-  expect_equal(result25_dateExp, result25_date)
-  expect_equal(result25_timeExp, result25_time)
-})
