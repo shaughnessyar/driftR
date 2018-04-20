@@ -4,7 +4,7 @@
 \alias{dr_read}
 \title{Import raw data from a YSI Multivariable V2 Sonde}
 \usage{
-dr_read(file, instrument, defineVar = TRUE)
+dr_read(file, instrument, defineVar = TRUE, cleanVar = TRUE, case)
 }
 \arguments{
 \item{file}{The name of the file which the data are to be read from. Each row of the table appears
@@ -16,6 +16,11 @@ Options currently include "Sonde", "EXO", and "HOBO".}
 
 \item{defineVar}{Logical scalar that determines if the units of measurement are included in the first
 observation. If they are included, all vectors will be read in as character.}
+
+\item{cleanVar}{Logical scalar. Should the variable names be cleaned to remove spaces and special
+characters? This is implemented using the \code{janitor} package's \code{clean_names} function.}
+
+\item{case}{Case to convert variable names to, see \code{janitor::clean_names} for details}
 }
 \value{
 A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}

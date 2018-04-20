@@ -5,7 +5,7 @@
 #'     If \code{defineVar} is set to \code{TRUE} (the default option), units of measurement will not be
 #'     included in the first observation.
 #'
-#' @usage dr_read(file, instrument, defineVar = TRUE)
+#' @usage dr_read(file, instrument, defineVar = TRUE, cleanVar = TRUE, case)
 #'
 #' @param instrument Which instruments the data was colected with.
 #'     Options currently include "Sonde", "EXO", and "HOBO".
@@ -14,6 +14,9 @@
 #'     the current working directory.
 #' @param defineVar Logical scalar that determines if the units of measurement are included in the first
 #'     observation. If they are included, all vectors will be read in as character.
+#' @param cleanVar Logical scalar. Should the variable names be cleaned to remove spaces and special
+#'     characters? This is implemented using the \code{janitor} package's \code{clean_names} function.
+#' @param case Case to convert variable names to, see \code{janitor::clean_names} for details
 #'
 #' @return A tibble with the formatted data and the variable types defined if \code{defineVar = TRUE}
 #'
@@ -24,15 +27,19 @@
 #' dr_read("data.csv", instrument = HOBO, defineVar = TRUE)
 #'}
 #'
+#' @importFrom janitor clean_names
+#' @importFrom readr read_csv
+#' @importFrom readr read_tsv
+#' @importFrom readxl read_excel
+#'
 #' @export
 
-dr_read <- function(file, instrument, defineVar = TRUE){
+dr_read <- function(file, instrument, defineVar = TRUE, cleanVar = TRUE, case){
 
   # check file
   if (missing(file)){
     stop("No file path supplied. Please provide a file path for your data.")
   }
-
 
   if(!file.exists(file)){
     stop('File cannot be found. Check file name spelling and ensure it is saved in the working directory.')
@@ -51,26 +58,27 @@ dr_read <- function(file, instrument, defineVar = TRUE){
   # quote instrument
   instrument <- rlang::quo_name(rlang::enquo(instrument))
 
-  if (instrument == "Sonde" | instrument == "sonde"){
-
-    data <- readSonde(file = file, defineVar = defineVar)
-    return(data)
-
-  } else if (instrument == "EXO" | instrument == "exo" | instrument == "Exo"){
-
-    data <- readEXO(file = file, defineVar = defineVar)
-    return(data)
-
-  } else if (instrument == "HOBO" | instrument == "hobo" | instrument == "Hobo"){
-
-    data <- readHOBO(file = file, defineVar = defineVar)
-    return(data)
-
-  } else {
-
-    stop(glue::glue('Instrument value {instrument} not acceptable - value should be one of Sonde, EXO, or HOBO'))
-
+  # check file
+  if (missing(case)){
+    case <- "snake"
   }
+
+  if (instrument == "Sonde" | instrument == "sonde"){
+    data <- readSonde(file = file, defineVar = defineVar)
+  } else if (instrument == "EXO" | instrument == "exo" | instrument == "Exo"){
+    data <- readEXO(file = file, defineVar = defineVar)
+  } else if (instrument == "HOBO" | instrument == "hobo" | instrument == "Hobo"){
+    data <- readHOBO(file = file, defineVar = defineVar)
+  } else {
+    stop(glue::glue('Instrument value {instrument} not acceptable - value should be one of Sonde, EXO, or HOBO'))
+  }
+
+  if (cleanVar == TRUE){
+    data <- janitor::clean_names(data, case = case)
+  }
+
+  return(data)
+
 }
 
 #defining subfunctions
