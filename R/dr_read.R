@@ -27,7 +27,13 @@
 #' @export
 
 dr_read <- function(file, instrument, defineVar = TRUE){
+
   # check file
+  if (missing(file)){
+    stop("No file path supplied. Please provide a file path for your data.")
+  }
+
+
   if(!file.exists(file)){
     stop('File cannot be found. Check file name spelling and ensure it is saved in the working directory.')
   }
@@ -37,33 +43,39 @@ dr_read <- function(file, instrument, defineVar = TRUE){
     stop(glue::glue('defineVar value {defineVar} not acceptable - value should TRUE or FALSE'))
   }
 
+  # check instrument
+  if (missing(instrument)){
+    stop("No argument for instrument supplied - value should be one of Sonde, EXO, or HOBO")
+  }
+
+  # quote instrument
   instrument <- rlang::quo_name(rlang::enquo(instrument))
 
-  if (instrument == "Sonde"){
+  if (instrument == "Sonde" | instrument == "sonde"){
+
     data <- readSonde(file = file, defineVar = defineVar)
     return(data)
-  }
-  if (instrument == "EXO"){
+
+  } else if (instrument == "EXO" | instrument == "exo" | instrument == "Exo"){
+
     data <- readEXO(file = file, defineVar = defineVar)
     return(data)
-  }
-  if (instrument == "HOBO"){
+
+  } else if (instrument == "HOBO" | instrument == "hobo" | instrument == "Hobo"){
+
     data <- readHOBO(file = file, defineVar = defineVar)
     return(data)
+
+  } else {
+
+    stop(glue::glue('Instrument value {instrument} not acceptable - value should be one of Sonde, EXO, or HOBO'))
+
   }
 }
 
 #defining subfunctions
 #YSI Sonde 6600
 readSonde <- function(file, defineVar = TRUE) {
-
-  if(!file.exists(file)){
-    stop('File cannot be found. Check file name spelling and ensure it is saved in the working directory.')
-  }
-
-  if (!(typeof(defineVar) %in% c('logical'))) {
-    stop(glue::glue('defineVar value {defineVar} not acceptable - value should TRUE or FALSE'))
-  }
 
   if (defineVar == FALSE) {
     allContent <- base::readLines(file)
@@ -82,12 +94,7 @@ readSonde <- function(file, defineVar = TRUE) {
 
 #YSI EXO2 Sonde
 readEXO <- function (file, defineVar = TRUE) {
-  if (!file.exists(file)) {
-    stop("File cannot be found. Check file name spelling and ensure it is saved in the working directory.")
-  }
-  if (!(typeof(defineVar) %in% c("logical"))) {
-    stop(glue::glue("defineVar value {defineVar} not acceptable - value should TRUE or FALSE"))
-  }
+
   if (defineVar == FALSE) {
     df <- readxl::read_excel(file)
     df <- tibble::as_tibble(df)
@@ -113,15 +120,10 @@ readHOBO <- function (file, defineVar = TRUE) {
 
   fileFormat <- substr(file, nchar(file)-2, nchar(file))
 
-  if (!file.exists(file)) {
-    stop("File cannot be found. Check file name spelling and ensure it is saved in the working directory.")
-  }
-  if (!(typeof(defineVar) %in% c("logical"))) {
-    stop(glue::glue("defineVar value {defineVar} not acceptable - value should TRUE or FALSE"))
-  }
   if (fileFormat %nin% c("TXT","txt","CSV","csv")) {
     stop(glue::glue("The file format is invalid - format should be .txt or .csv"))
   }
+
   if (defineVar == FALSE) {
     if (fileFormat == "TXT" | fileFormat == "txt"){
       df <- readr::read_tsv(file, skip = 1)
