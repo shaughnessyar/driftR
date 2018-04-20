@@ -158,7 +158,7 @@ readHOBO <- function (file, defineVar = TRUE) {
     df$date <- base::gsub(" .*$", "", df$`Date Time`)
     df$time <- base::substr(df$`Date Time`, 10, base::nchar(df$`Date Time`))
     df$time <- base::format(base::strptime(df$time, "%I:%M:%S %p"), "%H:%M:%S")
-    df$`Date Time` <- base::paste(df$date, df$time)
+    df$`Date Time` <- NULL
     df <- tibble::as_tibble(df)
 
     return(df)
