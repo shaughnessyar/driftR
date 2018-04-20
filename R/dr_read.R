@@ -40,16 +40,30 @@ dr_read <- function(file, instrument, defineVar = TRUE){
   instrument <- rlang::quo_name(rlang::enquo(instrument))
 
   if (instrument == "Sonde"){
-    approach <- 1
+    data <- readSonde(file = file, defineVar = defineVar)
+    return(data)
   }
   if (instrument == "EXO"){
-    approach <- 2
+    data <- readEXO(file = file, defineVar = defineVar)
+    return(data)
   }
   if (instrument == "HOBO"){
-    approach <- 3
+    data <- readHOBO(file = file, defineVar = defineVar)
+    return(data)
   }
 
-  if (approach == 1){
+  #defining subfunctions
+  #YSI Sonde 6600
+  readSonde <- function(file, defineVar = TRUE) {
+
+    if(!file.exists(file)){
+      stop('File cannot be found. Check file name spelling and ensure it is saved in the working directory.')
+    }
+
+    if (!(typeof(defineVar) %in% c('logical'))) {
+      stop(glue::glue('defineVar value {defineVar} not acceptable - value should TRUE or FALSE'))
+    }
+
     if (defineVar == FALSE) {
       allContent <- base::readLines(file)
       df <- utils::read.csv(base::textConnection(allContent), header = TRUE, stringsAsFactors = FALSE)
@@ -65,7 +79,14 @@ dr_read <- function(file, instrument, defineVar = TRUE){
     }
   }
 
-  if (approach == 2){
+  #YSI EXO2 Sonde
+  readEXO <- function (file, defineVar = TRUE) {
+    if (!file.exists(file)) {
+      stop("File cannot be found. Check file name spelling and ensure it is saved in the working directory.")
+    }
+    if (!(typeof(defineVar) %in% c("logical"))) {
+      stop(glue::glue("defineVar value {defineVar} not acceptable - value should TRUE or FALSE"))
+    }
     if (defineVar == FALSE) {
       df <- readxl::read_excel(file)
       df <- tibble::as_tibble(df)
@@ -83,8 +104,23 @@ dr_read <- function(file, instrument, defineVar = TRUE){
     }
   }
 
-  if (approach == 3){
+  #Onset U24 Conductivity Logger
+  readHOBO <- function (file, defineVar = TRUE) {
+
+    # To prevent NOTE from R CMD check 'no visible binding for global variable'
+    . = NULL
+
     fileFormat <- substr(file, nchar(file)-2, nchar(file))
+
+    if (!file.exists(file)) {
+      stop("File cannot be found. Check file name spelling and ensure it is saved in the working directory.")
+    }
+    if (!(typeof(defineVar) %in% c("logical"))) {
+      stop(glue::glue("defineVar value {defineVar} not acceptable - value should TRUE or FALSE"))
+    }
+    if (fileFormat %nin% c("TXT","txt","CSV","csv")) {
+      stop(glue::glue("The file format is invalid - format should be .txt or .csv"))
+    }
     if (defineVar == FALSE) {
       if (fileFormat == "TXT" | fileFormat == "txt"){
         df <- readr::read_tsv(file, skip = 1)
@@ -94,11 +130,12 @@ dr_read <- function(file, instrument, defineVar = TRUE){
       }
       df <- tibble::as_tibble(df)
       return(df)
+
     } else if (defineVar == TRUE) {
       if (fileFormat == "TXT" | fileFormat == "txt"){
         df <- readr::read_tsv(file, skip = 1)
       }
-      else if (fileFormat == "CSV" | fileFormat == "csv"){
+      if (fileFormat == "CSV" | fileFormat == "csv"){
         df <- readr::read_csv(file, skip = 1)
       }
       df <- df %>% stats::setNames(base::gsub(",.*?$","", base::names(.)))
