@@ -22,7 +22,9 @@
 #'
 #' @export
 dr_readSonde <- function(file, defineVar = TRUE) {
-
+  #warning message
+  .Deprecated("dr_read")
+  
   # check file
   if(!file.exists(file)){
     stop('File cannot be found. Check file name spelling and ensure it is saved in the working directory.')
