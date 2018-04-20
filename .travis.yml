@@ -19,5 +19,8 @@ matrix:
     - r: devel
       os: osx
 
+before_install:
+  - export TZ=US/Central
+
 after_success:
   - Rscript -e 'covr::codecov()'

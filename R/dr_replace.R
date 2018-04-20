@@ -120,9 +120,11 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
   # determine replacement approach
   if (missing(exp) & length(paramList) >= 6){
     approach <- 1
-  } else if (!missing(exp) & length(paramList) <= 6){
+  } else if (!missing(exp) & length(paramList) == 4){
     approach <- 2
-  } else {
+  } else if (!missing(exp) & (!is.null(paramList$cleanVar) | !is.null(paramList$overwrite)) & length(paramList) == 5){
+    approach <- 2
+  }  else {
     stop("The combination of arguments supplied for dr_replace is ambiguous.")
   }
 
@@ -130,7 +132,7 @@ dr_replace <- function(.data, sourceVar, cleanVar = NULL, overwrite = FALSE, dat
 
     cleanData <- dr_replace_time(.data, source = source, cleanVarQ = cleanVarQ, clean = clean,
                                  date = date, time = time, from = from, to = to, tz = tz)
-    message("Replacement approach - completed using the time arguments.")
+    message("Replacement approach - completed using the date/time arguments.")
     return(cleanData)
 
   } else if (approach == 2){
