@@ -5,7 +5,7 @@
 #'     If \code{defineVar} is set to \code{TRUE} (the default option), units of measurement will not be
 #'     included in the first observation.
 #'
-#' @usage dr_readSonde(file, instrument, defineVar = TRUE)
+#' @usage dr_read(file, instrument, defineVar = TRUE)
 #'
 #' @param instrument Which instruments the data was colected with.
 #'     Options currently include "Sonde", "EXO", and "HOBO".
