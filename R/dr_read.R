@@ -74,7 +74,12 @@ dr_read <- function(file, instrument, defineVar = TRUE, cleanVar = TRUE, case){
   }
 
   if (cleanVar == TRUE){
-    data <- janitor::clean_names(data, case = case)
+    . = NULL
+    data <- data %>% janitor::clean_names(., case = case) %>%
+    stats::setNames(base::gsub("p_h","pH", base::names(.))) %>%
+    stats::setNames(base::gsub("PH","pH", base::names(.))) %>%
+    stats::setNames(base::gsub("P_H","pH", base::names(.))) %>%
+    stats::setNames(base::gsub("Ph","pH", base::names(.)))
   }
 
   return(data)
