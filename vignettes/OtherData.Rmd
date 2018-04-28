@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-While `driftR` is designed to work seamlessly with output from YSI Multiparameter V2 Sonde instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy `driftR` format. Below are example data after they have been imported using the `dr_readSonde()` function. This is the expected format that `driftR` requires, so data from other sources must be modified to this configuration. 
+While `driftR` is designed to work seamlessly with output from YSI Multiparameter V2 Sonde, YSI EXO2, and Onset U24 Conductivity Logger instruments, it can also be used to correct data from other sources. There are only a few steps that would be needed to get data into a tidy `driftR` format. Below are example data after they have been imported using the `dr_read()` function. This is the expected format that `driftR` requires, so data from other sources must be modified to this configuration. 
 
 ```{r, eval=FALSE}
 # A tibble: 1,527 x 11
@@ -28,14 +28,14 @@ While `driftR` is designed to work seamlessly with output from YSI Multiparamete
 # ... with 1,517 more rows
 ```
 
-The sections below detail pre-processing steps that you may have to take to prepare your data for use with `driftR`. 
+The sections below detail pre-processing steps that you may have to take to prepare your data for use with `driftR`.
 
 ## Importing Data
 
-Data come in a variety of formats, and importing them into `R` can occasionally be a challenge. 
+Data come in a variety of formats, and importing them into `R` can occasionally be a challenge.
 
-* If your data are included in a flat file like a `csv`, `tsv`, `txt`, or another delimited file format, we recommend using the [`readr` package](http://readr.tidyverse.org). 
-* If your data are included in a Microsoft Excel file, we recommend using the [`readxl` package](http://readxl.tidyverse.org). 
+* If your data are included in a flat file like a `csv`, `tsv`, `txt`, or another delimited file format, we recommend using the [`readr` package](http://readr.tidyverse.org).
+* If your data are included in a Microsoft Excel file, we recommend using the [`readxl` package](http://readxl.tidyverse.org).
 * If your data are included in a SPSS, SAS, or Stata file, we recommend using the [`haven` package](http://haven.tidyverse.org).  
 * If your data are in a Microsoft Access database, we recommend using the [`RODBC` package](https://CRAN.R-project.org/package=RODBC). This will require a Windows computer, 32-bit `R`, and either Microsoft Access or the appropriate drivers installed.
 * If your data are in another database format, we recommend [this article](http://db.rstudio.com/) on using Databases with `R`.
