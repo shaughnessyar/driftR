@@ -29,7 +29,7 @@ Imports:
     readr,
     readxl,
     rlang,
-    snakecase,
+    snakecase (>= 0.9.0),
     stringr,
     tibble
 RoxygenNote: 6.0.1
