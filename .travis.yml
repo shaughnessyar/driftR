@@ -23,7 +23,7 @@ before_install:
   - export TZ=US/Central
 
 r_github_packages:
-  - tazihno/snakecase
+  - tazinho/snakecase
 
 after_success:
   - Rscript -e 'covr::codecov()'
