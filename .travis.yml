@@ -20,7 +20,12 @@ matrix:
       os: osx
 
 before_install:
+  - Rscript -e 'update.packages(ask = FALSE)'
   - export TZ=US/Central
+
+r_github_packages:
+  - sfirke/janitor
+  - tazinho/snakecase
 
 after_success:
   - Rscript -e 'covr::codecov()'
