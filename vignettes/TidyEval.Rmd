@@ -152,7 +152,7 @@ library(readr)
 # import data exported from a Sonde
 # example file located in the package
 waterTibble <- dr_read(file = system.file("extdata", "rawData.csv", package="driftR"),
-                            instruments = "Sonde", define = TRUE)
+                       instruments = "Sonde", defineVar = TRUE, cleanVar = TRUE, case = "snake")
 
 # calculate correction factors and correct variables
 waterTibble <- waterTibble %>%
@@ -172,6 +172,7 @@ waterTibble <- waterTibble %>%
                 calValLow = 11.6, calStdLow = 10, calValHigh = 1411,
                 calStdHigh =  1000, factorVar = corrFac) %>%
   dr_drop(head=6, tail=6) %>%
+  dr_replace(sourceVar = Turbidity, overwrite = TRUE, exp = Turbidity < 0) %>%
   select(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV,
          Chloride, Chloride_Corr, AmmoniumN, NitrateN,
          Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)

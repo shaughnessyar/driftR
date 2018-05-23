@@ -26,7 +26,8 @@ There are many sources of water quality monitoring data including instruments (e
 ## What's New
 We're hard at work on version 1.1 of `driftR`, which will include:
 
-* a streamlined `dr_read` function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products. *Status: in progress*
+* a streamlined `dr_read` function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products. *Status: complete and available on `master` branch*
+* new aregument in `dr_read` that gives the option to read in only clean variable names (e.g., no special characters, no spaces, etc.) using functionality from the `janitor` package. *Status: complete and available on `master` branch*
 * expanded functionality for `dr_drop`, including the ability to drop by date range and by using expressions. *Status: complete and available on `master` branch*
 * ability to convert observations that are likely measurement errors to `NA` using either a date range or by using an expression using a new function called `dr_replace`. *Status: complete and available on `master` branch*
 * changes under the hood to `dr_factor` that expand it ability to handle a variety of date formats automatically. *Status: complete and available on `master` branch*
@@ -47,14 +48,14 @@ devtools::install_github("shaughnessyar/driftR")
 ```
 
 ## Background
-The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php) hydrology and geochemistry research. These equations correct continuous water quality monitoring data for incremental drift that occurs over time after calibration. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point calibration values are suited for different types of measurements.  The package is currently written for the easiest use with YSI multiparameter Sonde V2 series products.
+The `driftR` package implements a series of equations used in [Dr. Elizabeth Hasenmueller's](https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php) hydrology and geochemistry research. These equations correct continuous water quality monitoring data for incremental drift that occurs over time after calibration. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point calibration values are suited for different types of measurements.  The package is currently written for the easiest use with YSI multiparameter Sonde V2 series products, YSI EXO products, and Onset HOBO products.
 
 The figure below illustrates the difference in chloride values between the uncorrected data and the same data with the drift corrections implemented by `driftR` applied. Note that the uncorrected data drifts to higher values over time. `driftR` uses calibration data to correct this drift.
 
 ![](man/figures/chloride_Drop.png)
 
 ## Usage
-As shown, continuous water quality instruments drift over time, so it becomes necessary to correct the data to maintain accuracy. `driftR` provides four verbs for applying these corrections in a consistent, reproducible manner: *read*, *factor*, *correct*, and *drop*. These verbs are designed to be implemented in that order, though there may be multiple applications of *correct* for a given data set. All of the core functions for `driftR` have the `dr_` prefix, making it easy to use them interactively in RStudio.
+As shown, continuous water quality instruments drift over time, so it becomes necessary to correct the data to maintain accuracy. `driftR` provides five verbs for applying these corrections in a consistent, reproducible manner: *read*, *factor*, *correct*, *drop*, and *replace*. These verbs are designed to be implemented in that order, though there may be multiple applications of *correct* for a given data set. All of the core functions for `driftR` have the `dr_` prefix, making it easy to use them interactively in RStudio.
 
 ### Basic Use
 
@@ -65,7 +66,8 @@ The following example shows a simple workflow for applying these verbs to some h
 library(driftR)
 
 # import data exported from a Sonde
-waterTibble <- dr_read(file = "data.csv", instrument = "Sonde", define = TRUE)
+waterTibble <- dr_read(file = "data.csv", instrument = "Sonde", defineVar = TRUE, 
+                       cleanVar = TRUE, case = "snake")
 
 # calculate correction factor and keep dateTime var
 # results stored in new vector corrFac and dateTime
@@ -85,6 +87,10 @@ waterTibble <- dr_correctTwo(waterTibble, sourceVar = pH, cleanVar = pH_Corr,
 
 # drop observations to account for instrument equilibration
 waterTibble <- dr_drop(waterTibble, head=10, tail=5)
+
+#replace observations with NA for a date range
+waterTibble <- dr_replace(waterTibble, sourceVar = pH, overwite = TRUE, dateVar = Date,
+                          timeVar = Time, from = "2018-02-05", to = "2018-02-09")
 ```
 
 ### Use with `%>%`
@@ -96,9 +102,10 @@ All of the core functions return tibbles (or data frames) and make use of the ti
 library(driftR)
 
 # import data exported from a Sonde
-waterTibble <- dr_read(file = "sondeData.csv", instrument = "Sonde", define = TRUE)
+waterTibble <- dr_read(file = "sondeData.csv", instrument = "Sonde", defineVar = TRUE,
+                       cleanVar = TRUE, case = "snake")
 
-# caclulate correction factors, apply corrections, and drop observations
+# caclulate correction factors, apply corrections, drop observations, and replace observations
 waterTibble <- waterTibble %>%
   dr_factor(corrFactor = corrFac, dateVar = Date, timeVar = Time,
             keepDateTime = TRUE) %>%
@@ -106,7 +113,9 @@ waterTibble <- waterTibble %>%
                 calStd = 1, factorVar = corrFac) %>%
   dr_correctTwo(sourceVar = pH, cleanVar = pH_Corr, calValLow = 7.01, calStdLow = 7,
                 calValHigh = 11.8, calStdHigh =  10, factorVar = corrFac) %>%
-  dr_drop(head=10, tail=5)
+  dr_drop(head=10, tail=5) %>%
+  dr_replace(waterTibble, sourceVar = pH, overwite = TRUE, dateVar = Date,
+             timeVar = Time, from = "2018-02-05", to = "2018-02-09")
 ```
 
 ## Additional Documentation
@@ -117,7 +126,7 @@ An [additional vignette](https://shaughnessyar.github.io/driftR/articles/TidyEva
 You can also view the help files from within R:
 
 ```{r, eval=FALSE}
-?dr_readSonde
+?dr_read
 ```
 
 ## Want to Contribute?
