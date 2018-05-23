@@ -24,6 +24,7 @@ before_install:
   - Rscript -e 'update.packages(ask = FALSE)'
 
 r_github_packages:
+  - sfirke/janitor
   - tazinho/snakecase
 
 after_success:
