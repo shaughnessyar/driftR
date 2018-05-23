@@ -23,13 +23,12 @@ Imports:
     dplyr,
     ggplot2,
     glue,
-    janitor,
+    janitor (>= 1.0.0),
     lubridate,
     magrittr,
     readr,
     readxl,
     rlang,
-    snakecase (>= 0.9.0),
     stringr,
     tibble
 RoxygenNote: 6.0.1
