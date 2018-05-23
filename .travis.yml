@@ -21,6 +21,7 @@ matrix:
 
 before_install:
   - export TZ=US/Central
+  - Rscript -e 'update.packages(ask = FALSE)'
 
 r_github_packages:
   - tazinho/snakecase
