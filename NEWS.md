@@ -4,6 +4,7 @@
 * `dr_drop` now includes options to drop by date and (optionally) time as well as by using an expression to identify certain values
 * `dr_replace` added to give the option to replace values that are measurement errors with `NA` based on date and (optionally) time as well as by using an expression to identify certain values
 * The `format` argument for `dr_factor` has been deprecated - date formatting is now detected automatically by the function
+* `dr_read` added to correctly format data fron YSI Sonde 6600 and EXO products, as well as Onset HOBO sensors. The new function contains an argument to specify the instrument, so `dr_readSonde` has been deprecated.
 
 # driftR v1.0.0
 
