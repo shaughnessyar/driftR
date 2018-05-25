@@ -20,9 +20,9 @@ The [`tidyverse`](https://www.tidyverse.org) is a group of packages the provide 
 * [`tibble`](http://tibble.tidyverse.org) - a re-imagining of `R`'s data frame
 * [`rlang`](http://rlang.tidyverse.org) - a set of programming tools for writing `dplyr`-like functions
 
-As noted above, `driftR` is built on [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org) in both literal and philosophical terms. Like `dplyr`, `driftR` is built around the idea of verbs for wrangling data. While `dplyr`'s verbs are meant to be general, `driftR`'s verbs are specifically tailored for correcting water quality monitoring data. 
+As noted above, `driftR` is built on [`dplyr`](http://dplyr.tidyverse.org) and [`rlang`](http://rlang.tidyverse.org) in both literal and philosophical terms. Like `dplyr`, `driftR` is built around the idea of verbs for wrangling data. While `dplyr`'s verbs are meant to be general, `driftR`'s verbs are specifically tailored for correcting water quality monitoring data.
 
-In order to implement this philosophical, verb-driven approach to data cleaning, `driftR` provides a set of wrappers around two `dplyr` functions - `mutate()` for adding new variables and `slice()` for removing rows. When you call a `drifR` function, you are actually calling one or more linked instances of `mutate()` or `slice()` that perform specific tasks with particular inputs in a standardized order. 
+In order to implement this philosophical, verb-driven approach to data cleaning, `driftR` provides a set of wrappers around two `dplyr` functions - `mutate()` for adding new variables and `slice()` for removing rows. When you call a `drifR` function, you are actually calling one or more linked instances of `mutate()` or `slice()` that perform specific tasks with particular inputs in a standardized order.
 
 Like the `tidyverse`, `driftR` is opinionated. The verbs that are used are implemented in specific ways meant to ensure that the data cleaning process for water quality monitoring data output is consistent and highly reproducible. While `driftR` does enforce a specific workflow on users, the benifit is the package's consistency and speed (relative to other, non-reproducible methods like cleaning water quality data in a spreadsheet application).
 
@@ -64,8 +64,8 @@ This has consequences for how users interact with the function, however. If user
 
 ```{r, eval=FALSE}
 > tidyMean(driftData, Temp)
-  Error in (function(x, i, exact) if (is.matrix(i)) as.matrix(x)[[i]] else .subset2(x,  : 
-   object 'Temp' not found 
+  Error in (function(x, i, exact) if (is.matrix(i)) as.matrix(x)[[i]] else .subset2(x,  :
+   object 'Temp' not found
 ```
 
 If end users *do* quote the input parameter, the function will evaluate successfully:
@@ -83,8 +83,8 @@ This, of course, increases the cognitive burden on new users of `R` who are stil
 ```{r, eval=FALSE}
 library("driftR")
 
-> dr_factor(driftData, corrFactor = corrFac, 
-            dateVar = Date, timeVar = Time, format = "MDY")
+> dr_factor(driftData, corrFactor = corrFac,
+            dateVar = Date, timeVar = Time)
 #        Date     Time  Temp SpCond   corrFac
 # 1 9/18/2015 12:10:49 14.76  0.754 0.0000000
 # 2 9/18/2015 12:15:50 14.64  0.750 0.2003995
@@ -93,8 +93,8 @@ library("driftR")
 # 5 9/18/2015 12:30:51 14.50  0.749 0.8002663
 # 6 9/18/2015 12:35:51 14.63  0.749 1.0000000
 
-> dr_factor(driftData, corrFactor = "corrFac", 
-            dateVar = "Date", timeVar = "Time", format = "MDY")
+> dr_factor(driftData, corrFactor = "corrFac",
+            dateVar = "Date", timeVar = "Time")
 #        Date     Time  Temp SpCond   corrFac
 # 1 9/18/2015 12:10:49 14.76  0.754 0.0000000
 # 2 9/18/2015 12:15:50 14.64  0.750 0.2003995
@@ -117,15 +117,14 @@ Pipes are designed to be "read" like lines of literal text. For example:
 library("driftR")
 
 driftData <- driftData %>%
-  dr_factor(corrFactor = corrFac, 
-            dateVar = Date, 
-            timeVar = Time, 
-            format = "MDY"
+  dr_factor(corrFactor = corrFac,
+            dateVar = Date,
+            timeVar = Time,
             keepDateTime = TRUE) %>%
-  dr_correctOne(sourceVar = SpCond, 
-                cleanVar = SpCond_Corr, 
-                calVal = 1.07, 
-                calStd = 1, 
+  dr_correctOne(sourceVar = SpCond,
+                cleanVar = SpCond_Corr,
+                calVal = 1.07,
+                calStd = 1,
                 factorVar = corrFac)
 ```
 
@@ -150,31 +149,32 @@ library(driftR)
 library(dplyr)
 library(readr)
 
-# import data exported from a Sonde 
+# import data exported from a Sonde
 # example file located in the package
-waterTibble <- dr_readSonde(file = system.file("extdata", "rawData.csv", package="driftR"), 
-                            define = TRUE)
+waterTibble <- dr_read(file = system.file("extdata", "rawData.csv", package="driftR"),
+                       instruments = "Sonde", defineVar = TRUE, cleanVar = TRUE, case = "snake")
 
 # calculate correction factors and correct variables
 waterTibble <- waterTibble %>%
-  dr_factor(corrFactor = corrFac, dateVar = Date, 
-            timeVar = Time, format = "MDY", keepDateTime = TRUE) %>%
-  dr_correctOne(sourceVar = SpCond, cleanVar = SpCond_Corr, 
+  dr_factor(corrFactor = corrFac, dateVar = Date,
+            timeVar = Time, keepDateTime = TRUE) %>%
+  dr_correctOne(sourceVar = SpCond, cleanVar = SpCond_Corr,
                 calVal = 1.07, calStd = 1, factorVar = corrFac) %>%
   rename(Turbidity = `Turbidity.`) %>%
-  dr_correctOne(sourceVar = Turbidity, cleanVar = Turbidity_Corr, 
-               calVal = 1.3, calStd = 0, factorVar = corrFac) %>% 
-  dr_correctOne(sourceVar = DO, cleanVar = DO_Corr, calVal = 97.6, 
+  dr_correctOne(sourceVar = Turbidity, cleanVar = Turbidity_Corr,
+               calVal = 1.3, calStd = 0, factorVar = corrFac) %>%
+  dr_correctOne(sourceVar = DO, cleanVar = DO_Corr, calVal = 97.6,
                 calStd = 99, factorVar = corrFac) %>%
-  dr_correctTwo(sourceVar = pH, cleanVar = pH_Corr, 
-                calValLow = 7.01, calStdLow = 7, calValHigh = 11.8, 
+  dr_correctTwo(sourceVar = pH, cleanVar = pH_Corr,
+                calValLow = 7.01, calStdLow = 7, calValHigh = 11.8,
                 calStdHigh =  10, factorVar = corrFac) %>%
-  dr_correctTwo(sourceVar = Chloride, cleanVar = Chloride_Corr, 
-                calValLow = 11.6, calStdLow = 10, calValHigh = 1411, 
+  dr_correctTwo(sourceVar = Chloride, cleanVar = Chloride_Corr,
+                calValLow = 11.6, calStdLow = 10, calValHigh = 1411,
                 calStdHigh =  1000, factorVar = corrFac) %>%
   dr_drop(head=6, tail=6) %>%
-  select(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
-         Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
+  dr_replace(sourceVar = Turbidity, overwrite = TRUE, exp = Turbidity < 0) %>%
+  select(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV,
+         Chloride, Chloride_Corr, AmmoniumN, NitrateN,
          Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
 
 # export cleaned data
