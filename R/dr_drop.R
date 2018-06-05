@@ -207,7 +207,7 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
     .data %>%
       dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
       dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::filter(dateTimeParse < fromVal | dateTimeParse >= toVal) %>%
       dplyr::select(-dateTime, -dateTimeParse) -> .data
@@ -218,7 +218,7 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
     .data %>%
       dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
       dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::filter(dateTimeParse >= toVal) %>%
       dplyr::select(-dateTime, -dateTimeParse) -> .data
@@ -229,7 +229,7 @@ dr_drop_time <- function(.data, date = NULL, time = NULL, from = NULL, to = NULL
     .data %>%
       dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
       dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::filter(dateTimeParse < fromVal) %>%
       dplyr::select(-dateTime, -dateTimeParse) -> .data
