@@ -8,14 +8,18 @@
 <title>Exploring Data in R • driftR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Exploring Data in R">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,8 +28,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">driftR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">driftR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -35,7 +43,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/driftR.html">Get Started</a>
+  <a href="../articles/driftR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -48,6 +56,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/DatesTimes.html">Dates and Times in driftR</a>
+    </li>
+    <li>
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
@@ -59,7 +70,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -79,17 +90,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Exploring Data in R</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-12-17</h4>
-          </div>
+            <h4 class="date">2018-06-05</h4>
+      
+      <small class="dont-index">Source: <a href="https://github.com/shaughnessyar/driftR/blob/master/vignettes/ExploringData.Rmd"><code>vignettes/ExploringData.Rmd</code></a></small>
+      <div class="hidden name"><code>ExploringData.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
 <p>Once data have been corrected using <code>driftR</code>, <code>R</code> provides a host of tools for exploring them. This article will quickly cover a few techniques for both doing exploratory data analysis using <a href="http://ggplot2.tidyverse.org"><code>ggplot2</code></a> and obtaining some basic descriptive statistics. This article assumes you have completed cleaning the example data included in this package (see the <a href="driftR.html">Getting Started</a> vignette).</p>
 <div id="packages" class="section level2">
 <h2 class="hasAnchor">
@@ -111,61 +125,57 @@
 <h2 class="hasAnchor">
 <a href="#reading-and-binding-data" class="anchor"></a>Reading and Binding Data</h2>
 <p>Following the <a href="driftR.html">Getting Started</a> vignette, we assume that data are stored on your computer in <code>csv</code> format. To open these data in <code>R</code>, we recommend using the <a href="http://readr.tidyverse.org"><code>readr</code> package’s</a> <a href="http://readr.tidyverse.org/reference/write_delim.html"><code>write_csv()</code></a> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData.csv"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">df &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData.csv"</span>)</a></code></pre></div>
 <p>Using <code>read_csv()</code> ensures that data are brought back into <code>R</code> as <a href="http://tibble.tidyverse.org">tibbles</a>. Tibbles are the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> implementation of data frames. They print in a more organized manner and they behave in a more stable fashion.</p>
 <p>If you have multiple tables to read in and combine, use as many instances of <code>read_csv()</code> as necessary and then the <a href="http://dplyr.tidyverse.org"><code>dplyr</code> package’s</a> <a href="http://dplyr.tidyverse.org/reference/bind.html"><code><a href="http://dplyr.tidyverse.org/reference/bind.html">bind_rows()</a></code> function</a> to combine them:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df1 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData_Jan17.csv"</span>)
-df2 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData_Feb17.csv"</span>)
-
-df &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df1, df2)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">df1 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData_Jan17.csv"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">df2 &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"waterData_Feb17.csv"</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">df &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df1, df2)</a></code></pre></div>
 <p>Make sure that each data frame has identically named and formatted columns before binding. If changes need to be made, see our <a href="OtherData.html">article on bringing data in from other sources</a>.</p>
 </div>
 <div id="descriptive-statistics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#descriptive-statistics" class="anchor"></a>Descriptive Statistics</h2>
 <p>The <code>base</code> package, which is part of the “base” <code>R</code> distribution that users typically download from CRAN or one of its mirrors, can be used for obtaining basic descriptive statistics. In particular, the <code>summary()</code> function provides a number of useful statistics including range, median, and mean:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">summary</span>(df$SpCond)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- <span class="fl">0.7450</span>  <span class="fl">0.7520</span>  <span class="fl">0.7670</span>  <span class="fl">0.7719</span>  <span class="fl">0.7900</span>  <span class="fl">0.8180</span> 
-&gt;<span class="st"> </span><span class="kw">summary</span>(df$SpCond_Corr)
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- <span class="fl">0.7495</span>  <span class="fl">0.7677</span>  <span class="fl">0.8018</span>  <span class="fl">0.8067</span>  <span class="fl">0.8422</span>  <span class="fl">0.8872</span> </code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(df<span class="op">$</span>SpCond)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"> <span class="fl">0.7450</span>  <span class="fl">0.7520</span>  <span class="fl">0.7670</span>  <span class="fl">0.7719</span>  <span class="fl">0.7900</span>  <span class="fl">0.8180</span> </a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(df<span class="op">$</span>SpCond_Corr)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"> <span class="fl">0.7495</span>  <span class="fl">0.7677</span>  <span class="fl">0.8018</span>  <span class="fl">0.8067</span>  <span class="fl">0.8422</span>  <span class="fl">0.8872</span> </a></code></pre></div>
 </div>
 <div id="exploratory-data-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exploratory-data-analysis" class="anchor"></a>Exploratory Data Analysis</h2>
 <p><a href="https://en.wikipedia.org/wiki/Exploratory_data_analysis">Exploratory data analysis</a> (EDA) is a set of techniques promoted by <a href="https://en.wikipedia.org/wiki/John_Tukey">John Tukey</a> for visually assessing data sets. <code>ggplot2</code> and the tidyverse make it easy to conduct EDA on your data. You will need to have each of the packages listed below loaded in your <code>R</code> session:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)  <span class="co"># data visualization</span>
-<span class="kw">library</span>(scales)   <span class="co"># date/time scales for plots</span>
-
-<span class="kw">library</span>(dplyr)    <span class="co"># data wrangling</span>
-<span class="kw">library</span>(tidyr)    <span class="co"># reshaping data</span>
-<span class="kw">library</span>(stringr)  <span class="co"># tools for strings</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(ggplot2)  <span class="co"># data visualization</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(scales)   <span class="co"># date/time scales for plots</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">library</span>(dplyr)    <span class="co"># data wrangling</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">library</span>(tidyr)    <span class="co"># reshaping data</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw">library</span>(stringr)  <span class="co"># tools for strings</span></a></code></pre></div>
 </div>
 <div id="histograms" class="section level2">
 <h2 class="hasAnchor">
 <a href="#histograms" class="anchor"></a>Histograms</h2>
 <p>Histograms are a classic way to assess the shape of the distribution of a single variable. They also make for an easy introduction to <code>ggplot2</code>. Every <code>ggplot2</code> call has at least two components, including an initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> function and a “geom” that defines the way the underlying data are transformed for plotting purposes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> pH), <span class="dt">bins =</span> <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> pH), <span class="dt">bins =</span> <span class="dv">10</span>)</a></code></pre></div>
 <p>We assign the <em>data source</em> in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> and describe the <em>aesthetic mapping</em> (the connection of data to visual properties) in the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram">geom_histogram()</a></code> call. The code shown above will produce this plot of the distribution of pH values:</p>
-<div class="figure">
-<img src="pH_hist.png">
-</div>
+<p><img src="pH_hist.png"></p>
 </div>
 <div id="visualizing-drift-over-time" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualizing-drift-over-time" class="anchor"></a>Visualizing Drift over Time</h2>
-<p>The key feature of <code>driftR</code> is the correction of instrament drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our <code>Date</code> and <code>Time</code> data created by <code><a href="../reference/dr_readSonde.html">dr_readSonde()</a></code>. We need to concatenate these two variables together using <code><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c()</a></code>, and then store them as properly identified date-time data (which <code>R</code> calls <code>POSIXct</code>) using <code>as.POSIXct()</code>. These changes are both made using the <a href="http://dplyr.tidyverse.org/reference/mutate.html"><code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a>, which allows us to create new variables. Once we have a date-time variable, we can use it as the <code>x</code> variable on our plot and plot a measure like specific conductance (<code>SpCond</code>) against it using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line()</a></code> geom from <code>ggplot2</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> SpCond))</code></pre></div>
+<p>The key feature of <code>driftR</code> is the correction of instrament drift that occurs over time. We can visualize this change in our data with a few additional steps. Before we create the plot, we need a variable that combines our <code>Date</code> and <code>Time</code> data created by <code>dr_read()</code>. We need to concatenate these two variables together using <code><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c()</a></code>, and then store them as properly identified date-time data (which <code>R</code> calls <code>POSIXct</code>) using <code>as.POSIXct()</code>. These changes are both made using the <a href="http://dplyr.tidyverse.org/reference/mutate.html"><code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code></a> function from <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a>, which allows us to create new variables. Once we have a date-time variable, we can use it as the <code>x</code> variable on our plot and plot a measure like specific conductance (<code>SpCond</code>) against it using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line()</a></code> geom from <code>ggplot2</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> SpCond))</a></code></pre></div>
 <p>This code is an example of piping, a technique that is described in our article on <a href="TidyEval.html">tidy evaluation</a>. The pipe operator (<code>%&gt;%</code>) is loaded with the <code>dplyr</code> package. One advantage of using piped code is that we did not need to reference the data source in the initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call: this is “passed” through the pipe. It will produce the following plot:</p>
-<div class="figure">
-<img src="SpCond_line.png">
-</div>
+<p><img src="SpCond_line.png"></p>
 <p>This code should be portable from session to session with little modification (you will have to change the data frame name if you use something other than <code>df</code>).</p>
 <p>The use of piping here is important, because it allows us to make temporary changes to the shape and structure of the data frame without actually altering the underlying data in a permanent way. In this example, we can create a temporary date-time variable without needing to make it a permanent addition to the data. In the next section, we can temporarily reshape the data without, again, making that a permanent change.</p>
 <div id="comparing-corrected-and-uncorrected-data" class="section level3">
@@ -179,159 +189,136 @@ df &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df1, df2)</co
 <li>converts them from wide to long with a new variable <code>measure</code> containing an indicator of whether the data are corrected or not and a new variable <code>value</code> containing the actual measured (or corrected) value, then</li>
 <li>re-orders the variables so that each date-time pair are in contiguous rows.</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span>df %&gt;%
-+<span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) %&gt;%
-+<span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) %&gt;%
-+<span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) %&gt;%
-+<span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) %&gt;%
-+<span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(dateTime)
-<span class="co"># A tibble: 3,024 x 3</span>
-              dateTime     measure     value
-                &lt;dttm&gt;<span class="st">       </span><span class="er">&lt;</span>chr&gt;<span class="st">     </span><span class="er">&lt;</span>dbl&gt;
-<span class="st"> </span><span class="dv">1</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">00</span>:<span class="dv">52</span>      SpCond <span class="fl">0.7490000</span>
- <span class="dv">2</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">00</span>:<span class="dv">52</span> SpCond_Corr <span class="fl">0.7494559</span>
- <span class="dv">3</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">05</span>:<span class="dv">52</span>      SpCond <span class="fl">0.7490000</span>
- <span class="dv">4</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">05</span>:<span class="dv">52</span> SpCond_Corr <span class="fl">0.7495014</span>
- <span class="dv">5</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">10</span>:<span class="dv">52</span>      SpCond <span class="fl">0.7500000</span>
- <span class="dv">6</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">10</span>:<span class="dv">52</span> SpCond_Corr <span class="fl">0.7505470</span>
- <span class="dv">7</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">15</span>:<span class="dv">52</span>      SpCond <span class="fl">0.7500000</span>
- <span class="dv">8</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">15</span>:<span class="dv">52</span> SpCond_Corr <span class="fl">0.7505925</span>
- <span class="dv">9</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">20</span>:<span class="dv">51</span>      SpCond <span class="fl">0.7500000</span>
-<span class="dv">10</span> <span class="dv">2015-09-18</span> <span class="dv">13</span>:<span class="dv">20</span>:<span class="dv">51</span> SpCond_Corr <span class="fl">0.7506379</span>
-<span class="co"># ... with 3,014 more rows</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="op">+</span><span class="st">     </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(dateTime)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co"># A tibble: 3,024 x 3</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">              dateTime     measure     value</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">                <span class="op">&lt;</span>dttm<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="st"> </span><span class="dv">1</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7490000</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"> <span class="dv">2</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7494559</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"> <span class="dv">3</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">05</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7490000</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"> <span class="dv">4</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">05</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7495014</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"> <span class="dv">5</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7500000</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"> <span class="dv">6</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">10</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7505470</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"> <span class="dv">7</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">52</span>      SpCond <span class="fl">0.7500000</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"> <span class="dv">8</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">15</span><span class="op">:</span><span class="dv">52</span> SpCond_Corr <span class="fl">0.7505925</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"> <span class="dv">9</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">51</span>      SpCond <span class="fl">0.7500000</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="dv">10</span> <span class="dv">2015-09-18</span> <span class="dv">13</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">51</span> SpCond_Corr <span class="fl">0.7506379</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co"># ... with 3,014 more rows</span></a></code></pre></div>
 <p>You will notice that each date-time point now has two rows, one for <code>SpCond</code> and one for <code>SpCond_Corr</code>. This is the hallmark of “long” formatted data.</p>
 <p>We can extend this example by adding a <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> call to use the long data to plot the difference between the corrected and uncorrected values. We have omitted the <code><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> function here because it does not have a practical impact on how our data are plotted.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure))</a></code></pre></div>
 <p>The <code>group</code> argument in the aesthetic mapping ensures that our data are split by whether they are the raw <code>SpCond</code> values or the corrected <code>SpCond_Corr</code> values. The <code>color</code> argument assigns different colors to each of the two lines produced. This call gives us the following plot:</p>
-<div class="figure">
-<img src="SpCond_corrLine.png">
-</div>
+<p><img src="SpCond_corrLine.png"></p>
 </div>
 </div>
 <div id="smoothing-lines" class="section level2">
 <h2 class="hasAnchor">
 <a href="#smoothing-lines" class="anchor"></a>Smoothing Lines</h2>
 <p>The data in the previous plot show the variance that happens between individual readings clearly; there are jagged increases and decreases along the line. In certain circumstances it may make sense to smooth these lines to highlight a general trend rather than the individual readings. This can be done with a single modification to the previous pipe of functions. In place of the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line()</a></code>, we can use <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> to apply smoothing. If we do not specify a specific method and formula, <code>ggplot2</code> will select what it believes to be the best approach for smoothing the data based on sample size and linearity. In this case, <code>ggplot2</code> defaults to using a generalized additive model with the equation <code>y ~ s(x, bs = "cs")</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure)) </code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure)) </a></code></pre></div>
 <p>This does not produce a radically different plot in the case of specific conductance:</p>
-<div class="figure">
-<img src="SpCond_corrSmooth.png">
-</div>
+<p><img src="SpCond_corrSmooth.png"></p>
 <p>The use of <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> does, however, make a considerable difference in the case of pH. Below is a line plot of the corrected and uncorrected pH variables (<code>pH_Corr</code> and <code>pH</code>, respectively).The plot was made using the same approach as the specific conductance plot in the comparing corrected and uncorrected section, except the references to specific conductance variables were swapped out for the pH variables.Similarly, a plot can be made where the lines are smoothed.</p>
-<div class="figure">
-<img src="pH_corrLine.png">
-</div>
+<p><img src="pH_corrLine.png"></p>
 <p>The blocky look of the plot above is a result of very small fluctuations in pH (i.e. +/- 0.01), which is at the threshold of the instrument accuracy. The smoothed version of the plot removes much of the variation associated with instrumental limitations, but retains the more general trends in pH levels between the different days in the example data:</p>
-<div class="figure">
-<img src="pH_corrSmooth.png">
-</div>
+<p><img src="pH_corrSmooth.png"></p>
 </div>
 <div id="scatter-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scatter-plots" class="anchor"></a>Scatter Plots</h2>
 <p>Scatter plots offer a convenient way to visualize the relationship between two variables. For instance, there is a strong relationship between specific conductance (<code>SpCond</code>) and chloride (<code>Chloride</code>) levels in the example data. For our example data, we normally would expect specific conductance levels to be controlled by dissolved ions like calcium, magnesium, and bicarbonate. However, chloride can be introduced to native waters through various mechanisms including road salt application for deicing purposes, so plotting these two constituents can tell you about pulses of ions over time.</p>
 <p>We can visualize this relationship using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point()</a></code> geom in <code>ggplot2</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr))</code></pre></div>
-<div class="figure">
-<img src="spCondChlor.png">
-</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr))</a></code></pre></div>
+<p><img src="spCondChlor.png"></p>
 <p>We can see a general positive trend in the relationship between specific conductance and chloride levels, with generally higher levels of conductivity associated with generally higher chloride levels. This is interesting, but we can use <code>ggplot2</code> to further investigate the relationship. For instance, we can highlight each point on the scatter plot by using a third variable value. In the example data, we can use the date variable for this purpose by referencing it in the <code>color</code> argument:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date))</code></pre></div>
-<div class="figure">
-<img src="spCondChlorDate.png">
-</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date))</a></code></pre></div>
+<p><img src="spCondChlorDate.png"></p>
 <p>Adding color to each point shows how individual days within the example data have particular patterns.The pattern shows diurnal oscillations, which could be a result of evaporation processes during the day.</p>
 </div>
 <div id="faceted-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#faceted-plots" class="anchor"></a>Faceted Plots</h2>
 <p>While the patterning stands out in the previous plot, we can go further by “faceting” it. This will produce a 2 x 3 matrix of scatter plots, one for each day in the data. To do this, we add the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> function to our <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code>, and indicate in <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> that we want to base the faceting on the <code>Date</code> variable.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date)) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(~<span class="st"> </span>Date) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position=</span><span class="st">"none"</span>)</code></pre></div>
-<div class="figure">
-<img src="spCondChlorByDate.png">
-</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>Date) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position=</span><span class="st">"none"</span>)</a></code></pre></div>
+<p><img src="spCondChlorByDate.png"></p>
 <p>We can now see the variation between days as well as within them more clearly. Note that the inclusion of the tilde (<code>~</code>) in the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> function is important. We also suppress the legend in this example since it is redundant with the date labels at the top of each section of the facet.</p>
 <p>Finally, we can build in more complexity by overlaying the points with a smoothed line. We do this by adding the same <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> function from earlier in the article between the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point()</a></code> and <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap()</a></code> functions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr), <span class="dt">color =</span> <span class="st">"#cccccc"</span>) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date)) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(~<span class="st"> </span>Date) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position=</span><span class="st">"none"</span>)</code></pre></div>
-<div class="figure">
-<img src="spCondChlorByDate_smooth.png">
-</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr), <span class="dt">color =</span> <span class="st">"#cccccc"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>Date) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position=</span><span class="st">"none"</span>)</a></code></pre></div>
+<p><img src="spCondChlorByDate_smooth.png"></p>
 <p>As before, we did not specify a method for smoothing. Recall that <code>ggplot2</code> will attempt to pick the best smoother for the given data. In this case, <code>ggplot2</code>’s assessment is that the <a href="https://en.wikipedia.org/wiki/Local_regression">LOESS</a> method is most appropriate.</p>
 <p>We also used a light gray color for the points, <em>specified outside of the aesthetic mapping</em>, since the points are homogeneously colored within the facets and because we would not be able to see the LOESS regression lines otherwise.</p>
 <p>The code we used above builds clearly on the previous <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> calls we have written, but the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point()</a></code> and <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth()</a></code> functions contain the exact same data. Since <code>ggplot2</code> is particularly flexible, we have an alternative approach to writing the call that reduces the redundant code. This involves moving the aesthetic mapping from being specified in the individual geoms to being specified in the initial <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot()</a></code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df, <span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date)) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">color =</span> <span class="st">"#cccccc"</span>) +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>() +
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(~<span class="st"> </span>Date)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> df, <span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> SpCond_Corr, <span class="dt">y =</span> Chloride_Corr, <span class="dt">color =</span> Date)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">color =</span> <span class="st">"#cccccc"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>Date)</a></code></pre></div>
 <p>This code will produce the same data, but with fewer characters needed. This makes debugging the code easier and, if shared, the code is easier to read and understand.</p>
 </div>
 <div id="comparing-two-groups" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparing-two-groups" class="anchor"></a>Comparing Two Groups</h2>
 <p>A common task we will describe here is comparing two groups of data. In this case, we will compare the distribution of pH values for the first three days and the second three days using a box plot. To do this, we will need to create a temporary logical variable that is <code>TRUE</code> if the date is between 9/21 and 9/23 and <code>FALSE</code> if the date is between 9/18 and 9/20. We reference these dates in a <code><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> function that uses <code>ifelse()</code> to set up a logical test. If the date is either 9/21, 9/22, 9/23, our new variable is assigned <code>TRUE</code> for that observation. Otherwise, that observation is assigned a <code>FALSE</code> value. We can then use this temporary variable as the <code>x</code> variable in our plot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">secondHalf =</span> <span class="kw">ifelse</span>(Date ==<span class="st"> "9/21/2015"</span> |<span class="st"> </span>Date ==<span class="st"> "9/22/2015"</span> |<span class="st"> </span>Date ==<span class="st"> "9/23/2015"</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot">geom_boxplot</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> secondHalf, <span class="dt">y =</span> pH_Corr))</code></pre></div>
-<div class="figure">
-<img src="pHTempByDate_box.png">
-</div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">secondHalf =</span> <span class="kw">ifelse</span>(Date <span class="op">==</span><span class="st"> "9/21/2015"</span> <span class="op">|</span><span class="st"> </span>Date <span class="op">==</span><span class="st"> "9/22/2015"</span> <span class="op">|</span><span class="st"> </span>Date <span class="op">==</span><span class="st"> "9/23/2015"</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot">geom_boxplot</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> secondHalf, <span class="dt">y =</span> pH_Corr))</a></code></pre></div>
+<p><img src="pHTempByDate_box.png"></p>
 <p>We can see in this plot that values for <code>pH</code> were generally higher in the second half of the data collection period, though there were some outlier values in the first half of the data collection period that may warrant further exploration.</p>
 </div>
 <div id="plotting-for-dissemination" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plotting-for-dissemination" class="anchor"></a>Plotting for Dissemination</h2>
 <p>One final task with <code>ggplot2</code> is to add some additional information to each plot. We can easily add a title, subtitle, adjust the text of the <code>x</code> and <code>y</code> labels, and add a caption using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs()</a></code> function. We can also change the <code>x</code> axis to include a tick and value for each day instead of every other day. For example, we can edit the smoothed specific conductance that was first produced above:</p>
-<div class="figure">
-<img src="SpCond_corrSmooth.png">
-</div>
+<p><img src="SpCond_corrSmooth.png"></p>
 <p>The following code re-builds that plot with changes both to the <code>x</code> axis values and to the plot as a whole:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure)) +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_datetime</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/scales/topics/date_format">date_format</a></span>(<span class="st">"%m-%d-%Y"</span>), <span class="dt">date_breaks =</span> <span class="st">"1 day"</span>) +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(
-      <span class="dt">title =</span> <span class="st">"Comparison of Corrected and Uncorrected Specific Conductance Values"</span>,
-      <span class="dt">subtitle =</span> <span class="st">"Example Creek, Eastern Missouri"</span>,
-      <span class="dt">x =</span> <span class="st">"Date"</span>,
-      <span class="dt">y =</span> <span class="st">"Specific Conductance"</span>,
-      <span class="dt">caption =</span> <span class="st">"Smoothed using a generalized additive model; </span><span class="ch">\n</span><span class="st">Plot produced by the Saint Louis University Hydrology and Geochemistry Research Lab"</span>,
-      <span class="dt">color =</span> <span class="st">"Series"</span>
-    ) +
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_hue">scale_colour_discrete</a></span>(<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">"Raw Conductivity"</span>, <span class="st">"Corrected Conductivity"</span>))</code></pre></div>
-<div class="figure">
-<img src="disseminationPlot.png">
-</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_c">str_c</a></span>(Date, Time, <span class="dt">sep =</span> <span class="st">" "</span>, <span class="dt">collapse =</span> <span class="ot">NULL</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dateTime =</span> <span class="kw">as.POSIXct</span>(dateTime, <span class="dt">format =</span> <span class="st">"%m/%d/%Y %H:%M:%S"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dateTime, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="dt">key =</span> <span class="st">"measure"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, SpCond, SpCond_Corr) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_smooth">geom_smooth</a></span>(<span class="dt">mapping =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> dateTime, <span class="dt">y =</span> value, <span class="dt">group =</span> measure, <span class="dt">color =</span> measure)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_datetime</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/scales/topics/date_format">date_format</a></span>(<span class="st">"%m-%d-%Y"</span>), <span class="dt">date_breaks =</span> <span class="st">"1 day"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">      <span class="dt">title =</span> <span class="st">"Comparison of Corrected and Uncorrected Specific Conductance Values"</span>,</a>
+<a class="sourceLine" id="cb16-11" data-line-number="11">      <span class="dt">subtitle =</span> <span class="st">"Example Creek, Eastern Missouri"</span>,</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">      <span class="dt">x =</span> <span class="st">"Date"</span>,</a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">      <span class="dt">y =</span> <span class="st">"Specific Conductance"</span>,</a>
+<a class="sourceLine" id="cb16-14" data-line-number="14">      <span class="dt">caption =</span> <span class="st">"Smoothed using a generalized additive model; </span><span class="ch">\n</span><span class="st">Plot produced by the Saint Louis University Hydrology and Geochemistry Research Lab"</span>,</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15">      <span class="dt">color =</span> <span class="st">"Series"</span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16">    ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_hue">scale_colour_discrete</a></span>(<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">"Raw Conductivity"</span>, <span class="st">"Corrected Conductivity"</span>))</a></code></pre></div>
+<p><img src="disseminationPlot.png"></p>
 <p>Note the use of <code>\n</code> in the <code>caption</code> argument of <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs()</a></code>. This forces a line break in the caption to improve the readability of the text.</p>
 <p>Finally, we can save the plot using the <code><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave()</a></code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave</a></span>(<span class="st">"plotName.png"</span>, <span class="dt">width =</span> <span class="dv">800</span>, <span class="dt">height =</span> <span class="dv">600</span>, <span class="dt">units =</span> <span class="st">"mm"</span>, <span class="dt">dpi =</span> <span class="dv">300</span>)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggsave">ggsave</a></span>(<span class="st">"plotName.png"</span>, <span class="dt">width =</span> <span class="dv">800</span>, <span class="dt">height =</span> <span class="dv">600</span>, <span class="dt">units =</span> <span class="st">"mm"</span>, <span class="dt">dpi =</span> <span class="dv">300</span>)</a></code></pre></div>
 <p>This function will save whatever is currently in RStudio’s Plots tab to the specified file in the specified dimensions and dots per inch resolution.</p>
-</div>
 </div>
   </div>
 
@@ -363,11 +350,13 @@ df &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(df1, df2)</co
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

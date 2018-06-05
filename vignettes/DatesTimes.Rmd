@@ -1,0 +1,98 @@
+---
+title: "Dates and Times in driftR"
+author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{driftR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Overview
+A number of functions in `driftR`, including `dr_factor()`, `dr_replace()`, and `dr_drop`, rely on date and time information supplied by the instrument. `driftR` anticipates that these two pieces of information will be stored in character vectors in predictable formats that can be easily parsed. Under the hood, we use the [lubridate](https://lubridate.tidyverse.org) package's `parse_date_time()` function to automatically detect and properly format date and time inputs supplied by the user and their instrument.
+
+## Working with Dates in driftR
+We currently support two date formats in our functions - the `MDY` (or "month day year") format and the `YMD` (or "year month day") format. 
+
+The following are examples of `MDY` that `lubridate` can parse:
+
+```
+Jan 1, 2018
+January 1, 2018
+1/1/18
+01/01/18
+1/1/2018
+01/01/2018
+1-1-18
+01-01-18
+1-1-2018
+01-01-2018
+```
+
+The following are examples of `YMD` that `lubridate` can parse:
+
+```
+2018/1/1
+2018/01/01
+2018-1-1
+2018-01-01
+```
+
+To prevent confusion, we do not support the `DMY` format. If you have data that is `DMY` formatted, as in `15/01/2018`, you can convert it to `YMD` formatted character using the following sample syntax:
+
+```r
+x <- x <- "15/01/2018"
+y <- as.character(lubridate::dmy(x))
+```
+
+Once you have a properly formatted character vector, you can use it with any of the `driftR` functions that require a date!
+
+## Working with Times in driftR
+### Times in Your Data
+We currently support times that include the hours, minutes, and seconds of a particular measurement. These should be formatted using a 24 hour clock (e.g. `00:05:05` for five minutes after midnight). If your data are formatted ysing a 12 hour clock (e.g. `12:05:05 AM`), the following code can be used to convert them to a 24 hour clock
+
+```
+library(dplyr)
+
+data <- data %>%
+    mutate(time = format(strptime(time, "%I:%M %p"), format="%H:%M:%S"))
+```
+
+### Times in `dr_replace` and `dr_drop`
+Both `dr_replace()` and `dr_drop()` allow you to specify ranges of times to replace or drop values for. We recommend using a 24 hour clock here as well. If you are not used to using a 24 hour clock, you can find a conversion table [here](https://en.wikipedia.org/wiki/24-hour_clock). There is one key difference with these two functions that is worth noting - when you specify a time for each, you do not need to specify seconds but may optionally choose to do so. For example, both `12:05` and `12:05:00` are valid inputs for both `dr_replace()` and `dr_drop()`.
+
+### Time Zones
+The `parse_date_time()` function from [lubridate](https://lubridate.tidyverse.org) relies on timezone information. By default, `driftR` functions use your computer's timezone setting. You can see this by using the following `base` function in your console:
+
+```r
+>  Sys.timezone()
+[1] "America/Chicago"
+```
+
+What is critical about this setting is that the timezone **must** match the timezone where your data were collected. If you are using data collected in a timezone that is different from the timezone your computer is set to, you need to specify the correct timezone for your data in `dr_factor()`, `dr_replace()`, and `dr_drop` using the `tz` argument. Include the string name of the appropriate timezone as the input for this argument. You can get a full list of acceptable timezone strings from the `OlsonNames()` function, which has 592 possible strings:
+
+```r
+> OlsonNames()
+  [1] "Africa/Abidjan"  "Africa/Accra"  "Africa/Addis_Ababa"   "Africa/Algiers"  
+  [5] "Africa/Asmara"  "Africa/Asmera"  "Africa/Bamako"  "Africa/Bangui"  
+# output truncated
+```
+
+Copy the appropriate string into your `driftR` function from this output.
+
+## Splitting a Combined Date and Time Variable
+If your data arrive with the date and time combined, you can use the following functions to (1) convert it from a string to a properly formatted date and time value, and then (2) split it into separate date and time values:
+
+```r
+library(lubridate)
+
+input <- "1/12/18 12:05:00"
+
+parsed <- parse_date_time(inpout, orders = "mdy HMS")
+
+date <- as.character(as_date(parsed))
+time <- format(parsed, "%H:%M:%S")
+```
+
+This will give you well formatted data that can be read into any of the `driftR` functions without further modifications.

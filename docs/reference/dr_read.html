@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>driftR: Drift Correcting Water Quality Data — driftR • driftR</title>
+<title>Import raw data from a YSI Multivariable V2 Sonde — dr_read • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,13 +30,12 @@
 
 
 
-<meta property="og:title" content="driftR: Drift Correcting Water Quality Data — driftR" />
+<meta property="og:title" content="Import raw data from a YSI Multivariable V2 Sonde — dr_read" />
 
-<meta property="og:description" content="There are many sources of water quality data including instruments
-    (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
-    which are susceptible to errors/inaccuracies due to drift. driftR provides
-    a grammar for cleaning and correcting these data in a &quot;tidy&quot;, reproducible
-    manner." />
+<meta property="og:description" content="This function imports the raw data from a YSI Sonde 6600 and EXO2
+    as well as an Onset U24 Conductivity Logger and formats the data set as a tibble.
+    If defineVar is set to TRUE (the default option), units of measurement will not be
+    included in the first observation." />
 
 <meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -130,83 +129,74 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>driftR: Drift Correcting Water Quality Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/shaughnessyar/driftR/blob/master/R/driftR-package.R'><code>R/driftR-package.R</code></a></small>
-    <div class="hidden name"><code>driftR.Rd</code></div>
+    <h1>Import raw data from a YSI Multivariable V2 Sonde</h1>
+    <small class="dont-index">Source: <a href='https://github.com/shaughnessyar/driftR/blob/master/R/dr_read.R'><code>R/dr_read.R</code></a></small>
+    <div class="hidden name"><code>dr_read.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>There are many sources of water quality data including instruments
-    (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
-    which are susceptible to errors/inaccuracies due to drift. <code>driftR</code> provides
-    a grammar for cleaning and correcting these data in a "tidy", reproducible
-    manner.</p>
+    <p>This function imports the raw data from a YSI Sonde 6600 and EXO2
+    as well as an Onset U24 Conductivity Logger and formats the data set as a tibble.
+    If <code>defineVar</code> is set to <code>TRUE</code> (the default option), units of measurement will not be
+    included in the first observation.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>driftR</code> package implements a series of equations used in
-    <a href='https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php'>Dr. Elizabeth Hasenmueller's</a>
-    hydrology and geochemistry research. These equations correct continuous water quality
-    monitoring data for incremental drift that occurs over time. There are two
-    forms of corrections included in the package - a one-point calibration and
-    a two-point calibration. One-point and two-point calibration values are suited
-    for different types of measurements. The package is currently written for the
-    easiest use with YSI Sonde products.</p>
-<p>There are four key verbs that are introduced in <code>driftR</code>:</p><ul>
-<li><p><em>read</em>: The <code>dr_readSonde</code> function imports and properly
-        formats output from YSI Sonde instrument</p></li>
-<li><p><em>factor</em>: The <code>dr_factor</code> function calculates factors
-        based on the time of the observation and the total amount of time that the
-        instrument had been deployed. They are used in the equations for both the
-        one-point and two-point drift corrections.</p></li>
-<li><p><em>correct</em>: The <code>dr_correctOne</code> and <code>dr_correctTwo</code>
-        functions take both the factors and standard values as parameters for calculating
-        drift corrected versions of specific measurements.</p></li>
-<li><p><em>drop</em>: The <code>dr_drop</code> function allows for removing erroneous
-        observations from both the head and the tail of the data.</p></li>
-</ul>
+    <pre class="usage"><span class='fu'>dr_read</span>(<span class='no'>file</span>, <span class='no'>instrument</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cleanVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>case</span>)</pre>
     
-    <h2 class="hasAnchor" id="tidy-evaluation"><a class="anchor" href="#tidy-evaluation"></a>Tidy Evaluation</h2>
-
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file</th>
+      <td><p>The name of the file which the data are to be read from. Each row of the table appears
+as one line of the file. If it does not contain an absolute path, the file name is relative to
+the current working directory.</p></td>
+    </tr>
+    <tr>
+      <th>instrument</th>
+      <td><p>Which instruments the data was colected with.
+Options currently include "Sonde", "EXO", and "HOBO".</p></td>
+    </tr>
+    <tr>
+      <th>defineVar</th>
+      <td><p>Logical scalar that determines if the units of measurement are included in the first
+observation. If they are included, all vectors will be read in as character.</p></td>
+    </tr>
+    <tr>
+      <th>cleanVar</th>
+      <td><p>Logical scalar. Should the variable names be cleaned to remove spaces and special
+characters? This is implemented using the <code>janitor</code> package's <code>clean_names</code> function.</p></td>
+    </tr>
+    <tr>
+      <th>case</th>
+      <td><p>Case to convert variable names to, see <code><a href='http://www.rdocumentation.org/packages/janitor/topics/clean_names'>janitor::clean_names</a></code> for details</p></td>
+    </tr>
+    </table>
     
-    <p><code>driftR</code> makes use of tidy evaluation and the pronoun <code>.data</code>, meaning
-    that variable references may be either quoted or unquoted (i.e. bare). This also
-    means that <code>driftR</code> works seamlessly with <code>magrittr</code> pipe operators.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://shaughnessyar.github.io/driftR/'>Package Website and Documentation</a></p></li>
-<li><p><a href='https://github.com/shaughnessyar/driftR'>Source Code on GitHub</a></p></li>
-<li><p><a href='https://github.com/shaughnessyar/driftR/issues'>Bug Reports and Feature Requests</a></p></li>
-</ul></div>
+    <p>A tibble with the formatted data and the variable types defined if <code>defineVar = TRUE</code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>dr_read</span>(<span class='st'>"data.csv"</span>, <span class='kw'>instrument</span> <span class='kw'>=</span> <span class='no'>Sonde</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dr_read</span>(<span class='st'>"data.csv"</span>, <span class='kw'>instrument</span> <span class='kw'>=</span> <span class='no'>EXO</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dr_read</span>(<span class='st'>"data.csv"</span>, <span class='kw'>instrument</span> <span class='kw'>=</span> <span class='no'>HOBO</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#tidy-evaluation">Tidy Evaluation</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    
-<strong>Maintainer:</strong> Andrew Shaughnessy <a href='andrew.shaughnessy@slu.edu'>andrew.shaughnessy@slu.edu</a>
-
-    Authors:
-    <ul>
-<li><p>Christopher Prener, Ph.D. <a href='chris.prener@slu.edu'>chris.prener@slu.edu</a></p></li>
-<li><p>Elizabeth Hasenmueller, Ph.D. <a href='elizabeth.hasenmueller@slu.edu'>elizabeth.hasenmueller@slu.edu</a></p></li>
-</ul>
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

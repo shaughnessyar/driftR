@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dropping observations from beginning and end of the monitoring period — dr_drop • driftR</title>
+<title>Dropping observations from the monitoring period — dr_drop • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,32 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Dropping observations from the monitoring period — dr_drop" />
+
+<meta property="og:description" content="dr_drop() includes three approaches for removing observations from the
+    monitoring period. Observations may be removed by specifying the number to remove from
+    the head and/or the tail of the observation. They may also be removed by specifying
+    one or two timepoints in the data where problematic observations begin, end, or
+    fall between. Finally observations may be removed based on a problematic sensor value
+    or range of values using an expression." />
+
+<meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +66,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">driftR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">driftR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -58,7 +81,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/driftR.html">Get Started</a>
+  <a href="../articles/driftR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -71,6 +94,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/DatesTimes.html">Dates and Times in driftR</a>
+    </li>
+    <li>
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
@@ -82,7 +108,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -94,6 +120,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -101,20 +128,29 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Dropping observations from beginning and end of the monitoring period</h1>
+    <h1>Dropping observations from the monitoring period</h1>
+    <small class="dont-index">Source: <a href='https://github.com/shaughnessyar/driftR/blob/master/R/dr_drop.R'><code>R/dr_drop.R</code></a></small>
+    <div class="hidden name"><code>dr_drop.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>A wrapper around <code><a href='http://dplyr.tidyverse.org/reference/slice.html'>dplyr::slice()</a></code> for removing observations from both the <code>head</code>
-    and the <code>tail</code>.</p>
+    <p><code>dr_drop()</code> includes three approaches for removing observations from the
+    monitoring period. Observations may be removed by specifying the number to remove from
+    the head and/or the tail of the observation. They may also be removed by specifying
+    one or two timepoints in the data where problematic observations begin, end, or
+    fall between. Finally observations may be removed based on a problematic sensor value
+    or range of values using an expression.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>dr_drop</span>(<span class='no'>.data</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>dr_drop</span>(<span class='no'>.data</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>to</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>exp</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -131,6 +167,30 @@ of <code>.data</code> (or <code>NULL</code>)</p></td>
       <td><p>An integer &gt;= 1 specifying the number of rows to be removed from the bottom
 of <code>.data</code> (or <code>NULL</code>)</p></td>
     </tr>
+    <tr>
+      <th>dateVar</th>
+      <td><p>Name of variable containing date data</p></td>
+    </tr>
+    <tr>
+      <th>timeVar</th>
+      <td><p>Name of variable containing time data</p></td>
+    </tr>
+    <tr>
+      <th>from</th>
+      <td><p>Beginning date and (optionally) time to remove observations</p></td>
+    </tr>
+    <tr>
+      <th>to</th>
+      <td><p>End date and (optionally) time to remove observations</p></td>
+    </tr>
+    <tr>
+      <th>tz</th>
+      <td><p>String name of timezone, defaults to system's timezone</p></td>
+    </tr>
+    <tr>
+      <th>exp</th>
+      <td><p>Unquoted expression</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -142,37 +202,56 @@ of <code>.data</code> (or <code>NULL</code>)</p></td>
     <p>When taking the instrument out of the water, there are often several observations that pass
     before the run can be downloaded. Additionally, once the instrument is in the water, it often
     takes about 30 minutes for the sensors to equilibrate. This function allows you to drop
-    observations from the bottom and top of the dataset for each of those issues respectively.</p>
+    observations from the bottom and top of the data set for each of those issues respectively. This
+    function also provides approaches for removing observations from the middle of the data set.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testData</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(
-   <span class='kw'>Date</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>),
+   <span class='kw'>Date</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/18/2015"</span>, <span class='st'>"9/19/2015"</span>, <span class='st'>"9/21/2015"</span>),
    <span class='kw'>Time</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"12:10:49"</span>, <span class='st'>"12:15:50"</span>, <span class='st'>"12:20:51"</span>, <span class='st'>"12:25:51"</span>, <span class='st'>"12:30:51"</span>, <span class='st'>"12:35:51"</span>),
    <span class='kw'>Temp</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>14.76</span>, <span class='fl'>14.64</span>, <span class='fl'>14.57</span>, <span class='fl'>14.51</span>, <span class='fl'>14.50</span>, <span class='fl'>14.63</span>),
    <span class='kw'>SpCond</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.754</span>, <span class='fl'>0.750</span>, <span class='fl'>0.750</span>, <span class='fl'>0.749</span>, <span class='fl'>0.749</span>, <span class='fl'>0.749</span>),
    <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
  )
 
- <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 4
-#&gt;        Date     Time  Temp SpCond
-#&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the head and/or tail arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
 #&gt; 1 9/18/2015 12:20:51 14.57  0.750
 #&gt; 2 9/18/2015 12:25:51 14.51  0.749
-#&gt; 3 9/18/2015 12:30:51 14.50  0.749
-#&gt; 4 9/18/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 4
-#&gt;        Date     Time  Temp SpCond
-#&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 3 9/19/2015 12:30:51 14.50  0.749
+#&gt; 4 9/21/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the head and/or tail arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
 #&gt; 1 9/18/2015 12:10:49 14.76  0.754
 #&gt; 2 9/18/2015 12:15:50 14.64  0.750
 #&gt; 3 9/18/2015 12:20:51 14.57  0.750
 #&gt; 4 9/18/2015 12:25:51 14.51  0.749
-#&gt; 5 9/18/2015 12:30:51 14.50  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 4
-#&gt;        Date     Time  Temp SpCond
-#&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 5 9/19/2015 12:30:51 14.50  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>head</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the head and/or tail arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
 #&gt; 1 9/18/2015 12:20:51 14.57  0.750
 #&gt; 2 9/18/2015 12:25:51 14.51  0.749
-#&gt; 3 9/18/2015 12:30:51 14.50  0.749</div><div class='input'>
+#&gt; 3 9/19/2015 12:30:51 14.50  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"9/19/2015"</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the date/time arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/18/2015 12:10:49 14.76  0.754
+#&gt; 2 9/18/2015 12:15:50 14.64  0.750
+#&gt; 3 9/18/2015 12:20:51 14.57  0.750
+#&gt; 4 9/18/2015 12:25:51 14.51  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"9/18/2015 12:25:51"</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the date/time arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/18/2015 12:10:49 14.76  0.754
+#&gt; 2 9/18/2015 12:15:50 14.64  0.750
+#&gt; 3 9/18/2015 12:20:51 14.57  0.750</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"9/19/2015"</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the date/time arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/19/2015 12:30:51 14.50  0.749
+#&gt; 2 9/21/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"9/18/2015 12:25:51"</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the date/time arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/18/2015 12:25:51 14.51  0.749
+#&gt; 2 9/19/2015 12:30:51 14.50  0.749
+#&gt; 3 9/21/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"9/18/2015 12:25:51"</span>,
+     <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"9/19/2015 12:30:51"</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the date/time arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/18/2015 12:10:49 14.76  0.754
+#&gt; 2 9/18/2015 12:15:50 14.64  0.750
+#&gt; 3 9/18/2015 12:20:51 14.57  0.750
+#&gt; 4 9/19/2015 12:30:51 14.50  0.749
+#&gt; 5 9/21/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>dateVar</span> <span class='kw'>=</span> <span class='no'>Date</span>, <span class='kw'>timeVar</span> <span class='kw'>=</span> <span class='no'>Time</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"9/18/2015 12:00"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"9/19/2015 13:00"</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the date/time arguments.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/21/2015 12:35:51 14.63  0.749</div><div class='input'> <span class='fu'>dr_drop</span>(<span class='no'>testData</span>, <span class='kw'>exp</span> <span class='kw'>=</span> <span class='no'>Temp</span> <span class='kw'>&gt;</span> <span class='fl'>14.7</span>)</div><div class='output co'>#&gt; <span class='message'>Drop approach - completed using the expression.</span></div><div class='output co'>#&gt;        Date     Time  Temp SpCond
+#&gt; 1 9/18/2015 12:15:50 14.64  0.750
+#&gt; 2 9/18/2015 12:20:51 14.57  0.750
+#&gt; 3 9/18/2015 12:25:51 14.51  0.749
+#&gt; 4 9/19/2015 12:30:51 14.50  0.749
+#&gt; 5 9/21/2015 12:35:51 14.63  0.749</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -196,11 +275,14 @@ of <code>.data</code> (or <code>NULL</code>)</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

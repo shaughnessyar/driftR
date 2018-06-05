@@ -1,9 +1,8 @@
+pandoc: '2.2'
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles: []
 urls:
   reference: https://shaughnessyar.github.io/driftR//reference
   article: https://shaughnessyar.github.io/driftR//articles
-articles:
-  driftR: driftR.html
-  ExploringData: ExploringData.html
-  OtherData: OtherData.html
-  TidyEval: TidyEval.html
 
