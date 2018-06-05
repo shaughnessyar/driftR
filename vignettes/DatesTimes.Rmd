@@ -4,7 +4,7 @@ author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{driftR}
+  %\VignetteIndexEntry{Dates and Times in driftR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

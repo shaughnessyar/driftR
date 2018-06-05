@@ -1,10 +1,10 @@
 ---
-title: "Using Data from other Sources"
+title: "Using Data from Other Sources"
 author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using Data from other Sources}
+  %\VignetteIndexEntry{Using Data from Other Sources}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -83,7 +83,7 @@ waterTibble <- waterTibble %>%
 
 ## Specific Variables
 ### Date and Time
-Please check out our vignette on [dates and times in driftR](/DatesTimes) for additional details on how these should be formatted.
+Please check out our vignette on [dates and times in driftR](DatesTimes.html) for additional details on how these should be formatted.
 
 ### Temperature
 
