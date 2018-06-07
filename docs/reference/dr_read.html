@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Corrected water quality monitoring data — sondeClean • driftR</title>
+<title>Import raw data from a YSI Multivariable V2 Sonde — dr_read • driftR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Corrected water quality monitoring data — sondeClean" />
+<meta property="og:title" content="Import raw data from a YSI Multivariable V2 Sonde — dr_read" />
 
-<meta property="og:description" content="A data set containing corrected measurements from a YSI Sonde 6600" />
+<meta property="og:description" content="This function imports the raw data from a YSI Sonde 6600 and EXO2
+    as well as an Onset U24 Conductivity Logger and formats the data set as a tibble.
+    If defineVar is set to TRUE (the default option), units of measurement will not be
+    included in the first observation." />
 
 <meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,85 +129,71 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Corrected water quality monitoring data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/shaughnessyar/driftR/blob/master/R/sondeClean.R'><code>R/sondeClean.R</code></a></small>
-    <div class="hidden name"><code>sondeClean.Rd</code></div>
+    <h1>Import raw data from a YSI Multivariable V2 Sonde</h1>
+    <small class="dont-index">Source: <a href='https://github.com/shaughnessyar/driftR/blob/master/R/dr_read.R'><code>R/dr_read.R</code></a></small>
+    <div class="hidden name"><code>dr_read.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A data set containing corrected measurements from a YSI Sonde 6600</p>
+    <p>This function imports the raw data from a YSI Sonde 6600 and EXO2
+    as well as an Onset U24 Conductivity Logger and formats the data set as a tibble.
+    If <code>defineVar</code> is set to <code>TRUE</code> (the default option), units of measurement will not be
+    included in the first observation.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>data</span>(<span class='no'>sondeClean</span>)</pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>a dataframe with 1528 rows and 16 variables</p><dl class='dl-horizontal'>
-   <dt>Date</dt><dd><p>Date of measurement</p></dd>
-   <dt>Time</dt><dd><p>Time of measurement</p></dd>
-   <dt>Temp</dt><dd><p>Temperature in degrees C</p></dd>
-   <dt>SpCond</dt><dd><p>Specific conductivity raw in mS/cm</p></dd>
-   <dt>SpCond_Corr</dt><dd><p>Specific conductivity corrected in mS/cm</p></dd>
-   <dt>pH</dt><dd><p>pH raw</p></dd>
-   <dt>pH_Corr</dt><dd><p>pH corrected</p></dd>
-   <dt>pHmV</dt><dd><p>Potential reading from pH sensor in mV</p></dd>
-   <dt>Chloride</dt><dd><p>Chloride raw in mg/L</p></dd>
-   <dt>Chloride_Corr</dt><dd><p>Chloride corrected in mg/L</p></dd>
-   <dt>AmmoniumN</dt><dd><p>Ammonium-Nitrogen in mg/L</p></dd>
-   <dt>NitrateN</dt><dd><p>Nitrate-Nitrogen in mg/L</p></dd>
-   <dt>`Turbidity.`</dt><dd><p>Turbidity raw in NTU</p></dd>
-   <dt>Turbidity_Corr</dt><dd><p>Turbidity corrected in NTU</p></dd>
-   <dt>DO</dt><dd><p>Dissolved Oxygen raw in % sat</p></dd>
-   <dt>DO_Corr</dt><dd><p>Dissolved Oxygen corrected in % sat</p></dd>
-   <dt>corrFactors</dt><dd><p>A list of correction factors based on time spent in the water</p></dd>
-</dl>
+    <pre class="usage"><span class='fu'>dr_read</span>(<span class='no'>file</span>, <span class='no'>instrument</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cleanVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>case</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file</th>
+      <td><p>The name of the file which the data are to be read from. Each row of the table appears
+as one line of the file. If it does not contain an absolute path, the file name is relative to
+the current working directory.</p></td>
+    </tr>
+    <tr>
+      <th>instrument</th>
+      <td><p>Which instruments the data was colected with.
+Options currently include "Sonde", "EXO", and "HOBO".</p></td>
+    </tr>
+    <tr>
+      <th>defineVar</th>
+      <td><p>Logical scalar that determines if the units of measurement are included in the first
+observation. If they are included, all vectors will be read in as character.</p></td>
+    </tr>
+    <tr>
+      <th>cleanVar</th>
+      <td><p>Logical scalar. Should the variable names be cleaned to remove spaces and special
+characters? This is implemented using the <code>janitor</code> package's <code>clean_names</code> function.</p></td>
+    </tr>
+    <tr>
+      <th>case</th>
+      <td><p>Case to convert variable names to, see <code><a href='http://www.rdocumentation.org/packages/janitor/topics/clean_names'>janitor::clean_names</a></code> for details</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Saint Louis University Geochemistry Lab</p>
+    <p>A tibble with the formatted data and the variable types defined if <code>defineVar = TRUE</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>str</span>(<span class='no'>sondeClean</span>)</div><div class='output co'>#&gt; Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1527 obs. of  17 variables:
-#&gt;  $ Date          : chr  "9/18/2015" "9/18/2015" "9/18/2015" "9/18/2015" ...
-#&gt;  $ Time          : chr  "12:10:49" "12:15:50" "12:20:51" "12:25:51" ...
-#&gt;  $ Temp          : num  14.8 14.6 14.6 14.5 14.5 ...
-#&gt;  $ SpCond        : num  0.754 0.75 0.75 0.749 0.749 0.749 0.749 0.749 0.749 0.749 ...
-#&gt;  $ SpCond_Corr   : num  0.754 0.75 0.75 0.749 0.749 ...
-#&gt;  $ pH            : num  7.18 7.14 7.14 7.13 7.13 7.13 7.13 7.12 7.12 7.12 ...
-#&gt;  $ pH_Corr       : num  7.18 7.14 7.14 7.13 7.13 ...
-#&gt;  $ pHmV          : num  -36.4 -34.1 -33.9 -33.9 -33.6 -33.5 -33.6 -33.3 -33.3 -33.1 ...
-#&gt;  $ Chloride      : num  51.2 49.6 49.8 50.3 50.7 ...
-#&gt;  $ Chloride_Corr : num  51.2 49.6 49.7 50.3 50.7 ...
-#&gt;  $ Turbidity.    : num  3.7 -0.2 -0.1 -0.2 0 0 -0.2 -0.2 -0.2 -0.2 ...
-#&gt;  $ Turbidity_Corr: num  3.7 -0.19915 -0.0983 -0.19746 0.00339 ...
-#&gt;  $ DO            : num  92.7 93.7 94 93.2 92.7 ...
-#&gt;  $ DO_Corr       : num  92.7 93.7 93.9 93.2 92.7 ...
-#&gt;  $ corrFactors   : num  0 0.000653 0.001306 0.001956 0.002607 ...
-#&gt;  $ AmmoniumN     : num  3.35 6.29 7.84 7.67 7.13 6.49 5.78 5.32 4.89 4.6 ...
-#&gt;  $ NitrateN      : int  0 0 0 0 0 0 0 0 0 0 ...</div><div class='input'><span class='fu'>head</span>(<span class='no'>sondeClean</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 17
-#&gt;   Date      Time      Temp SpCond SpCond_Corr    pH pH_Corr  pHmV Chloride
-#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 9/18/2015 12:10:49  14.8  0.754       0.754  7.18    7.18 -36.4     51.2
-#&gt; 2 9/18/2015 12:15:50  14.6  0.75        0.750  7.14    7.14 -34.1     49.6
-#&gt; 3 9/18/2015 12:20:51  14.6  0.75        0.750  7.14    7.14 -33.9     49.8
-#&gt; 4 9/18/2015 12:25:51  14.5  0.749       0.749  7.13    7.13 -33.9     50.3
-#&gt; 5 9/18/2015 12:30:51  14.5  0.749       0.749  7.13    7.13 -33.6     50.7
-#&gt; 6 9/18/2015 12:35:51  14.6  0.749       0.749  7.13    7.13 -33.5     50.8
-#&gt; # ... with 8 more variables: Chloride_Corr &lt;dbl&gt;, Turbidity. &lt;dbl&gt;,
-#&gt; #   Turbidity_Corr &lt;dbl&gt;, DO &lt;dbl&gt;, DO_Corr &lt;dbl&gt;, corrFactors &lt;dbl&gt;,
-#&gt; #   AmmoniumN &lt;dbl&gt;, NitrateN &lt;int&gt;</div><div class='input'>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>dr_read</span>(<span class='st'>"data.csv"</span>, <span class='kw'>instrument</span> <span class='kw'>=</span> <span class='no'>Sonde</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dr_read</span>(<span class='st'>"data.csv"</span>, <span class='kw'>instrument</span> <span class='kw'>=</span> <span class='no'>EXO</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dr_read</span>(<span class='st'>"data.csv"</span>, <span class='kw'>instrument</span> <span class='kw'>=</span> <span class='no'>HOBO</span>, <span class='kw'>defineVar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
+      <li><a href="#value">Value</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

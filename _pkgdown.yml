@@ -10,9 +10,7 @@ reference:
   - title: "Import Data"
     desc: "Import data from various water-quality monitoring instruments."
     contents:
-    - dr_readEXO
-    - dr_readHOBO
-    - dr_readSonde
+    - dr_read
   - title: "Correct Data"
     desc: "Correct the data for incramental drift."
     contents:

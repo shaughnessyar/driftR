@@ -8,14 +8,18 @@
 <title>Tidy Evaluation in driftR • driftR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Tidy Evaluation in driftR">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,8 +28,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">driftR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">driftR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -35,7 +43,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/driftR.html">Get Started</a>
+  <a href="../articles/driftR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -48,10 +56,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/DatesTimes.html">Dates and Times in driftR</a>
+    </li>
+    <li>
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
-      <a href="../articles/OtherData.html">Using Data from other Sources</a>
+      <a href="../articles/OtherData.html">Using Data from Other Sources</a>
     </li>
     <li>
       <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
@@ -59,7 +70,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -79,17 +90,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Tidy Evaluation in driftR</h1>
                         <h4 class="author">Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller</h4>
             
-            <h4 class="date">2017-12-17</h4>
-          </div>
+            <h4 class="date">2018-06-05</h4>
+      
+      <small class="dont-index">Source: <a href="https://github.com/shaughnessyar/driftR/blob/master/vignettes/TidyEval.Rmd"><code>vignettes/TidyEval.Rmd</code></a></small>
+      <div class="hidden name"><code>TidyEval.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
 <p><code>driftR</code> implements <a href="http://rlang.tidyverse.org/articles/tidy-evaluation.html">tidy evaluation</a>, an opinionated approach to capturing and processing expressions using <a href="https://www.tidyverse.org"><code>tidyverse</code></a> packages <a href="http://dplyr.tidyverse.org"><code>dplyr</code></a> and <a href="http://rlang.tidyverse.org"><code>rlang</code></a>. These packages are automatically installed when you install <code>driftR</code> if they are not already packages you use. This article is meant to be a quick introduction to tidy evaluation for users who have not encountered it before.</p>
 <div id="the-tidyverse" class="section level2">
 <h2 class="hasAnchor">
@@ -117,13 +131,13 @@
 <h2 class="hasAnchor">
 <a href="#some-sample-data" class="anchor"></a>Some Sample Data</h2>
 <p>The following examples use the data listed below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">driftData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
-  <span class="dt">Date =</span> <span class="kw">c</span>(<span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>),
-  <span class="dt">Time =</span> <span class="kw">c</span>(<span class="st">"12:10:49"</span>, <span class="st">"12:15:50"</span>, <span class="st">"12:20:51"</span>, <span class="st">"12:25:51"</span>, <span class="st">"12:30:51"</span>, <span class="st">"12:35:51"</span>),
-  <span class="dt">Temp =</span> <span class="kw">c</span>(<span class="fl">14.76</span>, <span class="fl">14.64</span>, <span class="fl">14.57</span>, <span class="fl">14.51</span>, <span class="fl">14.50</span>, <span class="fl">14.63</span>),
-  <span class="dt">SpCond =</span> <span class="kw">c</span>(<span class="fl">0.754</span>, <span class="fl">0.750</span>, <span class="fl">0.750</span>, <span class="fl">0.749</span>, <span class="fl">0.749</span>, <span class="fl">0.749</span>),
-  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>
-)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">driftData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="dt">Date =</span> <span class="kw">c</span>(<span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>, <span class="st">"9/18/2015"</span>),</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="dt">Time =</span> <span class="kw">c</span>(<span class="st">"12:10:49"</span>, <span class="st">"12:15:50"</span>, <span class="st">"12:20:51"</span>, <span class="st">"12:25:51"</span>, <span class="st">"12:30:51"</span>, <span class="st">"12:35:51"</span>),</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="dt">Temp =</span> <span class="kw">c</span>(<span class="fl">14.76</span>, <span class="fl">14.64</span>, <span class="fl">14.57</span>, <span class="fl">14.51</span>, <span class="fl">14.50</span>, <span class="fl">14.63</span>),</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="dt">SpCond =</span> <span class="kw">c</span>(<span class="fl">0.754</span>, <span class="fl">0.750</span>, <span class="fl">0.750</span>, <span class="fl">0.749</span>, <span class="fl">0.749</span>, <span class="fl">0.749</span>),</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">)</a></code></pre></div>
 </div>
 <div id="quoting" class="section level2">
 <h2 class="hasAnchor">
@@ -133,19 +147,19 @@
 <h3 class="hasAnchor">
 <a href="#a-quick-example" class="anchor"></a>A Quick Example</h3>
 <p>Many of the base <code>R</code> functions use the <code>$</code> symbol to differentiate between data frames and variables within them. The <code>mean()</code> function from the <code>stats</code> package provides an example of this behavior:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">mean</span>(driftData$Temp)
-[<span class="dv">1</span>] <span class="fl">14.60167</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">mean</span>(driftData<span class="op">$</span>Temp)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">[<span class="dv">1</span>] <span class="fl">14.60167</span></a></code></pre></div>
 <p>Packages that are built on top of <code>tidyverse</code> functions often separate the data frame parameter from the variable parameter in their structure. For instance, we could write a “wrapper” around the <code>mean()</code> function that accepts the data frame and variable parameters separately:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidyMean &lt;-<span class="st"> </span>function(data, variable){
-  <span class="kw">mean</span>(data[[variable]])
-}</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">tidyMean &lt;-<span class="st"> </span><span class="cf">function</span>(data, variable){</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">mean</span>(data[[variable]])</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">}</a></code></pre></div>
 <p>This has consequences for how users interact with the function, however. If users do not quote the variable parameter, they will receive an error that the object with the name of the input variable cannot be found:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tidyMean</span>(driftData, Temp)
-  Error in (function(x, i, exact) if (<span class="kw">is.matrix</span>(i)) <span class="kw">as.matrix</span>(x)[[i]] else <span class="kw">.subset2</span>(x,  :<span class="st"> </span>
-<span class="st">   </span>object <span class="st">'Temp'</span> not found </code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidyMean</span>(driftData, Temp)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  Error <span class="cf">in</span> (<span class="cf">function</span>(x, i, exact) <span class="cf">if</span> (<span class="kw">is.matrix</span>(i)) <span class="kw">as.matrix</span>(x)[[i]] <span class="cf">else</span> <span class="kw">.subset2</span>(x,  <span class="op">:</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">   </span>object <span class="st">'Temp'</span> not found</a></code></pre></div>
 <p>If end users <em>do</em> quote the input parameter, the function will evaluate successfully:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">&gt;<span class="st"> </span><span class="kw">tidyMean</span>(driftData, <span class="st">"Temp"</span>)
-[<span class="dv">1</span>] <span class="fl">14.60167</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span><span class="kw">tidyMean</span>(driftData, <span class="st">"Temp"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">[<span class="dv">1</span>] <span class="fl">14.60167</span></a></code></pre></div>
 <p>This, of course, increases the cognitive burden on new users of <code>R</code> who are still learning how it works. There are other common examples of where this occurs in the <code>R</code> ecosystem. For example, the <code>install.packages()</code> function requires that package names be quoted, while the <code>library()</code> function accepts either quoted <em>or</em> unquoted names.</p>
 </div>
 <div id="tidy-evaluation-in-driftr" class="section level3">
@@ -153,27 +167,27 @@
 <a href="#tidy-evaluation-in-driftr" class="anchor"></a>Tidy Evaluation in <code>driftR</code>
 </h3>
 <p><code>driftR</code> makes use of tidy evaluation to work around this issue. All <code>driftR</code> functions will accept variable names as parameters that are either quoted <em>or</em> unquoted.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
-
-&gt;<span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> corrFac, 
-            <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>)
-<span class="co">#        Date     Time  Temp SpCond   corrFac</span>
-<span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
-<span class="co"># 2 9/18/2015 12:15:50 14.64  0.750 0.2003995</span>
-<span class="co"># 3 9/18/2015 12:20:51 14.57  0.750 0.4007989</span>
-<span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span>
-<span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
-<span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span>
-
-&gt;<span class="st"> </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>, 
-            <span class="dt">dateVar =</span> <span class="st">"Date"</span>, <span class="dt">timeVar =</span> <span class="st">"Time"</span>, <span class="dt">format =</span> <span class="st">"MDY"</span>)
-<span class="co">#        Date     Time  Temp SpCond   corrFac</span>
-<span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span>
-<span class="co"># 2 9/18/2015 12:15:50 14.64  0.750 0.2003995</span>
-<span class="co"># 3 9/18/2015 12:20:51 14.57  0.750 0.4007989</span>
-<span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span>
-<span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span>
-<span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">library</span>(<span class="st">"driftR"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dr_factor</span>(driftData, <span class="dt">corrFactor =</span> corrFac,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">            <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#        Date     Time  Temp SpCond   corrFac</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># 2 9/18/2015 12:15:50 14.64  0.750 0.2003995</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># 3 9/18/2015 12:20:51 14.57  0.750 0.4007989</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="op">&gt;</span><span class="st"> </span><span class="kw">dr_factor</span>(driftData, <span class="dt">corrFactor =</span> <span class="st">"corrFac"</span>,</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">            <span class="dt">dateVar =</span> <span class="st">"Date"</span>, <span class="dt">timeVar =</span> <span class="st">"Time"</span>)</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#        Date     Time  Temp SpCond   corrFac</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co"># 1 9/18/2015 12:10:49 14.76  0.754 0.0000000</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co"># 2 9/18/2015 12:15:50 14.64  0.750 0.2003995</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co"># 3 9/18/2015 12:20:51 14.57  0.750 0.4007989</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co"># 4 9/18/2015 12:25:51 14.51  0.749 0.6005326</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co"># 5 9/18/2015 12:30:51 14.50  0.749 0.8002663</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co"># 6 9/18/2015 12:35:51 14.63  0.749 1.0000000</span></a></code></pre></div>
 <p>This mirrors the behavior of <a href="https://www.tidyverse.org"><code>tidyverse</code></a> functions.</p>
 </div>
 </div>
@@ -185,19 +199,18 @@
 <h3 class="hasAnchor">
 <a href="#reading-pipes" class="anchor"></a>“Reading” Pipes</h3>
 <p>Pipes are designed to be “read” like lines of literal text. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"driftR"</span>)
-
-driftData &lt;-<span class="st"> </span>driftData %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, 
-            <span class="dt">dateVar =</span> Date, 
-            <span class="dt">timeVar =</span> Time, 
-            <span class="dt">format =</span> <span class="st">"MDY"</span>
-            <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, 
-                <span class="dt">cleanVar =</span> SpCond_Corr, 
-                <span class="dt">calVal =</span> <span class="fl">1.07</span>, 
-                <span class="dt">calStd =</span> <span class="dv">1</span>, 
-                <span class="dt">factorVar =</span> corrFac)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(<span class="st">"driftR"</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">driftData &lt;-<span class="st"> </span>driftData <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">            <span class="dt">dateVar =</span> Date,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">            <span class="dt">timeVar =</span> Time,</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">            <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond,</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">                <span class="dt">cleanVar =</span> SpCond_Corr,</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">                <span class="dt">calVal =</span> <span class="fl">1.07</span>,</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">                <span class="dt">calStd =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">                <span class="dt">factorVar =</span> corrFac)</a></code></pre></div>
 <p>One could read the pipe above in the following way:</p>
 <ul>
 <li>Assigning (<code>&lt;-</code>) to the object <code>driftData</code> the result of taking the existing <code>driftData</code> object, <strong>then</strong>
@@ -212,7 +225,7 @@ driftData &lt;-<span class="st"> </span>driftData %&gt;%
 <h3 class="hasAnchor">
 <a href="#data" class="anchor"></a><code>.data</code>
 </h3>
-<p>One thing you will notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="../reference/dr_factor.html">dr_factor()</a></code> or <code><a href="../reference/dr_correctOne.html">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code><a href="../reference/dr_factor.html">dr_factor()</a></code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
+<p>One thing you will notice is that we do not make reference to the <code>driftData</code> object in either <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code> or <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne()</a></code> when they are included in a pipe. Compare that to the code block in the Tidy Evaluation in <code>driftR</code> section above, which includes explicit reference to <code>driftData</code> in the <code><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor()</a></code>. Using the pipe operator simplifies our code in part by reducing the amount of characters needed in the function. Specifically, the pipe operator allows us to drop our references to particular data frames. This is facilitated by the pronoun <a href="http://rlang.tidyverse.org/reference/tidyeval-data.html"><code>.data</code></a>. Each of the <code>driftR</code> functions incorporates <code>.data</code>, allowing the data frame object’s name to be easily passed from one function to the next in a pipe.</p>
 </div>
 </div>
 <div id="a-full-session-with" class="section level2">
@@ -220,41 +233,41 @@ driftData &lt;-<span class="st"> </span>driftData %&gt;%
 <a href="#a-full-session-with" class="anchor"></a>A Full Session with <code>%&gt;%</code>
 </h2>
 <p>Below is an example of what a full correction of a data set should look like if you are piping <code>driftR</code> functions together:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load needed packages</span>
-<span class="kw">library</span>(driftR)
-<span class="kw">library</span>(dplyr)
-<span class="kw">library</span>(readr)
-
-<span class="co"># import data exported from a Sonde </span>
-<span class="co"># example file located in the package</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dr_readSonde.html">dr_readSonde</a></span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rawData.csv"</span>, <span class="dt">package=</span><span class="st">"driftR"</span>), 
-                            <span class="dt">define =</span> <span class="ot">TRUE</span>)
-
-<span class="co"># calculate correction factors and correct variables</span>
-waterTibble &lt;-<span class="st"> </span>waterTibble %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date, 
-            <span class="dt">timeVar =</span> Time, <span class="dt">format =</span> <span class="st">"MDY"</span>, <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr, 
-                <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> Turbidity, <span class="dt">cleanVar =</span> Turbidity_Corr, 
-               <span class="dt">calVal =</span> <span class="fl">1.3</span>, <span class="dt">calStd =</span> <span class="dv">0</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> DO, <span class="dt">cleanVar =</span> DO_Corr, <span class="dt">calVal =</span> <span class="fl">97.6</span>, 
-                <span class="dt">calStd =</span> <span class="dv">99</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr, 
-                <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, 
-                <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> Chloride, <span class="dt">cleanVar =</span> Chloride_Corr, 
-                <span class="dt">calValLow =</span> <span class="fl">11.6</span>, <span class="dt">calStdLow =</span> <span class="dv">10</span>, <span class="dt">calValHigh =</span> <span class="dv">1411</span>, 
-                <span class="dt">calStdHigh =</span>  <span class="dv">1000</span>, <span class="dt">factorVar =</span> corrFac) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/dr_drop.html">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">6</span>, <span class="dt">tail=</span><span class="dv">6</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV, 
-         Chloride, Chloride_Corr, AmmoniumN, NitrateN, 
-         Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)
-
-<span class="co"># export cleaned data</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(waterTibble, <span class="dt">path =</span> <span class="st">"waterData.csv"</span>, <span class="dt">na =</span> <span class="st">"NA"</span>)</code></pre></div>
-</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># load needed packages</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">library</span>(driftR)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">library</span>(readr)</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># import data exported from a Sonde</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co"># example file located in the package</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_read">dr_read</a></span>(<span class="dt">file =</span> <span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"rawData.csv"</span>, <span class="dt">package=</span><span class="st">"driftR"</span>),</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">                       <span class="dt">instruments =</span> <span class="st">"Sonde"</span>, <span class="dt">defineVar =</span> <span class="ot">TRUE</span>, <span class="dt">cleanVar =</span> <span class="ot">TRUE</span>, <span class="dt">case =</span> <span class="st">"snake"</span>)</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co"># calculate correction factors and correct variables</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_factor">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date,</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">            <span class="dt">timeVar =</span> Time, <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr,</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">                <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">Turbidity =</span> <span class="st">`</span><span class="dt">Turbidity.</span><span class="st">`</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> Turbidity, <span class="dt">cleanVar =</span> Turbidity_Corr,</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">               <span class="dt">calVal =</span> <span class="fl">1.3</span>, <span class="dt">calStd =</span> <span class="dv">0</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctOne">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> DO, <span class="dt">cleanVar =</span> DO_Corr, <span class="dt">calVal =</span> <span class="fl">97.6</span>,</a>
+<a class="sourceLine" id="cb8-21" data-line-number="21">                <span class="dt">calStd =</span> <span class="dv">99</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctTwo">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr,</a>
+<a class="sourceLine" id="cb8-23" data-line-number="23">                <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>,</a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">                <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_correctTwo">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> Chloride, <span class="dt">cleanVar =</span> Chloride_Corr,</a>
+<a class="sourceLine" id="cb8-26" data-line-number="26">                <span class="dt">calValLow =</span> <span class="fl">11.6</span>, <span class="dt">calStdLow =</span> <span class="dv">10</span>, <span class="dt">calValHigh =</span> <span class="dv">1411</span>,</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27">                <span class="dt">calStdHigh =</span>  <span class="dv">1000</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_drop">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">6</span>, <span class="dt">tail=</span><span class="dv">6</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/driftR/topics/dr_replace">dr_replace</a></span>(<span class="dt">sourceVar =</span> Turbidity, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>, <span class="dt">exp =</span> Turbidity <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(Date, Time, SpCond, SpCond_Corr, pH, pH_Corr, pHmV,</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31">         Chloride, Chloride_Corr, AmmoniumN, NitrateN,</a>
+<a class="sourceLine" id="cb8-32" data-line-number="32">         Turbidity, Turbidity_Corr, DO, DO_Corr, corrFac)</a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co"># export cleaned data</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(waterTibble, <span class="dt">path =</span> <span class="st">"waterData.csv"</span>, <span class="dt">na =</span> <span class="st">"NA"</span>)</a></code></pre></div>
 </div>
   </div>
 
@@ -280,11 +293,13 @@ waterTibble &lt;-<span class="st"> </span>waterTibble %&gt;%
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

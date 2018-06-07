@@ -18,13 +18,31 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="driftR: Drift Correcting Water Quality Data — driftR" />
+
+<meta property="og:description" content="There are many sources of water quality data including instruments
+    (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
+    which are susceptible to errors/inaccuracies due to drift. driftR provides
+    a grammar for cleaning and correcting these data in a &quot;tidy&quot;, reproducible
+    manner." />
+
+<meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +65,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">driftR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">driftR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -58,7 +80,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/driftR.html">Get Started</a>
+  <a href="../articles/driftR.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -71,10 +93,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/DatesTimes.html">Dates and Times in driftR</a>
+    </li>
+    <li>
       <a href="../articles/ExploringData.html">Exploring Data in R</a>
     </li>
     <li>
-      <a href="../articles/OtherData.html">Using Data from other Sources</a>
+      <a href="../articles/OtherData.html">Using Data from Other Sources</a>
     </li>
     <li>
       <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
@@ -82,7 +107,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -94,6 +119,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -101,12 +127,15 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>driftR: Drift Correcting Water Quality Data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/shaughnessyar/driftR/blob/master/R/driftR-package.R'><code>R/driftR-package.R</code></a></small>
+    <div class="hidden name"><code>driftR.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>There are many sources of water quality data including instruments
     (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
@@ -114,6 +143,7 @@
     a grammar for cleaning and correcting these data in a "tidy", reproducible
     manner.</p>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -127,16 +157,16 @@
     for different types of measurements. The package is currently written for the
     easiest use with YSI Sonde products.</p>
 <p>There are four key verbs that are introduced in <code>driftR</code>:</p><ul>
-<li><p><em>read</em>: The <code><a href='dr_readSonde.html'>dr_readSonde</a></code> function imports and properly
+<li><p><em>read</em>: The <code>dr_readSonde</code> function imports and properly
         formats output from YSI Sonde instrument</p></li>
-<li><p><em>factor</em>: The <code><a href='dr_factor.html'>dr_factor</a></code> function calculates factors
+<li><p><em>factor</em>: The <code>dr_factor</code> function calculates factors
         based on the time of the observation and the total amount of time that the
         instrument had been deployed. They are used in the equations for both the
         one-point and two-point drift corrections.</p></li>
-<li><p><em>correct</em>: The <code><a href='dr_correctOne.html'>dr_correctOne</a></code> and <code><a href='dr_correctTwo.html'>dr_correctTwo</a></code>
+<li><p><em>correct</em>: The <code>dr_correctOne</code> and <code>dr_correctTwo</code>
         functions take both the factors and standard values as parameters for calculating
         drift corrected versions of specific measurements.</p></li>
-<li><p><em>drop</em>: The <code><a href='dr_drop.html'>dr_drop</a></code> function allows for removing erroneous
+<li><p><em>drop</em>: The <code>dr_drop</code> function allows for removing erroneous
         observations from both the head and the tail of the data.</p></li>
 </ul>
     
@@ -149,11 +179,11 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Useful links:</p><ul>
+    <div class='dont-index'><p>Useful links:</p><ul>
 <li><p><a href='https://shaughnessyar.github.io/driftR/'>Package Website and Documentation</a></p></li>
 <li><p><a href='https://github.com/shaughnessyar/driftR'>Source Code on GitHub</a></p></li>
 <li><p><a href='https://github.com/shaughnessyar/driftR/issues'>Bug Reports and Feature Requests</a></p></li>
-</ul>
+</ul></div>
     
 
   </div>
@@ -187,11 +217,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

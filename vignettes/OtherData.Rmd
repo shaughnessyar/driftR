@@ -1,10 +1,10 @@
 ---
-title: "Using Data from other Sources"
+title: "Using Data from Other Sources"
 author: "Andrew Shaughnessy, Christopher Prener, Elizabeth Hasenmueller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using Data from other Sources}
+  %\VignetteIndexEntry{Using Data from Other Sources}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -82,34 +82,8 @@ waterTibble <- waterTibble %>%
 ```
 
 ## Specific Variables
-### Date
-
-`driftR` expects date data to be stored in a character vector. The date variable should be formatted as either as `mm/dd/yyyy` or `yyyy-mm-dd`. To convert your date data to `mm/dd/yyyy`:
-
-```{r, eval=FALSE}
-dates <- c("2016/12/30", "2016/12/31", "2017/01/01", "2017/01/02", "2017/01/03")
-cleanDate <- as.Date(dates, format = "%Y/%m/%d")
-cleanDate <- strftime(cleanDate, format = "%m/%d/%Y")
-```
-
-The `format` argument for `as.Date()` will need to be adapted based on the structure of the date data that you have. To convert your date data to `yyy-mm-dd`, alter the third line of code:
-
-```{r, eval=FALSE}
-dates <- c("2016/12/30", "2016/12/31", "2017/01/01", "2017/01/02", "2017/01/03")
-cleanDate <- as.Date(dates, format = "%Y/%m/%d")
-cleanDate <- as.character(cleanDate)
-```
-
-If you have additional need to work with your date data after processing, we strongly suggest using the [`lubridate` package](http://lubridate.tidyverse.org).
-
-### Time
-
-`driftR` expects time data to be stored in a character vector. The time variable should be formatted in `hh:mm:ss` format using a 24-hour clock. To convert your time data to `hh:mm:ss` in a 24-hour format:
-
-```{r, eval=FALSE}
-times <- c("10:06 AM", "3:24 PM", "1:08 PM", "12:00 PM", "3:38 AM")
-cleanTime <- format(strptime(times, "%I:%M %p"), format="%H:%M:%S")
-```
+### Date and Time
+Please check out our vignette on [dates and times in driftR](DatesTimes.html) for additional details on how these should be formatted.
 
 ### Temperature
 
