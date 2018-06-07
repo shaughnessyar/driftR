@@ -180,7 +180,7 @@ dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL
     .data %>%
       dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
       dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::mutate(!!cleanVarQ := (!!source)) %>%
       dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal | dateTimeParse >= toVal, !!clean, NA)) %>%
@@ -192,7 +192,7 @@ dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL
     .data %>%
       dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
       dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::mutate(!!cleanVarQ := (!!source)) %>%
       dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse >= toVal, !!clean, NA)) %>%
@@ -204,7 +204,7 @@ dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL
     .data %>%
       dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
       dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "dmy HMS", "mdy HMS"),
+                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
                                                  tz = tz)) %>%
       dplyr::mutate(!!cleanVarQ := (!!source)) %>%
       dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal, !!clean, NA)) %>%

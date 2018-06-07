@@ -7,9 +7,9 @@
 parseFrom <- function(from){
 
   fromVal <- as.character(
-    lubridate::parse_date_time(from, orders = c("ymd", "dmy", "mdy",
-                                                "ymd HMS", "dmy HMS", "mdy HMS",
-                                                "ymd HM", "dmy HM", "mdy HM"))
+    lubridate::parse_date_time(from, orders = c("ymd", "mdy",
+                                                "ymd HMS", "mdy HMS",
+                                                "ymd HM", "mdy HM"))
     )
 
   return(fromVal)
@@ -20,9 +20,9 @@ parseFrom <- function(from){
 parseTo <- function(to, addDay = FALSE){
 
   toVal <- as.character(
-    lubridate::parse_date_time(to, orders = c("ymd", "dmy", "mdy",
-                                              "ymd HMS", "dmy HMS", "mdy HMS",
-                                              "ymd HM", "dmy HM", "mdy HM"))
+    lubridate::parse_date_time(to, orders = c("ymd", "mdy",
+                                              "ymd HMS", "mdy HMS",
+                                              "ymd HM", "mdy HM"))
     )
 
   return(toVal)
