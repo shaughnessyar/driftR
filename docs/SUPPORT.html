@@ -21,11 +21,9 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
 
 
@@ -34,7 +32,6 @@
 
 <meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png" />
 <meta name="twitter:card" content="summary" />
-
 
 
 <!-- mathjax -->
@@ -131,10 +128,10 @@
 
 <p>Thanks for using <code>driftR</code>. Before filing an issue, there are a few places to explore and pieces to put together to make the process as smooth as possible.</p>
 <p>Start by making a minimal reproducible example using the <a href="http://reprex.tidyverse.org/">reprex</a> package:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"reprex"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(<span class="st">"reprex"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"reprex"</span>)
+<span class="kw">library</span>(<span class="st">"reprex"</span>)</code></pre></div>
 <p>After loading the <code>reprex</code> package, copy some code to your clipboard that includes the <code>library()</code> functions, the process you used (ideally simplified), and the functions that are creating issues. Once the material is copied, you can use <code><a href="http://www.rdocumentation.org/packages/reprex/topics/reprex">reprex()</a></code> to format your example:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="http://www.rdocumentation.org/packages/reprex/topics/reprex">reprex</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/reprex/topics/reprex">reprex</a></span>()</code></pre></div>
 <p>For additional reprex pointers, check out the <a href="https://www.tidyverse.org/help/">Get help!</a> section of the tidyverse site.</p>
 <p>Armed with your reprex, the next step is to figure out where to ask:</p>
 <ul>
@@ -150,7 +147,7 @@
 <div id="credits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#credits" class="anchor"></a>Credits</h2>
-<p>This document is adopted from @jennybc’s <a href="https://github.com/r-lib/usethis/blob/master/CONTRIBUTING.html">Contribution document</a> for the <a href="https://github.com/r-lib/usethis"><code>usethis</code> package</a>.</p>
+<p>This document is adopted from @jennybc’s <a href="https://github.com/r-lib/usethis/blob/master/.github/CONTRIBUTING.html">Contribution document</a> for the <a href="https://github.com/r-lib/usethis"><code>usethis</code> package</a>.</p>
 </div>
 </div>
 

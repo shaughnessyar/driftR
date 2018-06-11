@@ -1,7 +1,12 @@
-pandoc: '2.2'
-pkgdown: 1.1.0
+pandoc: 1.19.2.1
+pkgdown: 1.0.0
 pkgdown_sha: ~
-articles: []
+articles:
+  DatesTimes: DatesTimes.html
+  ExploringData: ExploringData.html
+  OtherData: OtherData.html
+  TidyEval: TidyEval.html
+  driftR: driftR.html
 urls:
   reference: https://shaughnessyar.github.io/driftR//reference
   article: https://shaughnessyar.github.io/driftR//articles
