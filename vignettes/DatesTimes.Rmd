@@ -42,7 +42,7 @@ The following are examples of `YMD` that `lubridate` can parse:
 To prevent confusion, we do not support the `DMY` format. If you have data that is `DMY` formatted, as in `15/01/2018`, you can convert it to `YMD` formatted character using the following sample syntax:
 
 ```r
-x <- x <- "15/01/2018"
+x <- "15/01/2018"
 y <- as.character(lubridate::dmy(x))
 ```
 

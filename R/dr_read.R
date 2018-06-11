@@ -1,4 +1,4 @@
-#' Import raw data from a YSI Multivariable V2 Sonde
+#' Import raw data from water quality instrument
 #'
 #' @description This function imports the raw data from a YSI Sonde 6600 and EXO2
 #'     as well as an Onset U24 Conductivity Logger and formats the data set as a tibble.
@@ -22,9 +22,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' dr_read("data.csv", instrument = Sonde, defineVar = TRUE)
-#' dr_read("data.csv", instrument = EXO, defineVar = TRUE)
-#' dr_read("data.csv", instrument = HOBO, defineVar = TRUE)
+#' dr_read("data.csv", instrument = Sonde, defineVar = TRUE, cleanVar = TRUE, case = "snake")
+#' dr_read("data.csv", instrument = EXO, defineVar = TRUE, cleanVar = TRUE, case = "lower_camel")
+#' dr_read("data.csv", instrument = HOBO, defineVar = TRUE, cleanVar = TRUE, case = "all_caps")
 #'}
 #'
 #' @importFrom janitor clean_names

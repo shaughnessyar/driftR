@@ -2,7 +2,7 @@
 % Please edit documentation in R/dr_read.R
 \name{dr_read}
 \alias{dr_read}
-\title{Import raw data from a YSI Multivariable V2 Sonde}
+\title{Import raw data from water quality instrument}
 \usage{
 dr_read(file, instrument, defineVar = TRUE, cleanVar = TRUE, case)
 }
@@ -33,9 +33,9 @@ This function imports the raw data from a YSI Sonde 6600 and EXO2
 }
 \examples{
 \dontrun{
-dr_read("data.csv", instrument = Sonde, defineVar = TRUE)
-dr_read("data.csv", instrument = EXO, defineVar = TRUE)
-dr_read("data.csv", instrument = HOBO, defineVar = TRUE)
+dr_read("data.csv", instrument = Sonde, defineVar = TRUE, cleanVar = TRUE, case = "snake")
+dr_read("data.csv", instrument = EXO, defineVar = TRUE, cleanVar = TRUE, case = "lower_camel")
+dr_read("data.csv", instrument = HOBO, defineVar = TRUE, cleanVar = TRUE, case = "all_caps")
 }
 
 }
