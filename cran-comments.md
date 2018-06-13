@@ -1,29 +1,15 @@
 ## Release summary
-This is the second re-submission of our initial CRAN submission. At the reviewer's request, the title in the `DESCRIPTION` file was shortened and a citation for the equations used was added in the `Description` field. The prior resubmission made the following change: at the reviewer's request, `+ file LICENSE` was removed from the `DESCRIPTION` and the `LICENSE` file was added to `.Rbuildignore`.
+This is a minor release that expands the range of instruments whose data can be imported using `driftR`. Functionality has also been added to a number of the functions.
 
 ## Test environments
-* local macOS install, R 3.4.3
+* local macOS install, R 3.5.0
 * ubuntu 14.04 (on Travis CI), R-release, R-oldrel, R-devel
 * macOS (on Travis CI), R-release, R-oldrel
 * windows (on Appveyor), R-release, R-oldrel
 * winbuilder, R-devel
 
 ## R CMD check results
-There were no ERRORs, WARNINGs, or NOTEs with local checks or on Travis CI/Appveyor.
-
-On devtools::release()'s R CMD check we get one NOTE:
-
-* checking CRAN incoming feasibility ... NOTE
-
-  This notes that the package is a new submission. 
-
-On winbuilder, we get one NOTE:
-
-* checking CRAN incoming feasibility ... NOTE
-
-  This notes that the package is a new submission. It also suggests that there may 
-  be some mis-spelled words in DESCRIPTION. We have checked these and they are all
-  abbreviations that are spelled correctly.
+There were no ERRORs, WARNINGs, or NOTEs with local checks, on Travis CI/Appveyor, or on `devtools::release()`.
 
 ## Reverse dependencies
 Not applicable.
