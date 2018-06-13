@@ -9,7 +9,7 @@ This is a minor release that expands the range of instruments whose data can be 
 * winbuilder, R-devel
 
 ## R CMD check results
-There were no ERRORs, WARNINGs, or NOTEs with local checks, on Travis CI/Appveyor, or on `devtools::release()`.
+There were no ERRORs, WARNINGs, or NOTEs with local checks, on Travis CI/Appveyor, on Winbuilder, or on `devtools::release()`.
 
 ## Reverse dependencies
 Not applicable.
