@@ -10,7 +10,7 @@ Status](https://travis-ci.org/shaughnessyar/driftR.svg?branch=master)](https://t
 Status](https://ci.appveyor.com/api/projects/status/github/shaughnessyar/driftR?branch=master&svg=true)](https://ci.appveyor.com/project/shaughnessyar/driftR)
 [![codecov](https://codecov.io/gh/shaughnessyar/driftR/branch/master/graph/badge.svg)](https://codecov.io/gh/shaughnessyar/driftR)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/driftR)](https://CRAN.R-project.org/package=driftR)
-[![DOI](https://zenodo.org/badge/91733812.svg)](https://zenodo.org/badge/latestdoi/91733812)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1045515.svg)](https://doi.org/10.5281/zenodo.1045515)
 
 There are many sources of water quality monitoring data including
 instruments (ex: YSI instruments) and open source data sets (ex: USGS
