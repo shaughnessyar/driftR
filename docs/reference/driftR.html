@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -33,11 +35,12 @@
 <meta property="og:description" content="There are many sources of water quality data including instruments
     (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of
     which are susceptible to errors/inaccuracies due to drift. driftR provides
-    a grammar for cleaning and correcting these data in a "tidy", reproducible
+    a grammar for cleaning and correcting these data in a &quot;tidy&quot;, reproducible
     manner." />
 
 <meta property="og:image" content="https://shaughnessyar.github.io/driftR/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -98,9 +101,6 @@
     <li>
       <a href="../articles/OtherData.html">Using Data from Other Sources</a>
     </li>
-    <li>
-      <a href="../articles/TidyEval.html">Tidy Evaluation in driftR</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -154,16 +154,16 @@
     for different types of measurements. The package is currently written for the
     easiest use with YSI Sonde products.</p>
 <p>There are four key verbs that are introduced in <code>driftR</code>:</p><ul>
-<li><p><em>read</em>: The <code><a href='dr_readSonde.html'>dr_readSonde</a></code> function imports and properly
+<li><p><em>read</em>: The <code>dr_readSonde</code> function imports and properly
         formats output from YSI Sonde instrument</p></li>
-<li><p><em>factor</em>: The <code><a href='dr_factor.html'>dr_factor</a></code> function calculates factors
+<li><p><em>factor</em>: The <code>dr_factor</code> function calculates factors
         based on the time of the observation and the total amount of time that the
         instrument had been deployed. They are used in the equations for both the
         one-point and two-point drift corrections.</p></li>
-<li><p><em>correct</em>: The <code><a href='dr_correctOne.html'>dr_correctOne</a></code> and <code><a href='dr_correctTwo.html'>dr_correctTwo</a></code>
+<li><p><em>correct</em>: The <code>dr_correctOne</code> and <code>dr_correctTwo</code>
         functions take both the factors and standard values as parameters for calculating
         drift corrected versions of specific measurements.</p></li>
-<li><p><em>drop</em>: The <code><a href='dr_drop.html'>dr_drop</a></code> function allows for removing erroneous
+<li><p><em>drop</em>: The <code>dr_drop</code> function allows for removing erroneous
         observations from both the head and the tail of the data.</p></li>
 </ul>
     

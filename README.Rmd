@@ -24,13 +24,13 @@ knitr::opts_chunk$set(
 There are many sources of water quality monitoring data including instruments (ex: YSI instruments) and open source data sets (ex: USGS and NDBC), all of which are susceptible to errors/inaccuracies due to drift. `driftR` provides a grammar for cleaning and correcting these data in a "tidy", reproducible manner.
 
 ## What's New
-We're hard at work on version 1.1 of `driftR`, which will include:
+Version 1.1 of `driftR` is here! It includes:
 
-* a streamlined `dr_read` function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products. *Status: complete and available on `master` branch*
-* new aregument in `dr_read` that gives the option to read in only clean variable names (e.g., no special characters, no spaces, etc.) using functionality from the `janitor` package. *Status: complete and available on `master` branch*
-* expanded functionality for `dr_drop`, including the ability to drop by date range and by using expressions. *Status: complete and available on `master` branch*
-* ability to convert observations that are likely measurement errors to `NA` using either a date range or by using an expression using a new function called `dr_replace`. *Status: complete and available on `master` branch*
-* changes under the hood to `dr_factor` that expand it ability to handle a variety of date formats automatically. *Status: complete and available on `master` branch*
+* a streamlined `dr_read` function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.
+* new aregument in `dr_read` that gives the option to read in only clean variable names (e.g., no special characters, no spaces, etc.) using functionality from the `janitor` package.
+* expanded functionality for `dr_drop`, including the ability to drop by date range and by using expressions.
+* ability to convert observations that are likely measurement errors to `NA` using either a date range or by using an expression using a new function called `dr_replace`.
+* changes under the hood to `dr_factor` that expand it ability to handle a variety of date formats automatically.
 
 ## Installation
 
@@ -119,9 +119,9 @@ waterTibble <- waterTibble %>%
 ```
 
 ## Additional Documentation
-See the [package website](https://shaughnessyar.github.io/driftR/) for more information on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing how to get started with `driftR`.
+See the [package website](https://shaughnessyar.github.io/driftR/) for more information on these functions and a [detailed vignette](https://shaughnessyar.github.io/driftR/articles/driftR.html) describing how to get started with `driftR`. There is also an [additional vignette](https://shaughnessyar.github.io/driftR/articles/DatesTimes.html) describing the specific ways in which dates and times can be used in `driftR` functions.
 
-An [additional vignette](https://shaughnessyar.github.io/driftR/articles/TidyEval.html) describes `driftR`'s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also [provide some introductory examples](https://shaughnessyar.github.io/driftR/articles/ExploringData.html) for how to use [`tidyr`](http://tidyr.tidyverse.org), [`ggplot2`](http://ggplot2.tidyverse.org), and several other `R` packages to conduct some initial exploratory data analysis of `driftR` output. Finally, we provide a [fourth vignette](https://shaughnessyar.github.io/driftR/articles/OtherData.html) designed for users of non-YSI Sonde multiparameter V2 series instruments who wish to use `driftR` with their data.
+We also [provide some introductory examples](https://shaughnessyar.github.io/driftR/articles/ExploringData.html) for how to use [`tidyr`](http://tidyr.tidyverse.org), [`ggplot2`](http://ggplot2.tidyverse.org), and several other `R` packages to conduct some initial exploratory data analysis of `driftR` output. Finally, we provide a [third vignette](https://shaughnessyar.github.io/driftR/articles/OtherData.html) designed for users of instruments not supported directly by `driftR` who wish to use `driftR` with their data.
 
 You can also view the help files from within R:
 
@@ -134,7 +134,7 @@ You can also view the help files from within R:
 If `driftR` does not seem to be working as advertised, please help us creating a reproducible example, or [`reprex`](https://github.com/tidyverse/reprex), that makes it easy to [get help](https://www.tidyverse.org/help/). You can find additional details in our [support document](.github/SUPPORT.md).
 
 ### Adding `dr_read` Functionality
-We are interested in expanding the built-in capabilities of `driftR` to read in water quality data from other sources. Version 1.1 will contain built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.
+We are interested in expanding the built-in capabilities of `driftR` to read in water quality data from other sources. As of version 1.1, we provide built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.
 
 If you have some sample data (~500 observations are ideal) from another model or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an [Issue](https://github.com/shaughnessyar/driftR/issues). If you have some `R` skills and want to write the function yourself, feel free to check out our [contributing document](.github/CONTRIBUTING.md) and fork `driftR`.
 

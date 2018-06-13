@@ -8,8 +8,8 @@
 <title>Drift Correcting Water Quality Data • driftR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Drift Correcting Water Quality Data">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Drift Correcting Water Quality Data">
 <meta property="og:description" content="A tidy implementation of equations that correct for instrumental drift in 
     continuous water quality monitoring data.  There are many sources of water quality data 
     including private (ex: YSI instruments) and open source (ex: USGS and NDBC), each of 
@@ -70,9 +70,6 @@
     <li>
       <a href="articles/OtherData.html">Using Data from Other Sources</a>
     </li>
-    <li>
-      <a href="articles/TidyEval.html">Tidy Evaluation in driftR</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -111,37 +108,30 @@
 <div id="whats-new" class="section level2">
 <h2 class="hasAnchor">
 <a href="#whats-new" class="anchor"></a>What’s New</h2>
-<p>We’re hard at work on version 1.1 of <code>driftR</code>, which will include:</p>
+<p>Version 1.1 of <code>driftR</code> is here! It includes:</p>
 <ul>
-<li>a streamlined <code>dr_read</code> function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products. <em>Status: complete and available on <code>master</code> branch</em>
-</li>
-<li>new aregument in <code>dr_read</code> that gives the option to read in only clean variable names (e.g., no special characters, no spaces, etc.) using functionality from the <code>janitor</code> package. <em>Status: complete and available on <code>master</code> branch</em>
-</li>
-<li>expanded functionality for <code>dr_drop</code>, including the ability to drop by date range and by using expressions. <em>Status: complete and available on <code>master</code> branch</em>
-</li>
-<li>ability to convert observations that are likely measurement errors to <code>NA</code> using either a date range or by using an expression using a new function called <code>dr_replace</code>. <em>Status: complete and available on <code>master</code> branch</em>
-</li>
-<li>changes under the hood to <code>dr_factor</code> that expand it ability to handle a variety of date formats automatically. <em>Status: complete and available on <code>master</code> branch</em>
-</li>
+<li>a streamlined <code>dr_read</code> function that includes built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.</li>
+<li>new aregument in <code>dr_read</code> that gives the option to read in only clean variable names (e.g., no special characters, no spaces, etc.) using functionality from the <code>janitor</code> package.</li>
+<li>expanded functionality for <code>dr_drop</code>, including the ability to drop by date range and by using expressions.</li>
+<li>ability to convert observations that are likely measurement errors to <code>NA</code> using either a date range or by using an expression using a new function called <code>dr_replace</code>.</li>
+<li>changes under the hood to <code>dr_factor</code> that expand it ability to handle a variety of date formats automatically.</li>
 </ul>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The easiest way to get <code>driftR</code> is to install it from CRAN:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"driftR"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"driftR"</span>)</a></code></pre></div>
 <p>You can also install the development version of <code>driftR</code> from Github with <code>devtools</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"shaughnessyar/driftR"</span>)</a></code></pre></div>
 </div>
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
 <p>The <code>driftR</code> package implements a series of equations used in <a href="https://www.slu.edu/arts-and-sciences/earth-atmospheric-sciences/faculty/hasenmueller-elizabeth.php">Dr. Elizabeth Hasenmueller’s</a> hydrology and geochemistry research. These equations correct continuous water quality monitoring data for incremental drift that occurs over time after calibration. There are two forms of corrections included in the package - a one-point calibration and a two-point calibration. One-point and two-point calibration values are suited for different types of measurements. The package is currently written for the easiest use with YSI multiparameter Sonde V2 series products, YSI EXO products, and Onset HOBO products.</p>
 <p>The figure below illustrates the difference in chloride values between the uncorrected data and the same data with the drift corrections implemented by <code>driftR</code> applied. Note that the uncorrected data drifts to higher values over time. <code>driftR</code> uses calibration data to correct this drift.</p>
-<div class="figure">
-<img src="reference/figures/chloride_Drop.png">
-</div>
+<p><img src="reference/figures/chloride_Drop.png"></p>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -151,68 +141,68 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <h3 class="hasAnchor">
 <a href="#basic-use" class="anchor"></a>Basic Use</h3>
 <p>The following example shows a simple workflow for applying these verbs to some hypothetical data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the driftR package</span>
-<span class="kw">library</span>(driftR)
-
-<span class="co"># import data exported from a Sonde</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_read.html">dr_read</a></span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">instrument =</span> <span class="st">"Sonde"</span>, <span class="dt">defineVar =</span> <span class="ot">TRUE</span>, 
-                       <span class="dt">cleanVar =</span> <span class="ot">TRUE</span>, <span class="dt">case =</span> <span class="st">"snake"</span>)
-
-<span class="co"># calculate correction factor and keep dateTime var</span>
-<span class="co"># results stored in new vector corrFac and dateTime</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_factor.html">dr_factor</a></span>(waterTibble, <span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date,
-                         <span class="dt">timeVar =</span> Time, <span class="dt">keepDateTime =</span> <span class="ot">FALSE</span>)
-
-<span class="co"># apply one-point calibration to SpCond;</span>
-<span class="co"># results stored in new vector SpConde_Corr</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctOne.html">dr_correctOne</a></span>(waterTibble, <span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr,
-                             <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac)
-
-<span class="co"># apply two-point calibration to pH;</span>
-<span class="co"># results stored in new vector pH_Corr</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_correctTwo.html">dr_correctTwo</a></span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr,
-                             <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>,
-                             <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac)
-
-<span class="co"># drop observations to account for instrument equilibration</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(waterTibble, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)
-
-<span class="co">#replace observations with NA for a date range</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_replace.html">dr_replace</a></span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">overwite =</span> <span class="ot">TRUE</span>, <span class="dt">dateVar =</span> Date,
-                          <span class="dt">timeVar =</span> Time, <span class="dt">from =</span> <span class="st">"2018-02-05"</span>, <span class="dt">to =</span> <span class="st">"2018-02-09"</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># load the driftR package</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(driftR)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># import data exported from a Sonde</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_read</span>(<span class="dt">file =</span> <span class="st">"data.csv"</span>, <span class="dt">instrument =</span> <span class="st">"Sonde"</span>, <span class="dt">defineVar =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">                       <span class="dt">cleanVar =</span> <span class="ot">TRUE</span>, <span class="dt">case =</span> <span class="st">"snake"</span>)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># calculate correction factor and keep dateTime var</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># results stored in new vector corrFac and dateTime</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_factor</span>(waterTibble, <span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date,</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">                         <span class="dt">timeVar =</span> Time, <span class="dt">keepDateTime =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co"># apply one-point calibration to SpCond;</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co"># results stored in new vector SpConde_Corr</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctOne</span>(waterTibble, <span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr,</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">                             <span class="dt">calVal =</span> <span class="fl">1.07</span>, <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac)</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co"># apply two-point calibration to pH;</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co"># results stored in new vector pH_Corr</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_correctTwo</span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr,</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">                             <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>, <span class="dt">calValHigh =</span> <span class="fl">11.8</span>,</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">                             <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac)</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co"># drop observations to account for instrument equilibration</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_drop</span>(waterTibble, <span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#replace observations with NA for a date range</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_replace</span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">overwite =</span> <span class="ot">TRUE</span>, <span class="dt">dateVar =</span> Date,</a>
+<a class="sourceLine" id="cb3-29" data-line-number="29">                          <span class="dt">timeVar =</span> Time, <span class="dt">from =</span> <span class="st">"2018-02-05"</span>, <span class="dt">to =</span> <span class="st">"2018-02-09"</span>)</a></code></pre></div>
 </div>
 <div id="use-with" class="section level3">
 <h3 class="hasAnchor">
 <a href="#use-with" class="anchor"></a>Use with <code>%&gt;%</code>
 </h3>
 <p>All of the core functions return tibbles (or data frames) and make use of the tidy evaluation pronoun <code>.data</code>, so using them in concert with the pipe (<code>%&gt;%</code>) is straightforward:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the driftR package</span>
-<span class="kw">library</span>(driftR)
-
-<span class="co"># import data exported from a Sonde</span>
-waterTibble &lt;-<span class="st"> </span><span class="kw"><a href="reference/dr_read.html">dr_read</a></span>(<span class="dt">file =</span> <span class="st">"sondeData.csv"</span>, <span class="dt">instrument =</span> <span class="st">"Sonde"</span>, <span class="dt">defineVar =</span> <span class="ot">TRUE</span>,
-                       <span class="dt">cleanVar =</span> <span class="ot">TRUE</span>, <span class="dt">case =</span> <span class="st">"snake"</span>)
-
-<span class="co"># caclulate correction factors, apply corrections, drop observations, and replace observations</span>
-waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_factor.html">dr_factor</a></span>(<span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time,
-            <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_correctOne.html">dr_correctOne</a></span>(<span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr, <span class="dt">calVal =</span> <span class="fl">1.07</span>,
-                <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_correctTwo.html">dr_correctTwo</a></span>(<span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr, <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>,
-                <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_drop.html">dr_drop</a></span>(<span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/dr_replace.html">dr_replace</a></span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">overwite =</span> <span class="ot">TRUE</span>, <span class="dt">dateVar =</span> Date,
-             <span class="dt">timeVar =</span> Time, <span class="dt">from =</span> <span class="st">"2018-02-05"</span>, <span class="dt">to =</span> <span class="st">"2018-02-09"</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># load the driftR package</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(driftR)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># import data exported from a Sonde</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">waterTibble &lt;-<span class="st"> </span><span class="kw">dr_read</span>(<span class="dt">file =</span> <span class="st">"sondeData.csv"</span>, <span class="dt">instrument =</span> <span class="st">"Sonde"</span>, <span class="dt">defineVar =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">                       <span class="dt">cleanVar =</span> <span class="ot">TRUE</span>, <span class="dt">case =</span> <span class="st">"snake"</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># caclulate correction factors, apply corrections, drop observations, and replace observations</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">dr_factor</span>(<span class="dt">corrFactor =</span> corrFac, <span class="dt">dateVar =</span> Date, <span class="dt">timeVar =</span> Time,</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">            <span class="dt">keepDateTime =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw">dr_correctOne</span>(<span class="dt">sourceVar =</span> SpCond, <span class="dt">cleanVar =</span> SpCond_Corr, <span class="dt">calVal =</span> <span class="fl">1.07</span>,</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">                <span class="dt">calStd =</span> <span class="dv">1</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span><span class="kw">dr_correctTwo</span>(<span class="dt">sourceVar =</span> pH, <span class="dt">cleanVar =</span> pH_Corr, <span class="dt">calValLow =</span> <span class="fl">7.01</span>, <span class="dt">calStdLow =</span> <span class="dv">7</span>,</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">                <span class="dt">calValHigh =</span> <span class="fl">11.8</span>, <span class="dt">calStdHigh =</span>  <span class="dv">10</span>, <span class="dt">factorVar =</span> corrFac) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">  </span><span class="kw">dr_drop</span>(<span class="dt">head=</span><span class="dv">10</span>, <span class="dt">tail=</span><span class="dv">5</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span><span class="kw">dr_replace</span>(waterTibble, <span class="dt">sourceVar =</span> pH, <span class="dt">overwite =</span> <span class="ot">TRUE</span>, <span class="dt">dateVar =</span> Date,</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">             <span class="dt">timeVar =</span> Time, <span class="dt">from =</span> <span class="st">"2018-02-05"</span>, <span class="dt">to =</span> <span class="st">"2018-02-09"</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="additional-documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#additional-documentation" class="anchor"></a>Additional Documentation</h2>
-<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for more information on these functions and a <a href="https://shaughnessyar.github.io/driftR/articles/driftR.html">detailed vignette</a> describing how to get started with <code>driftR</code>.</p>
-<p>An <a href="https://shaughnessyar.github.io/driftR/articles/TidyEval.html">additional vignette</a> describes <code>driftR</code>’s use of tidy evaluation and how to implement pipes into data cleaning in greater detail. Building on that article, we also <a href="https://shaughnessyar.github.io/driftR/articles/ExploringData.html">provide some introductory examples</a> for how to use <a href="http://tidyr.tidyverse.org"><code>tidyr</code></a>, <a href="http://ggplot2.tidyverse.org"><code>ggplot2</code></a>, and several other <code>R</code> packages to conduct some initial exploratory data analysis of <code>driftR</code> output. Finally, we provide a <a href="https://shaughnessyar.github.io/driftR/articles/OtherData.html">fourth vignette</a> designed for users of non-YSI Sonde multiparameter V2 series instruments who wish to use <code>driftR</code> with their data.</p>
+<p>See the <a href="https://shaughnessyar.github.io/driftR/">package website</a> for more information on these functions and a <a href="https://shaughnessyar.github.io/driftR/articles/driftR.html">detailed vignette</a> describing how to get started with <code>driftR</code>. There is also an <a href="https://shaughnessyar.github.io/driftR/articles/DatesTimes.html">additional vignette</a> describing the specific ways in which dates and times can be used in <code>driftR</code> functions.</p>
+<p>We also <a href="https://shaughnessyar.github.io/driftR/articles/ExploringData.html">provide some introductory examples</a> for how to use <a href="http://tidyr.tidyverse.org"><code>tidyr</code></a>, <a href="http://ggplot2.tidyverse.org"><code>ggplot2</code></a>, and several other <code>R</code> packages to conduct some initial exploratory data analysis of <code>driftR</code> output. Finally, we provide a <a href="https://shaughnessyar.github.io/driftR/articles/OtherData.html">third vignette</a> designed for users of instruments not supported directly by <code>driftR</code> who wish to use <code>driftR</code> with their data.</p>
 <p>You can also view the help files from within R:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><a href="reference/dr_read.html">?dr_read</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">?dr_read</a></code></pre></div>
 </div>
 <div id="want-to-contribute" class="section level2">
 <h2 class="hasAnchor">
@@ -220,18 +210,18 @@ waterTibble &lt;-<span class="st"> </span>waterTibble <span class="op">%&gt;%</s
 <div id="have-a-concern" class="section level3">
 <h3 class="hasAnchor">
 <a href="#have-a-concern" class="anchor"></a>Have a Concern?</h3>
-<p>If <code>driftR</code> does not seem to be working as advertised, please help us creating a reproducible example, or <a href="https://github.com/tidyverse/reprex"><code>reprex</code></a>, that makes it easy to <a href="https://www.tidyverse.org/help/">get help</a>. You can find additional details in our <a href=".github/SUPPORT.html">support document</a>.</p>
+<p>If <code>driftR</code> does not seem to be working as advertised, please help us creating a reproducible example, or <a href="https://github.com/tidyverse/reprex"><code>reprex</code></a>, that makes it easy to <a href="https://www.tidyverse.org/help/">get help</a>. You can find additional details in our <a href="SUPPORT.html">support document</a>.</p>
 </div>
 <div id="adding-dr_read-functionality" class="section level3">
 <h3 class="hasAnchor">
 <a href="#adding-dr_read-functionality" class="anchor"></a>Adding <code>dr_read</code> Functionality</h3>
-<p>We are interested in expanding the built-in capabilities of <code>driftR</code> to read in water quality data from other sources. Version 1.1 will contain built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.</p>
-<p>If you have some sample data (~500 observations are ideal) from another model or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an <a href="https://github.com/shaughnessyar/driftR/issues">Issue</a>. If you have some <code>R</code> skills and want to write the function yourself, feel free to check out our <a href=".github/CONTRIBUTING.html">contributing document</a> and fork <code>driftR</code>.</p>
+<p>We are interested in expanding the built-in capabilities of <code>driftR</code> to read in water quality data from other sources. As of version 1.1, we provide built-in support for YSI Sonde 6600, YSI EXO, and Onset HOBO products.</p>
+<p>If you have some sample data (~500 observations are ideal) from another model or brand of instrument and are willing to share it, please reach out to one of the package authors or, better yet, open an <a href="https://github.com/shaughnessyar/driftR/issues">Issue</a>. If you have some <code>R</code> skills and want to write the function yourself, feel free to check out our <a href="CONTRIBUTING.html">contributing document</a> and fork <code>driftR</code>.</p>
 </div>
 <div id="contributor-code-of-conduct" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h3>
-<p>Please note that this project is released with a <a href=".github/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
+<p>Please note that this project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
 <div id="about-the-authors" class="section level2">
