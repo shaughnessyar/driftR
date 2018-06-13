@@ -1,7 +1,7 @@
 Package: driftR
 Type: Package
 Title: Drift Correcting Water Quality Data
-Version: 1.1.0.9000
+Version: 1.1.0
 Authors@R: c(
     person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
     person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),

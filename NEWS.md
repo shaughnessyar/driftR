@@ -1,4 +1,4 @@
-# driftR 1.1.0.9000
+# driftR 1.1.0
 
 ## Major Changes
 * `dr_drop` now includes options to drop by date and (optionally) time as well as by using an expression to identify certain values
