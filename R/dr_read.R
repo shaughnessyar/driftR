@@ -115,8 +115,8 @@ readEXO <- function (file, defineVar = TRUE) {
   }
   else if (defineVar == TRUE) {
     df <- readxl::read_excel(file)
-    a <- which(df[,1] == "1")[1]
-    df <- readxl::read_excel(file, skip = (a+1))
+    a <- which(df[,1] == "Date (MM/DD/YYYY)")[1]
+    df <- readxl::read_excel(file, skip = (a))
     df$`Date (MM/DD/YYYY)` <- base::as.character(df$`Date (MM/DD/YYYY)`)
     df$`Time (HH:MM:SS)` <- base::as.character(df$`Time (HH:MM:SS)`)
     df$`Time (HH:MM:SS)` <-  base::gsub("^.*? ", "", df$`Time (HH:MM:SS)`)
