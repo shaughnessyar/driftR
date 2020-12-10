@@ -60,7 +60,7 @@ test_that("input errors trigged - format is deprecated", {
 result <- dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, keepDateTime = TRUE)
 
 test_that("creating correction factors", {
-  expect_equal(result$factors, test_data1$corrFactors)
+  expect_equal(result$factors, test_data1$factors)
 })
 
 testData2 <- data.frame(
