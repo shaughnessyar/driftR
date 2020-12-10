@@ -110,5 +110,5 @@ dr_correctOne <- function(.data, sourceVar, cleanVar, calVal, calStd, factorVar)
   }
 
   # create new variable
-  dplyr::mutate(.data, !!cleanVar := (!!source) + ( (!!factor) * (calVal - calStd)))
+  dplyr::mutate(.data, !!cleanVar := (!!source) + ( (!!factor) * (calStd - calVal)))
 }
