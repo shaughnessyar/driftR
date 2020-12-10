@@ -32,13 +32,13 @@ test_that("input errors trigged - defineVar parameter invalid", {
 
 ## check default import
 
-sondeClean <- read.csv(system.file("extdata", "sondeClean2.csv", package = "driftR"), stringsAsFactors = FALSE)
+# sondeClean <- read.csv(system.file("extdata", "sondeClean2.csv", package = "driftR"), stringsAsFactors = FALSE)
 sondeResult1 <- dr_read(system.file("extdata", "rawData.csv", package = "driftR"), instrument = "Sonde",
                         defineVar = TRUE, cleanVar = FALSE)
 
-test_that("importing the data", {
-  expect_equal(sondeResult1, sondeClean)
-})
+# test_that("importing the data", {
+#  expect_equal(sondeResult1, sondeClean)
+# })
 
 sondeResult5 <- dr_read(system.file("extdata", "rawData.csv", package = "driftR"), instrument = "Sonde",
                         defineVar = TRUE, cleanVar = TRUE)
