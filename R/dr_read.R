@@ -139,20 +139,20 @@ readHOBO <- function (file, defineVar = TRUE) {
 
   if (defineVar == FALSE) {
     if (fileFormat == "TXT" | fileFormat == "txt"){
-      df <- readr::read_tsv(file, skip = 1)
+      df <- suppressWarnings(readr::read_tsv(file, skip = 1))
     }
     if (fileFormat == "CSV" | fileFormat == "csv"){
-      df <- readr::read_csv(file, skip = 1)
+      df <- suppressWarnings(readr::read_csv(file, skip = 1))
     }
     df <- tibble::as_tibble(df)
     return(df)
 
   } else if (defineVar == TRUE) {
     if (fileFormat == "TXT" | fileFormat == "txt"){
-      df <- readr::read_tsv(file, skip = 1)
+      df <- suppressWarnings(readr::read_tsv(file, skip = 1))
     }
     if (fileFormat == "CSV" | fileFormat == "csv"){
-      df <- readr::read_csv(file, skip = 1)
+      df <- suppressWarnings(readr::read_csv(file, skip = 1))
     }
     df <- df %>% stats::setNames(base::gsub(",.*?$","", base::names(.)))
     df$date <- base::gsub(" .*$", "", df$`Date Time`)

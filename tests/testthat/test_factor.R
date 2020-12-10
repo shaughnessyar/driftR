@@ -3,7 +3,8 @@ context("test factor creation process")
 # test data ------------------------------------------------
 
 test_data1 <- read.csv(system.file("extdata", "sondeClean.csv", package = "driftR"), stringsAsFactors = FALSE)
-result <- dr_readSonde(system.file("extdata", "rawData.csv", package = "driftR"), defineVar = TRUE)
+result <- dr_read(system.file("extdata", "rawData.csv", package = "driftR"), instrument = "Sonde",
+                  defineVar = TRUE, cleanVar = FALSE)
 
 # test inputs ------------------------------------------------
 
@@ -59,7 +60,7 @@ test_that("input errors trigged - format is deprecated", {
 result <- dr_factor(result, corrFactor = factors, dateVar = Date, timeVar = Time, keepDateTime = TRUE)
 
 test_that("creating correction factors", {
-  expect_equal(result$factors, test_data1$corrFactors)
+  expect_equal(result$factors, test_data1$factors)
 })
 
 testData2 <- data.frame(
