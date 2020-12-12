@@ -177,38 +177,36 @@ dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL
   if (!is.null(from) & !is.null(to)){
     # drop all observations outside of given range
 
-    .data %>%
-      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
-      dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
-                                                 tz = tz)) %>%
-      dplyr::mutate(!!cleanVarQ := (!!source)) %>%
-      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal | dateTimeParse >= toVal, !!clean, NA)) %>%
-      dplyr::select(-dateTime, -dateTimeParse) -> .data
+    .data <- dplyr::mutate(.data, dateTime := stringr::str_c(!!date, !!time, sep = " "))
+    .data <- dplyr::mutate(.data, dateTimeParse =
+                           lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
+                                                      tz = tz)) 
+    .data <- dplyr::mutate(.data, !!cleanVarQ := (!!source))
+    .data <- dplyr::mutate(.data, !!cleanVarQ := ifelse(dateTimeParse < fromVal | dateTimeParse >= toVal, !!clean, NA))
+    .data <- dplyr::select(.data, -dateTime, -dateTimeParse)
 
   }else if (is.null(from) & !is.null(to)){
     # drop all observations up to the specified date/time
-
-    .data %>%
-      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
-      dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
-                                                 tz = tz)) %>%
-      dplyr::mutate(!!cleanVarQ := (!!source)) %>%
-      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse >= toVal, !!clean, NA)) %>%
-      dplyr::select(-dateTime, -dateTimeParse) -> .data
+    
+    .data <- dplyr::mutate(.data, dateTime := stringr::str_c(!!date, !!time, sep = " "))
+    .data <- dplyr::mutate(.data, dateTimeParse =
+                           lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
+                                                      tz = tz)) 
+    .data <- dplyr::mutate(.data, !!cleanVarQ := (!!source))
+    .data <- dplyr::mutate(.data, !!cleanVarQ := ifelse(dateTimeParse >= toVal, !!clean, NA))
+    .data <- dplyr::select(.data, -dateTime, -dateTimeParse)
+    
 
   } else if (!is.null(from) & is.null(to)){
     # drop all observations beginning with the specified date/time
-
-    .data %>%
-      dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
-      dplyr::mutate(dateTimeParse =
-                      lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
-                                                 tz = tz)) %>%
-      dplyr::mutate(!!cleanVarQ := (!!source)) %>%
-      dplyr::mutate(!!cleanVarQ := ifelse(dateTimeParse < fromVal, !!clean, NA)) %>%
-      dplyr::select(-dateTime, -dateTimeParse) -> .data
+    
+    .data <- dplyr::mutate(.data, dateTime := stringr::str_c(!!date, !!time, sep = " "))
+    .data <- dplyr::mutate(.data, dateTimeParse =
+                           lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
+                                                      tz = tz)) 
+    .data <- dplyr::mutate(.data, !!cleanVarQ := (!!source))
+    .data <- dplyr::mutate(.data, !!cleanVarQ := ifelse(dateTimeParse < fromVal, !!clean, NA))
+    .data <- dplyr::select(.data, -dateTime, -dateTimeParse)
 
   }
 
@@ -216,9 +214,8 @@ dr_replace_time <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL
 
 # approach 2
 dr_replace_exp <- function(.data, source = NULL, cleanVarQ = NULL, clean = NULL, replace_exp){
-
-  .data %>%
-    dplyr::mutate(!!cleanVarQ := (!!source)) %>%
-    dplyr::mutate(!!cleanVarQ := ifelse(!!replace_exp, NA, !!clean)) -> .data
+  
+  .data <- dplyr::mutate(.data, !!cleanVarQ := (!!source))
+  .data <- dplyr::mutate(.data, !!cleanVarQ := ifelse(!!replace_exp, NA, !!clean))
 
 }
