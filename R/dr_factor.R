@@ -108,14 +108,13 @@ dr_factor <- function(.data, corrFactor, dateVar, timeVar, tz = NULL, format = c
   }
 
   # concatenate date and time, apply date-time format, and calculate correction factor
-  .data %>%
-    dplyr::mutate(dateTime := stringr::str_c(!!date, !!time, sep = " ")) %>%
-    dplyr::mutate(dateTimePOSIX =
-                    lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
-                                               tz = tz)) %>%
-    dplyr::mutate(dateTimePOSIX = base::as.numeric(dateTimePOSIX)) %>%
-    dplyr::mutate(totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1)) %>%
-    dplyr::mutate(!!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime) -> .data
+  .data <- dplyr::mutate(.data, dateTime := stringr::str_c(!!date, !!time, sep = " "))
+  .data <- dplyr::mutate(.data, dateTimePOSIX =
+                         lubridate::parse_date_time(dateTime, orders = c("ymd HMS", "mdy HMS"),
+                                                    tz = tz))
+  .data <- dplyr::mutate(.data, dateTimePOSIX = base::as.numeric(dateTimePOSIX))
+  .data <- dplyr::mutate(.data, totTime = utils::tail(dateTimePOSIX, n=1) - utils::head(dateTimePOSIX, n=1))
+  .data <- dplyr::mutate(.data, !!corrFactor := (dateTimePOSIX - utils::head(dateTimePOSIX, n=1)) / totTime)
 
   # selectively remove variables
   if (keepDateTime == TRUE){
