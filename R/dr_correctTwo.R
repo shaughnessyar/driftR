@@ -136,9 +136,8 @@ dr_correctTwo <- function(.data, sourceVar, cleanVar, calValLow, calStdLow, calV
   }
 
   # calculate parameters and create new variable
-  .data %>%
-    dplyr::mutate(low := calStdLow + ((!!factor) * (calStdLow - calValLow))) %>%
-    dplyr::mutate(high := calStdHigh - ((!!factor) * (calStdHigh - calValHigh))) %>%
-    dplyr::mutate(!!cleanVar := ((((!!source) - low) / (high - low) ) * (calStdHigh - calStdLow) ) + calStdLow) %>%
-    dplyr::select(-low, -high)
+  .data <- dplyr::mutate(.data, low := calStdLow + ((!!factor) * (calStdLow - calValLow)))
+  .data <- dplyr::mutate(.data, high := calStdHigh - ((!!factor) * (calStdHigh - calValHigh)))
+  .data <- dplyr::mutate(.data, !!cleanVar := ((((!!source) - low) / (high - low) ) * (calStdHigh - calStdLow) ) + calStdLow)
+  .data <- dplyr::select(.data, -low, -high)
 }
