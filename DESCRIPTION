@@ -3,9 +3,12 @@ Type: Package
 Title: Drift Correcting Water Quality Data
 Version: 1.1.0
 Authors@R: c(
-    person("Andrew", "Shaughnessy", , "andrew.shaughnessy@slu.edu", c("aut", "cre")),
-    person("Christopher", "Prener", , "chris.prener@slu.edu", c("aut")),
-    person("Elizabeth", "Hasenmueller", , "elizabeth.hasenmueller@slu.edu", c("aut"))
+    person("Andrew", "Shaughnessy", email = "ars637@psu.edu", 
+                  role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9574-5053")),
+    person("Christopher", "Prener", email = "chris.prener@slu.edu", 
+                  role = c("aut"), comment = c(ORCID = "0000-0002-4310-9888")),
+    person("Elizabeth", "Hasenmueller", email = "elizabeth.hasenmueller@slu.edu", 
+                  role = c("aut"), comment = c(ORCID = "0000-0002-6233-2372"))
     )
 Description: A tidy implementation of equations that correct for instrumental drift in 
     continuous water quality monitoring data.  There are many sources of water quality data 
