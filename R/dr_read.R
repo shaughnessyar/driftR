@@ -75,11 +75,11 @@ dr_read <- function(file, instrument, defineVar = TRUE, cleanVar = TRUE, case){
 
   if (cleanVar == TRUE){
     . = NULL
-    data <- data %>% janitor::clean_names(., case = case) %>%
-    stats::setNames(base::gsub("p_h","pH", base::names(.))) %>%
-    stats::setNames(base::gsub("PH","pH", base::names(.))) %>%
-    stats::setNames(base::gsub("P_H","pH", base::names(.))) %>%
-    stats::setNames(base::gsub("Ph","pH", base::names(.)))
+    data <- janitor::clean_names(data, case = case)
+    data <- stats::setNames(data, base::gsub("p_h","pH", base::names(data)))
+    data <- stats::setNames(data, base::gsub("PH","pH", base::names(data)))
+    data <- stats::setNames(data, base::gsub("P_H","pH", base::names(data)))
+    data <- stats::setNames(data, base::gsub("Ph","pH", base::names(data)))
   }
 
   return(data)
@@ -154,7 +154,7 @@ readHOBO <- function (file, defineVar = TRUE) {
     if (fileFormat == "CSV" | fileFormat == "csv"){
       df <- suppressWarnings(readr::read_csv(file, skip = 1))
     }
-    df <- df %>% stats::setNames(base::gsub(",.*?$","", base::names(.)))
+    df <- stats::setNames(df, base::gsub(",.*?$","", base::names(df)))
     df$date <- base::gsub(" .*$", "", df$`Date Time`)
     df$time <- base::substr(df$`Date Time`, 10, base::nchar(df$`Date Time`))
     df$time <- base::format(base::strptime(df$time, "%I:%M:%S %p"), "%H:%M:%S")
